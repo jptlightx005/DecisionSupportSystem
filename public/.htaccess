@@ -1,0 +1,10 @@
+RewriteEngine On    # Turn on the rewriting engine
+
+RewriteRule ^$ /views/pages/$1 [L]
+RewriteRule ^about$ /views/pages/about.php [L]
+RewriteRule ^help$ /views/pages/help.php [L]
+RewriteRule ^test$ /views/pages/test.php [L]
+
+RewriteRule ^css/(.*)$ /scripts/stylesheet/$1 [NC,L]
+RewriteRule ^js/(.*)$ /scripts/javascript/$1 [NC,L]
+RewriteRule ^bootstrap/(.*)$ /library/bootstrap/$1 [NC,L]
