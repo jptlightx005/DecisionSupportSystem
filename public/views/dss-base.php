@@ -29,6 +29,7 @@ $site = array(
 	);
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
+
 if(isset($action)){
 	$ulogin = new uLogin('appLogin', 'appLoginFail');
 	if($action == SIGN_UP){
@@ -36,7 +37,7 @@ if(isset($action)){
 		if (!$ulogin->CreateUser( $_POST['usrn'],  $_POST['pssw']) ){
 			$msg = 'account creation failure';
 		}else{
-			$msg = 'account created';
+			$msg = 'Account registered successfully';
 		}
 	}else if($action == LOG_IN){
 		if (isset($_POST['nonce']) && ulNonce::Verify('login', $_POST['nonce'])){
@@ -45,21 +46,21 @@ if(isset($action)){
 			if ($ulogin->IsAuthSuccess()){
 				// Since we have specified callback functions to uLogin,
 				// we don't have to do anything here.
-				$msg = "Success";
+				$msg = "Logged in successfully";
 				setcookie('usrn', $_POST["usrn"], time() + 86400 * 5, "/");
 			}
 		}else{
 			$msg = 'invalid nonce';
 		}
-
-		redirectToURL($msg, $site['root']);
-		exit();
 	}else if($action == LOG_OUT){
 		resetCookies();
-		redirectToURL("Logged out successfully", $site['root']);
-		exit();
+		$msg = "Logged out successfully";
 	}
+
+	redirectToURL($msg, $site['root']);
+	exit();
 }
+
 $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 
 ?>
