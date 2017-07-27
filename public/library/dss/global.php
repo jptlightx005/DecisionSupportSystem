@@ -21,6 +21,24 @@ function helpIsActive(){
 	return(pageIsActive($helpPages));
 }
 
+//navigation functions
+function redirectToURL($msg, $rurl, $timeout = 1000){
+    echo "<h1>$msg</h1>";
+
+    if($rurl != null)
+        echo "<script>setTimeout(\"location.href = '$rurl';\",$timeout);</script>";
+}
+
+//cookies function
+function resetCookies(){
+    setcookie('usrn', '', time() - 7200, "/");
+ //    setcookie('token', '', time() - 7200, "/");
+ //    setcookie('first_name', '', time() - 7200, "/");
+	// setcookie('middle_name', '', time() - 7200, "/");
+ //    setcookie('last_name', '', time() - 7200, "/");
+ //    setcookie('priviledge_level', '', time() - 7200, "/");
+}
+
 //custom functions
 function printArray($array){
     echo "<pre>";

@@ -6,21 +6,61 @@
 // 1 - authorized nurse level
 // 0 - no access
 
+define('LIB_DIR', $_SERVER['DOCUMENT_ROOT'] . '/library/');
+define('SIGN_UP', 'Sign up');
+define('LOG_IN', 'Login');
+define('LOG_OUT', 'logout');
 
-require_once('../../library/dss/global.php');
-require_once('../../library/phpti-0.9/ti.php');
+require_once(LIB_DIR . 'dss/global.php');
+require_once(LIB_DIR . 'dss/db.php');
+require_once(LIB_DIR . 'phpti-0.9/ti.php');
 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 $site = array(
 		'title' => 'Decision Support System',
 		'subtitle' => 'Patient Diagnosis and Prescription',
 		'logo' => "assets/logo.png",
 		'icon' => "assets/logo.ico",
-		'root' => '/dss/',
+		'root' => '/',
 		'current_page' => $_SERVER['PHP_SELF']
 	);
-$_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']) && isset($_COOKIE['token']);
+
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
+if(isset($action)){
+	$ulogin = new uLogin('appLogin', 'appLoginFail');
+	if($action == SIGN_UP){
+		// New account
+		if (!$ulogin->CreateUser( $_POST['usrn'],  $_POST['pssw']) ){
+			$msg = 'account creation failure';
+		}else{
+			$msg = 'account created';
+		}
+	}else if($action == LOG_IN){
+		if (isset($_POST['nonce']) && ulNonce::Verify('login', $_POST['nonce'])){
+			$_SESSION['appRememberMeRequested'] = true;
+			$ulogin->Authenticate($_POST['usrn'],  $_POST['pssw']);
+			if ($ulogin->IsAuthSuccess()){
+				// Since we have specified callback functions to uLogin,
+				// we don't have to do anything here.
+				$msg = "Success";
+				setcookie('usrn', $_POST["usrn"], time() + 86400 * 5, "/");
+			}
+		}else{
+			$msg = 'invalid nonce';
+		}
+
+		redirectToURL($msg, $site['root']);
+		exit();
+	}else if($action == LOG_OUT){
+		resetCookies();
+		redirectToURL("Logged out successfully", $site['root']);
+		exit();
+	}
+}
+$_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 
 ?>
 
@@ -67,7 +107,7 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']) && isset($_COOKIE['token']);
 		            <?php endif; ?>
 			      
 		            <?php if($_SESSION['isLoggedIn']): ?>
-		                <li><a href="<?= $root ?>?action=logout">Logout</a></li>
+		                <li><a href="?action=<?= LOG_OUT ?>">Logout</a></li>
 		            <?php else: ?>
 		            	<li><a href="#" data-toggle="modal" data-target="#login-modal"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 		            <?php endif; ?>
@@ -110,9 +150,10 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']) && isset($_COOKIE['token']);
                     <div class="loginmodal-container">
                         <h1>Login to Your Account</h1><br>
                         <form id="login_form" method="post">
+                        <input type="hidden" id="nonce" name="nonce" value="<?= ulNonce::Create('login') ?>">
                             <input type="text" name="usrn" placeholder="Username">
                             <input type="password" name="pssw" placeholder="Password">
-                            <input type="submit" name="action" class="login loginmodal-submit" value="Login">
+                            <input type="submit" name="action" class="login loginmodal-submit" value="<?= LOG_IN ?>">
                         </form>
 
                         <div class="login-help">
@@ -137,7 +178,7 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']) && isset($_COOKIE['token']);
 							<input class="form-control" type="text" name="middle_name" placeholder="Middle Name" />
 							<input class="form-control" type="text" name="last_name" placeholder="Last Name" required />
 							<input class="form-control" type="text" name="job" placeholder="Position" required />
-							<input type="submit" name="action" class="login loginmodal-submit" value="Sign Up" />
+							<input type="submit" name="action" class="login loginmodal-submit" value="<?= SIGN_UP ?>" />
                         </form>
 
                         <div class="login-help">
