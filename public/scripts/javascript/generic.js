@@ -1,7 +1,8 @@
 
 function showSuccessMessage(title, message){
 	$(document).ready(function(){
-        $('#success_alert span').text(message);
+        $('#success_alert #title').text(title);
+        $('#success_alert #message').text(message);
         $('#success_alert').removeClass('hidden');
     });
 }

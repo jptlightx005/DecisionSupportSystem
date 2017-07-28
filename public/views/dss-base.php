@@ -16,6 +16,7 @@ require_once(LIB_DIR . 'dss/db.php');
 require_once(LIB_DIR . 'phpti-0.9/ti.php');
 
 require_once(LIB_DIR . 'dss/data/admin.php');
+require_once(LIB_DIR . 'dss/data/patient.php');
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -188,13 +189,23 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 					<!-- Keep all page content within the page-content inset div! -->
 					<div class="page-content inset" style="margin-left: 10px; margin-right: 10px;">
 						&nbsp;
-						<div class="hidden alert alert-success" id="success_alert">
-				          	<span id="title" style="font-weight:bold">Success!</span>: <span id="message">SUCCESS TEXT</span>
-				        </div>
+						<div id="main">
+							<div class="hidden alert alert-success" id="success_alert">
+					          	<span id="title" style="font-weight:bold">Success!</span>: <span id="message">SUCCESS TEXT</span>
+					        </div>
 
-				        <div class="hidden alert alert-danger" id="fail_alert">
-			              	<span id="title" style="font-weight:bold">Failed!</span>: <span id="message">ERROR TEXT</span>
-			            </div>
+					        <div class="hidden alert alert-danger" id="fail_alert">
+				              	<span id="title" style="font-weight:bold">Failed!</span>: <span id="message">ERROR TEXT</span>
+				            </div>
+
+				            <?php if($_COOKIE['privilege_level'] == 0): ?>
+						   		<script>
+						   			showErrorMessage('Access denied', 'In order to have access to the data available here, you have to request access from the Administrator.');
+						   		</script>
+						   	<?php endif; ?>
+						</div>
+						
+
 						<?php startblock('main') ?>
 						<?php endblock() ?>
 					</div>

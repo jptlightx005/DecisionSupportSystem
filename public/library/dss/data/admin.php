@@ -2,10 +2,10 @@
 require_once('db.php');
 
 function getProfileByID($adminID){
-	$result = selectFromQuery('dss_accounts', 'UL_ID', $adminID);
+	$result = selectFirstFromQuery('dss_accounts', 'UL_ID', $adminID);
 	
-	if(count($result) > 0){
-		return response(1, "Profile successfully loaded", $result[0]);
+	if(isset($result)){
+		return response(1, "Profile successfully loaded", $result);
 	}else{
 		return response(0, "Admin ID Not Found!");
 	}
