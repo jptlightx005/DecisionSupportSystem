@@ -6,6 +6,8 @@ RewriteRule ^help$ /views/pages/help.php [L]
 RewriteRule ^profile$ /views/pages/profile.php [L]
 RewriteRule ^test$ /views/pages/test.php [L]
 
+RewriteRule ^case$ /views/pages/case/case-list.php [L]
+
 RewriteRule ^css/(.*)$ /scripts/stylesheet/$1 [NC,L]
 RewriteRule ^js/(.*)$ /scripts/javascript/$1 [NC,L]
 RewriteRule ^bootstrap/(.*)$ /library/bootstrap/$1 [NC,L]
