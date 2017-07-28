@@ -88,3 +88,17 @@ function returnFullName($first_name, $middle_name, $last_name){
 function returnAdminFullName(){
 	return returnFullName(returnCookieWithKey('first_name'), returnCookieWithKey('middle_name'), returnCookieWithKey('last_name'));
 }
+
+function response($errno, $description, $content = null){
+	$response = array("response" => $errno);
+	
+	if($content != null){
+		$response['content'] = $content;
+	}
+
+	if($description != null){
+		$response['message'] = $description;
+	}
+	
+	return $response;
+}

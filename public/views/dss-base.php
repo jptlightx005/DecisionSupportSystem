@@ -15,6 +15,8 @@ require_once(LIB_DIR . 'dss/global.php');
 require_once(LIB_DIR . 'dss/db.php');
 require_once(LIB_DIR . 'phpti-0.9/ti.php');
 
+require_once(LIB_DIR . 'dss/data/admin.php');
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
