@@ -63,6 +63,9 @@ if(isset($action)){
 			$msg = "Password didn't match";
 		}
 		$url = $_SERVER['REQUEST_URI'];
+
+		redirectToURL($msg, $url);
+		exit();
 	}else if($action == LOG_IN){
 		if (isset($_POST['nonce']) && ulNonce::Verify('login', $_POST['nonce'])){
 			$_SESSION['appRememberMeRequested'] = true;
@@ -100,14 +103,17 @@ if(isset($action)){
 			$msg = 'invalid nonce';
 		}
 		$url = $_SERVER['REQUEST_URI'];
+
+		redirectToURL($msg, $url);
+		exit();
 	}else if($action == LOG_OUT){
 		resetCookies();
 		$msg = "Logged out successfully";
 		$url = $site['root'];
-	}
 
-	redirectToURL($msg, $url);
-	exit();
+		redirectToURL($msg, $url);
+		exit();
+	}
 }
 
 $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);

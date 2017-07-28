@@ -1,10 +1,19 @@
 <?php require_once('../../dss-base.php') ?>
-
+<?php
+    define('ADD_PATIENT', 'add_patient');
+?>
 <?php if($_SESSION['isLoggedIn']): ?>
-	<?php
-		$patients = getPatientList();
-	?>
+
 	<?php startblock('main') ?>
+        <?php
+            if(isset($action)){
+                if($action == ADD_PATIENT){
+                    addNewPatient($_POST, $_FILES);
+                }
+            }
+
+            $patients = getPatientList();
+        ?>
 	   	<?php if($_COOKIE['privilege_level'] != 0): ?>
 	   		<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addPatientModal">
                  <span class="glyphicon glyphicon-plus"></span> Add Patient
@@ -46,32 +55,33 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Add Patient</h4>
                 </div>
-                <input type='hidden' name="usrn" value="<?php echo $_COOKIE['usrn']; ?>" />
-                <input type='hidden' name="token" value="<?php echo $_COOKIE['token']; ?>" />
-                <input type='hidden' name="adminID" value="<?php echo $_COOKIE['adminID']; ?>" />
+                <input type='hidden' name="admin_ulid" value="<?php echo $_COOKIE['adminID']; ?>" />
                 <div class="modal-body">
-                    <img style="margin-bottom:10px;" class="img-responsive center-block img-rounded" id="patient_photo" src="assets/placeholder.gif" alt="Insert Image" width="304" height="236">
-                    <div class="row">
-                        <div class="col-xs-4"></div>
-                        <div class="col-xs-4">
-                            <label class="btn btn-primary btn-file center-block btn-md">
-                                Browse <input type="file" style="display: none;" name="patient_picture" onchange="readURL(this);"  accept="image/*">
-                            </label>
+                    <div class="image-selection">
+                        <img style="margin-bottom:10px;" class="img-responsive center-block img-rounded image-selected" id="patient_photo" src="assets/placeholder.gif" alt="Insert Image" width="304" height="236">
+                        <div class="row">
+                            <div class="col-xs-4"></div>
+                            <div class="col-xs-4">
+                                <label class="btn btn-primary btn-file center-block btn-md">
+                                    Browse <input type="file" style="display: none;" name="patient_picture" class="image-browser"  accept="image/*">
+                                </label>
+                            </div>
+                            <div class="col-xs-4"></div>
                         </div>
-                        <div class="col-xs-4"></div>
                     </div>
-                    <label>Last Name:</label>
-                    <input class="form-control" type="text" name="last_name" required />
+                    
                     <label>First Name:</label>
                     <input class="form-control" type="text" name="first_name" required />
                     <label>Middle Name:</label>
-                    <input class="form-control" type="text" name="maternal_name" required />
+                    <input class="form-control" type="text" name="middle_name" required />
+                    <label>Last Name:</label>
+                    <input class="form-control" type="text" name="last_name" required />
                     <label>Ward/Room/Bed/Service:</label>
-                    <input class="form-control" type="text" name="ward_room" />
+                    <input class="form-control" type="text" name="ward" />
                     <label>Permanent Address:</label>
                     <input class="form-control" type="text" name="address" required/>
                     <label>Telephone No.:</label>
-                    <input class="form-control" type="text" name="tel_no" />
+                    <input class="form-control" type="text" name="telephone" />
                     <label>Gender:</label><br/>
                     <select class="form-control" name="gender" required>
                         <option disabled selected value>Select Gender</option>
@@ -79,7 +89,7 @@
                         <option value='Female'>Female</option>
                     </select>
                     <label>Civil Status:</label>
-                    <select class="form-control" name="civil_status" required>
+                    <select class="form-control" name="status" required>
                         <option disabled selected value>Select Status</option>
                         <option value='Single'>Single</option>
                         <option value='Married'>Married</option>
@@ -122,25 +132,25 @@
                     <label>Employer (Type of Business):</label>
                     <input class="form-control" type="text" name="employer" />
                     <label>Address:</label>
-                    <input class="form-control" type="text" name="e_address" />
+                    <input class="form-control" type="text" name="emp_address" />
                     <label>Telephone No.:</label>
-                    <input class="form-control" type="text" name="e_tel_no" />
+                    <input class="form-control" type="text" name="emp_telephone" />
                     <br/>
                     
                     <label>Mother's Name:</label>
                     <input class="form-control" type="text" name="mother" required/>
                     <label>Address:</label>
-                    <input class="form-control" type="text" name="m_address" required/>
+                    <input class="form-control" type="text" name="mom_address" required/>
                     <label>Telephone No.:</label>
-                    <input class="form-control" type="text" name="m_tel_no" required/>
+                    <input class="form-control" type="text" name="mom_telephone" required/>
                     <br/>
                     
                     <label>Spouse Name:</label>
                     <input class="form-control" type="text" name="spouse" />
                     <label>Address:</label>
-                    <input class="form-control" type="text" name="s_address" />
+                    <input class="form-control" type="text" name="sp_address" />
                     <label>Telephone No.:</label>
-                    <input class="form-control" type="text" name="s_tel_no" />
+                    <input class="form-control" type="text" name="sp_telephone" />
                     <br/>
 
                     <label>Electronic Health Record:</label>
@@ -170,11 +180,30 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" name="action" value="add_patient" class="btn btn-default">Submit</button>
+                    <button type="submit" name="action" value="<?= ADD_PATIENT ?>" class="btn btn-default">Submit</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </form>
 
         </div>
     </div>
+
+    <footer>
+        <script type="text/javascript">
+            $(".image-browser").change(function() {
+                var input = ($(this))[0];
+
+                if(input.files && input.files[0]){
+                    var reader = new FileReader();
+                    var img = $(this).closest('.image-selection').find('.image-selected');
+                    reader.onload = function (e){
+                        img.attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+                
+            });
+        </script>
+    </footer>
 <?php endif; ?>
