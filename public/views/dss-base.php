@@ -124,8 +124,8 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 		<script src="js/jquery.min.js"></script>
 	    <script src="js/sidebar.js"></script>
 
-	    <script src="js/search.js"></script>
-	    <script src="js/general.js"></script>
+	    <!-- <script src="js/search.js"></script> -->
+	    <script src="js/generic.js"></script>
 
 	    <script src="bootstrap/js/bootstrap.min.js"></script>
 	    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
@@ -186,8 +186,15 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 				<!-- Page content -->
 				<div id="page-content-wrapper">
 					<!-- Keep all page content within the page-content inset div! -->
-					<div class="page-content inset" style="margin-left: 10px;">
+					<div class="page-content inset" style="margin-left: 10px; margin-right: 10px;">
 						&nbsp;
+						<div class="hidden alert alert-success" id="success_alert">
+				          	<span id="title" style="font-weight:bold">Success!</span>: <span id="message">SUCCESS TEXT</span>
+				        </div>
+
+				        <div class="hidden alert alert-danger" id="fail_alert">
+			              	<span id="title" style="font-weight:bold">Failed!</span>: <span id="message">ERROR TEXT</span>
+			            </div>
 						<?php startblock('main') ?>
 						<?php endblock() ?>
 					</div>
