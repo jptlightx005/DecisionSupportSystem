@@ -45,6 +45,10 @@
   width: 100%;
 }
 
+
+#page-content-wrapper p{
+  font-size: 14pt;
+}
 #sidebar_menu li a, .sidebar-nav li a {
     color: #999;
     display: block;

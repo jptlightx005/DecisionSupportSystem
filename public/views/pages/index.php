@@ -2,7 +2,8 @@
 
 <?php if($_SESSION['isLoggedIn']): ?>
 	<?php startblock('main') ?>
-	   Test page
+	   <h1>Welcome, <?= $_COOKIE['job']. " " . returnAdminFullName(); ?>!</h1>
+	   <p>Please select an operation from the left panel.
 	<?php endblock() ?>
 <?php else: ?>
 	<!-- Login -->

@@ -33,12 +33,33 @@ $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
 if(isset($action)){
 	$ulogin = new uLogin('appLogin', 'appLoginFail');
 	if($action == SIGN_UP){
-		// New account
-		if (!$ulogin->CreateUser( $_POST['usrn'],  $_POST['pssw']) ){
-			$msg = 'account creation failure';
+		if($_POST['pssw'] == $_POST['conf_pssw']){
+			// New account
+			if (!$ulogin->CreateUser( $_POST['usrn'],  $_POST['pssw']) ){
+				$msg = 'account creation failure';
+			}else{
+				$ulid = getULIDforUsrn($_POST['usrn']);
+				if(isset($ulid)){
+					$ulid = $ulid['id'];
+					$email = returnMysqlEscapedString($_POST['email']);
+					$first_name = returnMysqlEscapedString($_POST['first_name']);
+					$last_name = returnMysqlEscapedString($_POST['last_name']);
+					$job = returnMysqlEscapedString($_POST['job']);
+					$query = "INSERT INTO dss_accounts(UL_ID, email, first_name, last_name, job) VALUES ($ulid, '$email', '$first_name', '$last_name', '$job')";
+					if(executeQuery($query)){
+						$msg = 'Account registered successfully';
+					}else{
+						$msg = 'Account registration failed';
+					}
+				}else{
+					$msg = 'account creation failure';
+				}
+				
+			}
 		}else{
-			$msg = 'Account registered successfully';
+			$msg = "Password didn't match";
 		}
+		$url = $_SERVER['REQUEST_URI'];
 	}else if($action == LOG_IN){
 		if (isset($_POST['nonce']) && ulNonce::Verify('login', $_POST['nonce'])){
 			$_SESSION['appRememberMeRequested'] = true;
@@ -46,18 +67,43 @@ if(isset($action)){
 			if ($ulogin->IsAuthSuccess()){
 				// Since we have specified callback functions to uLogin,
 				// we don't have to do anything here.
-				$msg = "Logged in successfully";
-				setcookie('usrn', $_POST["usrn"], time() + 86400 * 5, "/");
+				$ulid = getULIDforUsrn($_POST['usrn']);
+				if(isset($ulid)){
+					$ulid = $ulid['id'];
+					$profile = selectFirstQuery("SELECT * FROM dss_accounts WHERE UL_ID = $ulid");
+
+					if(isset($profile)){
+						$msg = "Logged in successfully";
+						setcookie('adminID', $ulid, time() + 86400 * 5, "/");
+						setcookie('usrn', $_POST["usrn"], time() + 86400 * 5, "/");
+			            setcookie('first_name', $profile["first_name"], time() + 86400 * 5, "/");
+			            setcookie('middle_name', $profile["middle_name"], time() + 86400 * 5, "/");
+			            setcookie('last_name', $profile["last_name"], time() + 86400 * 5, "/");
+			            setcookie('privilege_level', $profile["privilege_level"], time() + 86400 * 5, "/");
+			            setcookie('job', $profile["job"], time() + 86400 * 5, "/");
+					}else{
+						$msg = "Logged in successfully, no Profile";
+						setcookie('adminID', $ulid, time() + 86400 * 5, "/");
+						setcookie('usrn', $_POST["usrn"], time() + 86400 * 5, "/");
+					}
+				}else{
+					$msg = "Logging in failed, no ULID";
+				}
+				
+			}else{
+				$msg = "Invalid username or password";
 			}
 		}else{
 			$msg = 'invalid nonce';
 		}
+		$url = $_SERVER['REQUEST_URI'];
 	}else if($action == LOG_OUT){
 		resetCookies();
 		$msg = "Logged out successfully";
+		$url = $site['root'];
 	}
 
-	redirectToURL($msg, $site['root']);
+	redirectToURL($msg, $url);
 	exit();
 }
 
@@ -126,7 +172,7 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 				    	<li class="sidebar-brand"><a href="#" id="menu-toggle" onClick="toggleMenu()">Menu <span id="main_icon" class="glyphicon glyphicon-menu-hamburger"></a></li>
 					</ul>
 					<ul class="sidebar-nav" id="sidebar">     
-					  	<li><a href="<?=  $site['root'] ?>">Cases</a></li>
+					  	<li><a href="case">Cases</a></li>
 		                <li><a href="patient">Patients</a></li>
 		                <li><a href="symptoms">Symptoms</a></li>
 		                <li><a href="medicine">Medicine</a></li>
@@ -138,7 +184,8 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 				<!-- Page content -->
 				<div id="page-content-wrapper">
 					<!-- Keep all page content within the page-content inset div! -->
-					<div class="page-content inset">
+					<div class="page-content inset" style="margin-left: 10px;">
+						&nbsp;
 						<?php startblock('main') ?>
 						<?php endblock() ?>
 					</div>
@@ -178,7 +225,7 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 							<input class="form-control" type="text" name="first_name" placeholder="First Name" required />
 							<input class="form-control" type="text" name="middle_name" placeholder="Middle Name" />
 							<input class="form-control" type="text" name="last_name" placeholder="Last Name" required />
-							<input class="form-control" type="text" name="job" placeholder="Position" required />
+							<input class="form-control" type="text" name="job" placeholder="Position" />
 							<input type="submit" name="action" class="login loginmodal-submit" value="<?= SIGN_UP ?>" />
                         </form>
 
