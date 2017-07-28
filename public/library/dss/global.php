@@ -10,6 +10,7 @@ function pageIsActive($pages){
 function homeIsActive(){
 	$homePages[] = "/views/pages/index.php";
 	$homePages[] = "/views/pages/case/case-list.php";
+	$homePages[] = "/views/pages/patient/patient-list.php";
 	return(pageIsActive($homePages));
 }
 
@@ -30,12 +31,12 @@ function profileIsActive(){
 
 //side nav module pages
 function caseIsActive(){
-	$casePages[] = "/views/pages/case/case-list.php";
+	$casePages[] = "/views/pages/case/case-list.php"; //make sure to add this at homeIsActive();
 	return(pageIsActive($casePages));
 }
 
 function patientIsActive(){
-	$casePages[] = "/views/pages/case/case-list.php";
+	$casePages[] = "/views/pages/patient/patient-list.php"; //make sure to add this at homeIsActive();
 	return(pageIsActive($casePages));
 }
 
