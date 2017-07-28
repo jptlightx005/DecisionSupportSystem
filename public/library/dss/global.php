@@ -6,8 +6,10 @@ function pageIsActive($pages){
 	return in_array(strtolower($currentPage), $pages) ? " class=\"active\"" : "";
 }
 
+//top nav pages
 function homeIsActive(){
 	$homePages[] = "/views/pages/index.php";
+	$homePages[] = "/views/pages/case/case-list.php";
 	return(pageIsActive($homePages));
 }
 
@@ -19,6 +21,22 @@ function aboutIsActive(){
 function helpIsActive(){
 	$helpPages[] = "/views/pages/help.php";
 	return(pageIsActive($helpPages));
+}
+
+function profileIsActive(){
+	$profilePages[] = "/views/pages/profile.php";
+	return(pageIsActive($profilePages));
+}
+
+//side nav module pages
+function caseIsActive(){
+	$casePages[] = "/views/pages/case/case-list.php";
+	return(pageIsActive($casePages));
+}
+
+function patientIsActive(){
+	$casePages[] = "/views/pages/case/case-list.php";
+	return(pageIsActive($casePages));
 }
 
 //navigation functions

@@ -150,7 +150,7 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 
 		        <ul class="nav navbar-nav navbar-right">
 		        	<?php if($_SESSION['isLoggedIn']): ?>
-		                <li><a href="profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+		                <li <?= profileIsActive() ?>><a href="profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
 		            <?php else: ?>
 		                <li><a href="#" data-toggle="modal" data-target="#signup-modal"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 		            <?php endif; ?>
@@ -174,7 +174,7 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 				    	<li class="sidebar-brand"><a href="#" id="menu-toggle" onClick="toggleMenu()">Menu <span id="main_icon" class="glyphicon glyphicon-menu-hamburger"></a></li>
 					</ul>
 					<ul class="sidebar-nav" id="sidebar">     
-					  	<li><a href="case">Cases</a></li>
+					  	<li <?= caseIsActive() ?>><a href="case">Cases</a></li>
 		                <li><a href="patient">Patients</a></li>
 		                <li><a href="symptoms">Symptoms</a></li>
 		                <li><a href="medicine">Medicine</a></li>
