@@ -2,6 +2,8 @@
 
 <?php
     define('UPDATE_PATIENT', 'update_patient');
+    define('UPDATE_PICTURE', 'update_picture');
+    define('ADD_EHR', 'add_ehr');
 ?>
 
 <?php if($_SESSION['isLoggedIn']): ?>
@@ -9,6 +11,10 @@
         if(isset($action)){
             if($action == UPDATE_PATIENT){
                 // addNewPatient($_POST, $_FILES);
+            }else if($action == UPDATE_PICTURE){
+                changePicture($_POST, $_FILES);
+            }else if($action == ADD_EHR){
+                addEHR($_POST, $_FILES);
             }
         }
 
@@ -76,15 +82,14 @@
 						<div class="row" style="margin-top:10px;">
                             <div class="col-xs-4"></div>
                             <div class="col-xs-4">
-                                <form action="patient-info?patient_id=<?= $patient['ID']; ?>#patient_record" method="post" enctype="multipart/form-data">
+                                <form action="patient-page?id=<?= $patient['ID']; ?>#patient_record" method="post" enctype="multipart/form-data">
 									<input type='hidden' name="adminID" value="<?= $_COOKIE['adminID']; ?>" />
 				                    <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
-			                    	<input type='hidden' name="action" value="change_picture" />
+			                    	<input type='hidden' name="action" value="<?= UPDATE_PICTURE ?>" />
 
 									<label class="btn btn-primary btn-file center-block btn-md">
 			                            <?= $hasPhoto ? 'Change' : 'Add' ?> Picture <input type="file" style="display: none;" name="patient_picture" onchange="this.form.submit();" accept="image/*">
 			                        </label>
-
 								</form>
                             </div>
                             <div class="col-xs-4"></div>
@@ -95,7 +100,7 @@
                             <div class="col-xs-4"></div>
                             <div class="col-xs-4">
                                 <?php if($hasPhoto): ?>
-			                    <form action="patient-info?patient_id=<?= $patient['PatientID']; ?>#patient_record" method="post" enctype="multipart/form-data">
+			                    <form action="patient-page?id=<?= $patient['PatientID']; ?>#patient_record" method="post" enctype="multipart/form-data">
 									<input type='hidden' name="usrn" value="<?php echo $_COOKIE['usrn']; ?>" />
 									<input type='hidden' name="token" value="<?php echo $_COOKIE['token']; ?>" />
 									<input type='hidden' name="adminID" value="<?php echo $_COOKIE['adminID']; ?>" />
@@ -233,10 +238,10 @@
 					<b>Electronic Health Records:</b>
 					</div>
 					<div class="row">
-						<form  method="post" action="patient-info?patient_id=<?= $patient_info['PatientID']; ?>#patient_ehr" enctype="multipart/form-data">
+						<form  method="post" action="patient-page?id=<?= $patient['ID']; ?>#patient_ehr" enctype="multipart/form-data">
 							<input type='hidden' name="adminID" value="<?php echo $_COOKIE['adminID']; ?>" />
 		                    <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
-	                    	<input type='hidden' name="action" value="add_ehr" />
+	                    	<input type='hidden' name="action" value="<?= ADD_EHR ?>" />
 							<div class="col-xs-4">
 								<label class="btn btn-primary btn-file center-block btn-md">
 		                            Add EHR Documents <input type="file" style="display: none;" name="ehr_img" onchange="this.form.submit();" accept="image/*">
