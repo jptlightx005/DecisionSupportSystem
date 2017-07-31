@@ -41,10 +41,10 @@
                 <?php foreach($patients as $dict): ?>
                     <tr>
                         <td><?= $dict['PatientID'] ?></td>
-                        <td><?= returnFullNameFromObject($dict) ?></td>
+                        <td><a href="patient-page?id=<?= $dict['ID'] ?>"><?= returnFullNameFromObject($dict) ?></a></td>
                         <td><?= $dict['gender'] ?></td>
                         <td><?= $dict['address'] ?></td>
-                        <td><?= returnFullDateStringWithDate($dict['last_visit']) ?></td>
+                        <td><?= returnFullDateTimeStringWithDate($dict['last_visit']) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>

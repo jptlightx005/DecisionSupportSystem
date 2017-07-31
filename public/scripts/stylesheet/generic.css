@@ -1,0 +1,6 @@
+.center-cropped {
+  object-fit: cover;
+  object-position: center; /* Center the image within the element */
+  height: 200px;
+  width: 250px;
+}

@@ -3,8 +3,23 @@ require_once('db.php');
 
 function getPatientList(){
 	global $conn;
-	$query = "SELECT * FROM tbl_patients WHERE is_removed = 0";
-	return selectFromQuery('dss_patients', 'is_removed', 0);
+	$query = "SELECT ID, PatientID, first_name, middle_name, last_name, gender, address, last_visit FROM dss_patients WHERE is_removed = 0";
+	return selectQuery($query);
+}
+
+function getPatientInfo($id){
+	global $conn;
+	return selectFirstFromQuery('dss_patients', 'ID', $id);
+}
+
+function getPatientLatestPicture($id){
+	global $conn;
+	return selectQuery("SELECT * FROM dss_uploads WHERE PatientID = $id AND type = 'patient_picture' ORDER BY date_uploaded DESC LIMIT 1");
+}
+
+function getPatientEHR($id){
+	global $conn;
+	return selectQuery("SELECT * FROM dss_uploads WHERE PatientID = $id AND type = 'patient_ehr' ORDER BY date_uploaded DESC");
 }
 
 function addNewPatient($post, $files){
@@ -48,11 +63,13 @@ function addNewPatient($post, $files){
 				$ehr_file = $ehr_files[$i];
 				$full_name = $post["first_name"] . " " . $post["last_name"];
 				$subfile_name = replace_accents(friendly_url($full_name));
+				$query = "INSERT INTO dss_uploads (`PatientID`) VALUES ($patient_id)";
+				$ehrid = executeQueryGetInsertID($query);
 				$file_name = "$patient_id-$ehrid-$subfile_name-ehr.jpg";
 				saveFile($ehr_file, $file_name);
 				$file_name = "uploads/$file_name";
 
-				$query = "INSERT INTO `dss_uploads` (PatientID, url, type, date_uploaded) VALUES ($patient_id, '$file_name', 'patient_ehr', CURRENT_TIMESTAMP)";
+				$query = "UPDATE `dss_uploads` SET url = '$file_name', type = 'patient_ehr', date_uploaded = CURRENT_TIMESTAMP WHERE ID = $ehrid AND `PatientID` = $patient_id";
 				executeQuery($query);
 			}
 		}
