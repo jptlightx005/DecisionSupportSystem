@@ -109,6 +109,15 @@ function returnAdminFullName(){
 	return returnFullName(returnCookieWithKey('first_name'), returnCookieWithKey('middle_name'), returnCookieWithKey('last_name'));
 }
 
+function returnFullNameFromObject($obj){
+    return returnFullName($obj['first_name'], $obj['middle_name'], $obj['last_name']);
+}
+
+function returnFullDateStringWithDate($date){
+    $newDate = date("F j, Y h:i A ", strtotime($date));
+    return $date != "0000-00-00 00:00:00" ? $newDate : "N/A";
+}
+
 function response($errno, $description, $content = null){
 	$response = array("response" => $errno);
 	
