@@ -38,8 +38,15 @@
                     <td colspan="6" style="text-align:center;font-weight:bold;font-size:25px;padding:25px;">No results</td>
                 </tr>
             <?php else: ?>
-                <tr>
-                </tr>
+                <?php foreach($patients as $dict): ?>
+                    <tr>
+                        <td><?= $dict['PatientID'] ?></td>
+                        <td><a href="patient-page?id=<?= $dict['ID'] ?>"><?= returnFullNameFromObject($dict) ?></a></td>
+                        <td><?= $dict['gender'] ?></td>
+                        <td><?= $dict['address'] ?></td>
+                        <td><?= returnFullDateTimeStringWithDate($dict['last_visit']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
             <?php endif; ?>
                 
             </table>

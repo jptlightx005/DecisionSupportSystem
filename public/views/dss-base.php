@@ -137,13 +137,14 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 	    <script src="bootstrap/js/bootstrap.min.js"></script>
 	    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
 	    <link rel="stylesheet" type="text/css" href="css/sidebar.css" />
+	    <link rel="stylesheet" type="text/css" href="css/generic.css" />
 	    
 	    <link rel="stylesheet" type="text/css" href="css/login.css" />
 	    <!-- <link rel="stylesheet" type="text/css" href="css/search.css" /> -->
 	</head>
 	<body>
 		<!-- TOP NAVBAR -->
-		<nav class="navbar navbar-inverse navbar-static-top" style="margin-bottom: 0px;">
+		<nav class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom: 0px;">
 		    <div class="container-fluid">
 
 		        <div class="navbar-header">
@@ -173,7 +174,7 @@ $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 
 		<?php if($_SESSION['isLoggedIn']): ?>
 			<!-- Sidebar -->
-			<div id="wrapper" class="active">
+			<div id="wrapper" class="active" style="margin-top: 50px;">
 				<!-- Sidebar -->
 				    <!-- Sidebar -->
 				<div id="sidebar-wrapper">

@@ -9,6 +9,7 @@ RewriteRule ^test$ /views/pages/test.php [L]
 RewriteRule ^case$ /views/pages/case/case-list.php [L]
 
 RewriteRule ^patient$ /views/pages/patient/patient-list.php [L]
+RewriteRule ^patient-page$ /views/pages/patient/patient-page.php [L]
 
 RewriteRule ^css/(.*)$ /scripts/stylesheet/$1 [NC,L]
 RewriteRule ^js/(.*)$ /scripts/javascript/$1 [NC,L]

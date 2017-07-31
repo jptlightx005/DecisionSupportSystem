@@ -1,4 +1,6 @@
 <?php
+define('IMAGES_FOLDER', $_SERVER['DOCUMENT_ROOT'] . '/images/');
+define('ASSETS_FOLDER', $_SERVER['DOCUMENT_ROOT'] . '/images/assets/');
 define('UPLOADS_FOLDER', $_SERVER['DOCUMENT_ROOT'] . '/images/uploads/');
 
 //active page functions
@@ -12,6 +14,7 @@ function homeIsActive(){
 	$homePages[] = "/views/pages/index.php";
 	$homePages[] = "/views/pages/case/case-list.php";
 	$homePages[] = "/views/pages/patient/patient-list.php";
+    $homePages[] = "/views/pages/patient/patient-page.php";
 	return(pageIsActive($homePages));
 }
 
@@ -37,8 +40,9 @@ function caseIsActive(){
 }
 
 function patientIsActive(){
-	$casePages[] = "/views/pages/patient/patient-list.php"; //make sure to add this at homeIsActive();
-	return(pageIsActive($casePages));
+	$patientPages[] = "/views/pages/patient/patient-list.php"; //make sure to add this at homeIsActive();
+    $patientPages[] = "/views/pages/patient/patient-page.php";
+	return(pageIsActive($patientPages));
 }
 
 //navigation functions
@@ -74,7 +78,13 @@ function returnBlankIfNull($obj){
 		return "";
 	}
 }
-
+function returnSpaceIfBlank($obj){
+    if(returnBlankIfNull($obj) == ""){
+        return '&nbsp;';
+    }else{
+        return $obj;
+    }
+}
 function returnBlankIfNullObjectWithKey($obj, $key){
 	if(isset($obj)){
 		if(isset($obj[$key])){
@@ -107,6 +117,20 @@ function returnFullName($first_name, $middle_name, $last_name){
 
 function returnAdminFullName(){
 	return returnFullName(returnCookieWithKey('first_name'), returnCookieWithKey('middle_name'), returnCookieWithKey('last_name'));
+}
+
+function returnFullNameFromObject($obj){
+    return returnFullName($obj['first_name'], $obj['middle_name'], $obj['last_name']);
+}
+
+function returnFullDateStringWithDate($date){
+    $newDate = date("F j, Y", strtotime($date));
+    return $date != "0000-00-00 00:00:00" ? $newDate : "N/A";
+}
+
+function returnFullDateTimeStringWithDate($date){
+    $newDate = date("F j, Y h:i A ", strtotime($date));
+    return $date != "0000-00-00 00:00:00" ? $newDate : "N/A";
 }
 
 function response($errno, $description, $content = null){
