@@ -25,7 +25,7 @@ function getPatientPicture($id){
 
 function getPatientEHR($id){
 	global $conn;
-	return selectQuery("SELECT * FROM dss_uploads WHERE PatientID = $id AND type = 'patient_ehr' ORDER BY date_uploaded DESC");
+	return selectQuery("SELECT * FROM dss_uploads WHERE PatientID = $id AND type = 'patient_ehr' AND is_removed = 0 ORDER BY date_uploaded DESC");
 }
 
 function addNewPatient($post, $files){
@@ -133,7 +133,7 @@ function addEHR($post, $file){
 		$query = "UPDATE `dss_uploads` SET url = '$file_name', type = 'patient_ehr', date_uploaded = CURRENT_TIMESTAMP WHERE ID = $ehrid AND `PatientID` = $patient_id";
 		executeQuery($query);
 	}
-	return response(1, "Successfully Uploaded!");
+	return response(1, "Successfully Uploaded EHR!");
 }
 
 function removePicture($id){
@@ -143,6 +143,13 @@ function removePicture($id){
 	executeQuery("UPDATE dss_uploads SET is_removed = 1 WHERE ID = $picture_id AND PatientID = $id");
 
 	executeQuery("UPDATE `dss_patients` SET picture_id = 0 WHERE ID = $id");
-	return response(1, "Successfully removed!");
+	return response(1, "Successfully removed picture!");
+}
+
+function removeEHR($id){
+	global $conn;
+
+	executeQuery("UPDATE dss_uploads SET is_removed = 1 WHERE ID = $id");
+	return response(1, "Successfully removed EHR!");
 }
 ?>

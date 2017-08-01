@@ -8,7 +8,10 @@
         <?php
             if(isset($action)){
                 if($action == ADD_PATIENT){
-                    addNewPatient($_POST, $_FILES);
+                    $result = addNewPatient($_POST, $_FILES);
+                    if($result['response'] == 1){
+                        showMessage('Successfully Added Patient', 'Added patient info without errors.');
+                    }
                 }
             }
 
