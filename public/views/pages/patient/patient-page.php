@@ -3,7 +3,9 @@
 <?php
     define('UPDATE_PATIENT', 'update_patient');
     define('UPDATE_PICTURE', 'update_picture');
+    define('DELETE_PICTURE', 'delete_picture');
     define('ADD_EHR', 'add_ehr');
+    define('DELETE_EHR', 'delete_ehr');
 ?>
 
 <?php if($_SESSION['isLoggedIn']): ?>
@@ -15,6 +17,9 @@
                 changePicture($_POST, $_FILES);
             }else if($action == ADD_EHR){
                 addEHR($_POST, $_FILES);
+            }else if($action == DELETE_PICTURE){
+            	printArray($_POST);
+                removePicture($_POST['patient_id']);
             }
         }
 
@@ -23,8 +28,8 @@
 	    }
 
         $patient = getPatientInfo($_GET['id']);
-        $result = getPatientLatestPicture($_GET['id']);
-        if($result == 0){
+        $result = getPatientPicture($patient['picture_id']);;
+        if(count($result) == 0){
         	$patientPicture = "assets/placeholder.gif";
         	$hasPhoto = false;
         }else{
@@ -96,25 +101,25 @@
                         </div>
 
                         <!-- REMOVE PICTURE -->
-                        <div class="row" style="margin-top:10px">
-                            <div class="col-xs-4"></div>
-                            <div class="col-xs-4">
-                                <?php if($hasPhoto): ?>
-			                    <form action="patient-page?id=<?= $patient['PatientID']; ?>#patient_record" method="post" enctype="multipart/form-data">
-									<input type='hidden' name="usrn" value="<?php echo $_COOKIE['usrn']; ?>" />
-									<input type='hidden' name="token" value="<?php echo $_COOKIE['token']; ?>" />
-									<input type='hidden' name="adminID" value="<?php echo $_COOKIE['adminID']; ?>" />
-				                    <input type='hidden' name="patient_id" value="<?php echo $patient['PatientID']; ?>" />
+                        <?php if($hasPhoto): ?>
+	                        <div class="row" style="margin-top:10px">
+	                            <div class="col-xs-4"></div>
+	                            <div class="col-xs-4">
+	                                
+				                    <form action="patient-page?id=<?= $patient['ID']; ?>#patient_record" method="post" enctype="multipart/form-data">
+										<input type='hidden' name="usrn" value="<?= $_COOKIE['usrn']; ?>" />
+										<input type='hidden' name="adminID" value="<?= $_COOKIE['adminID']; ?>" />
+					                    <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
 
-				                    <button type="submit" name="action" value="remove_picture" class="btn btn-danger btn-md form-control">
-				                    	Remove Picture
-				                    </button>
-								</form>
-		                    	<?php endif; ?>
-                            </div>
-                            <div class="col-xs-4"></div>
-                        </div>
-
+					                    <button type="submit" name="action" value="<?= DELETE_PICTURE ?>" class="btn btn-danger btn-md form-control">
+					                    	Remove Picture
+					                    </button>
+									</form>
+			                    	
+	                            </div>
+	                            <div class="col-xs-4"></div>
+	                        </div>
+						<?php endif; ?>
                         <!-- PATIENT INFO -->
                         <br>
                         <div class="col-md-6">
@@ -235,8 +240,9 @@
 					</div>
 
 					<div class="row">
-					<b>Electronic Health Records:</b>
+						<b>Electronic Health Records:</b>
 					</div>
+					<br>
 					<div class="row">
 						<form  method="post" action="patient-page?id=<?= $patient['ID']; ?>#patient_ehr" enctype="multipart/form-data">
 							<input type='hidden' name="adminID" value="<?php echo $_COOKIE['adminID']; ?>" />
@@ -253,8 +259,8 @@
 					<?php if(count($patientEHR) > 0): ?>
 						<div class="row" id="ehr_images">
 						<?php foreach ($patientEHR as $ehr_img): ?>
-							<a class="imgmodaled" href="#" data-image-id="" data-toggle="modal" data-title="Electronic Health Record" data-caption="<?php echo $ehr_img["ID"]; ?>" data-image="<?= $ehr_img["url"]; ?>" data-target="#image-gallery">
-							<img class="center-cropped img-rounded" src="<?= $ehr_img["url"];
+							<a class="imgmodaled" href="#" data-image-id="" data-toggle="modal" data-title="Electronic Health Record" data-caption="<?= $ehr_img["ID"]; ?>" data-image="<?= $ehr_img["url"]; ?>" data-target="#image-gallery">
+							<img class="center-cropped img-rounded" style="margin:5px 0;" src="<?= $ehr_img["url"];
 							?>" /> 
 							</a> 
 						<?php endforeach; ?>
@@ -280,17 +286,15 @@
 					<div class="col-md-8 text-justify" id="image-gallery-caption">
 						
 					</div>
-					<form action="patient-info?patient_id=<?= $patient_info['PatientID']; ?>#patient_record" method="post" enctype="multipart/form-data">
-						<input type='hidden' name="usrn" value="<?php echo $_COOKIE['usrn']; ?>" />
-						<input type='hidden' name="token" value="<?php echo $_COOKIE['token']; ?>" />
+					<form action="patient-page?id=<?= $patient['ID']; ?>#patient_record" method="post" enctype="multipart/form-data">
 						<input type='hidden' name="adminID" value="<?php echo $_COOKIE['adminID']; ?>" />
-	                    <input type='hidden' name="patient_id" value="<?php echo $patient_info['PatientID']; ?>" />
+	                    <input type='hidden' name="patient_id" value="<?php echo $patient['ID']; ?>" />
 	                    <input type='hidden' name="ehr_id" value="0" />
 
-	                    <button id="remove_picture_button" type="submit" name="action" value="remove_picture" class="btn btn-danger btn-md form-control">
+	                    <button id="remove_picture_button" type="submit" name="action" value="<?= DELETE_PICTURE ?>" class="btn btn-danger btn-md form-control">
 	                    	Remove Picture
 	                    </button>
-	                    <button id="remove_ehr_button" type="submit" name="action" value="remove_ehr" class="btn btn-danger btn-md form-control">
+	                    <button id="remove_ehr_button" type="submit" name="action" value="<?= DELETE_EHR ?>" class="btn btn-danger btn-md form-control">
 	                    	Remove EHR
 	                    </button>
 					</form>
