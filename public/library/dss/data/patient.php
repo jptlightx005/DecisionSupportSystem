@@ -178,4 +178,11 @@ function removeEHR($id){
 	executeQuery("UPDATE dss_uploads SET is_removed = 1 WHERE ID = $id");
 	return response(1, "Successfully removed EHR!");
 }
+
+function removePatient($id){
+	global $conn;
+
+	executeQuery("UPDATE dss_patients SET is_removed = 1 WHERE ID = $id");
+	return response(1, "Successfully removed Patient!");
+}
 ?>

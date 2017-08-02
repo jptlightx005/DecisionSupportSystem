@@ -6,6 +6,7 @@
     define('DELETE_PICTURE', 'delete_picture');
     define('ADD_EHR', 'add_ehr');
     define('DELETE_EHR', 'delete_ehr');
+    define('DELETE_PATIENT', 'delete_patient');
 ?>
 
 <?php if($_SESSION['isLoggedIn']): ?>
@@ -74,10 +75,10 @@
 	                <span class="glyphicon glyphicon-pencil"></span> Edit
 	            </button>
 	   			<form method="post" style="display:inline;" action="patient">
-	                <input type='hidden' name="adminID" value="<?php echo $_COOKIE['adminID']; ?>" />
+	                <input type='hidden' name="admin_uid" value="<?php echo $_COOKIE['adminID']; ?>" />
 	                <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
-	                <button title="Remove Patient" id="delete" type="submit" class="btn btn-default btn-md" name="action" value="delete_patient" onclick="return confirm('Are you sure you want to delete this record?');">
-	                    <span name="action" value="delete" class="glyphicon glyphicon-remove"></span> Remove
+	                <button title="Remove Patient" id="delete" type="submit" class="btn btn-default btn-md" name="action" value="<?= DELETE_PATIENT ?>" onclick="return confirm('Are you sure you want to delete this record?');">
+	                    <span class="glyphicon glyphicon-remove"></span> Remove
 	                </button>
 	            </form>
 	   		</div>
