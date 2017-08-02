@@ -62,7 +62,11 @@
 		   		<a href="patient" class="btn btn-default btn-md">
 	                <span class="glyphicon glyphicon-arrow-left"></span> Back
 	            </a>
-	            <button class="btn btn-default btn-md">
+	            <?php
+                  $relative = "/patient-print?id={$patient['ID']}";
+                  $onclick = "return printPopupWindow('$relative');";
+                ?>
+	            <button onclick="<?= $onclick; ?>" class="btn btn-default btn-md">
 	                <span class="glyphicon glyphicon-print"></span> Print
 	            </button>
 
