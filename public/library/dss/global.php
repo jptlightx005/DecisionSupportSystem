@@ -230,3 +230,18 @@ function reArrayFiles(&$file_post) {
 
     return $file_ary;
 }
+
+
+function showMessage($title, $message, $type = 0){
+    $final_title = addslashes($title);
+    $final_message = addslashes($message);
+    if($type == 0){
+        echo '<script>' . "showSuccessMessage('$final_title', '$final_message');" . '</script>';
+    }else{
+        echo '<script>' . "showErrorMessage('$final_title', '$final_message');" . '</script>';
+    }
+}
+
+function createUniqueIDUsingID($id){
+    return date("y") . "-" . str_pad($id, 5, "0", STR_PAD_LEFT);
+}

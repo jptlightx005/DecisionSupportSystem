@@ -18,14 +18,14 @@ function getPatientName($id){
 	return selectFirstQuery($query);
 }
 
-function getPatientLatestPicture($id){
+function getPatientPicture($id){
 	global $conn;
-	return selectQuery("SELECT * FROM dss_uploads WHERE PatientID = $id AND type = 'patient_picture' ORDER BY date_uploaded DESC LIMIT 1");
+	return selectQuery("SELECT * FROM dss_uploads WHERE ID = $id AND type = 'patient_picture' AND is_removed = 0");
 }
 
 function getPatientEHR($id){
 	global $conn;
-	return selectQuery("SELECT * FROM dss_uploads WHERE PatientID = $id AND type = 'patient_ehr' ORDER BY date_uploaded DESC");
+	return selectQuery("SELECT * FROM dss_uploads WHERE PatientID = $id AND type = 'patient_ehr' AND is_removed = 0 ORDER BY date_uploaded DESC");
 }
 
 function addNewPatient($post, $files){
@@ -46,6 +46,10 @@ function addNewPatient($post, $files){
 	$query = "INSERT INTO `dss_patients` $field_names VALUES $field_values;";
 
 	$patient_id = executeQueryGetInsertID($query);
+	$patient_uid = createUniqueIDUsingID($patient_id);
+	
+	$query = "UPDATE `dss_patients` SET PatientID = '$patient_uid' WHERE ID = $patient_id";
+	executeQuery($query);
 
 	if($files["patient_picture"]["error"] != UPLOAD_ERR_NO_FILE){
 		$full_name = $post["first_name"] . " " . $post["last_name"];
@@ -56,7 +60,7 @@ function addNewPatient($post, $files){
 
 		$query = "INSERT INTO `dss_uploads` (PatientID, url, type, date_uploaded) VALUES ($patient_id, '$file_name', 'patient_picture', CURRENT_TIMESTAMP)";
 		$file_id = executeQueryGetInsertID($query);
-		$query = "UPDATE `dss_patients` SET picture_id = $file_id";
+		$query = "UPDATE `dss_patients` SET picture_id = $file_id WHERE ID = $patient_id";
 		executeQuery($query);
 	}	
 
@@ -84,16 +88,41 @@ function addNewPatient($post, $files){
 	return response(1, "Successfully added patient!");
 }
 
+function updatePatient($post){
+	global $conn;
+	$setFieldValue = "";
+	foreach($post as $key => $value){
+		if($key != "action" &&
+			$key != "patient_id"){
+				$newValue = addslashes($value);
+				$setFieldValue .= "`$key` = '$newValue', ";
+			}
+	}
+	$setFieldValue = substr($setFieldValue, 0, strlen($setFieldValue) - 2);
+
+	$query = "UPDATE `dss_patients` SET $setFieldValue WHERE `ID` = '{$post['patient_id']}'";
+	
+	$stmt = $conn->prepare($query);
+	if($stmt->execute()){
+		return response(1, "Successfully updated patient!");
+	}else{
+		return response(0, "Operation failed!");
+	}
+}
+
 function changePicture($post, $file){
 	global $conn;
 
 	$file_name = "assets/placeholder.gif";
 	$patient_id = $post['patient_id'];
-	$patient_name = getPatientName($patient_id);
+	$patient = getPatientInfo($patient_id);
 	
-	$full_name = $patient_name["first_name"] . " " . $patient_name["last_name"];
+	$full_name = $patient["first_name"] . " " . $patient["last_name"];
 
 	if($file["patient_picture"]["error"] != UPLOAD_ERR_NO_FILE){
+		$current_picture = $patient['picture_id'];
+		executeQuery("UPDATE `dss_uploads` SET is_removed = 1 WHERE ID = $current_picture AND PatientID = $patient_id");
+
 		$subfile_name = replace_accents(friendly_url($full_name));
 		$file_name = "{$post["patient_id"]}-$subfile_name.jpg";
 		saveFile($file["patient_picture"], $file_name);
@@ -101,7 +130,7 @@ function changePicture($post, $file){
 
 		$query = "INSERT INTO `dss_uploads` (PatientID, url, type, date_uploaded) VALUES ($patient_id, '$file_name', 'patient_picture', CURRENT_TIMESTAMP)";
 		$file_id = executeQueryGetInsertID($query);
-		$query = "UPDATE `dss_patients` SET picture_id = $file_id";
+		$query = "UPDATE `dss_patients` SET picture_id = $file_id WHERE ID = $patient_id";
 		executeQuery($query);
 	}
 
@@ -130,6 +159,30 @@ function addEHR($post, $file){
 		$query = "UPDATE `dss_uploads` SET url = '$file_name', type = 'patient_ehr', date_uploaded = CURRENT_TIMESTAMP WHERE ID = $ehrid AND `PatientID` = $patient_id";
 		executeQuery($query);
 	}
-	return response(1, "Successfully Uploaded!");
+	return response(1, "Successfully Uploaded EHR!");
+}
+
+function removePicture($id){
+	global $conn;
+
+	$picture_id = selectFirstQuery("SELECT picture_id FROM dss_patients WHERE ID = $id")['picture_id'];
+	executeQuery("UPDATE dss_uploads SET is_removed = 1 WHERE ID = $picture_id AND PatientID = $id");
+
+	executeQuery("UPDATE `dss_patients` SET picture_id = 0 WHERE ID = $id");
+	return response(1, "Successfully removed picture!");
+}
+
+function removeEHR($id){
+	global $conn;
+
+	executeQuery("UPDATE dss_uploads SET is_removed = 1 WHERE ID = $id");
+	return response(1, "Successfully removed EHR!");
+}
+
+function removePatient($id){
+	global $conn;
+
+	executeQuery("UPDATE dss_patients SET is_removed = 1 WHERE ID = $id");
+	return response(1, "Successfully removed Patient!");
 }
 ?>

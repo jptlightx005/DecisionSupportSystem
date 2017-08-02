@@ -1,6 +1,7 @@
 <?php require_once('../../dss-base.php') ?>
 <?php
     define('ADD_PATIENT', 'add_patient');
+    define('DELETE_PATIENT', 'delete_patient');
 ?>
 <?php if($_SESSION['isLoggedIn']): ?>
 
@@ -8,7 +9,17 @@
         <?php
             if(isset($action)){
                 if($action == ADD_PATIENT){
-                    addNewPatient($_POST, $_FILES);
+                    $result = addNewPatient($_POST, $_FILES);
+                }else if($action == DELETE_PATIENT){
+                    $result = removePatient($_POST['patient_id']);
+                }
+
+                if(isset($result)){
+                    if($result['response'] == 1){
+                        showMessage('Success!', $result['message']);
+                    }else if($result['response'] == 0){
+                        showMessage('Failed!', $result['message'], 1);
+                    }
                 }
             }
 

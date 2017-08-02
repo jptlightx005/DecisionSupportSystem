@@ -3,18 +3,33 @@
 <?php
     define('UPDATE_PATIENT', 'update_patient');
     define('UPDATE_PICTURE', 'update_picture');
+    define('DELETE_PICTURE', 'delete_picture');
     define('ADD_EHR', 'add_ehr');
+    define('DELETE_EHR', 'delete_ehr');
+    define('DELETE_PATIENT', 'delete_patient');
 ?>
 
 <?php if($_SESSION['isLoggedIn']): ?>
 	<?php
         if(isset($action)){
             if($action == UPDATE_PATIENT){
-                // addNewPatient($_POST, $_FILES);
+                $result = updatePatient($_POST);
             }else if($action == UPDATE_PICTURE){
-                changePicture($_POST, $_FILES);
+                $result = changePicture($_POST, $_FILES);
             }else if($action == ADD_EHR){
-                addEHR($_POST, $_FILES);
+                $result = addEHR($_POST, $_FILES);
+            }else if($action == DELETE_PICTURE){
+                $result = removePicture($_POST['patient_id']);
+            }else if($action == DELETE_EHR){
+            	$result = removeEHR($_POST['ehr_id']);
+            }
+
+            if(isset($result)){
+            	if($result['response'] == 1){
+            		showMessage('Success!', $result['message']);
+            	}else if($result['response'] == 0){
+            		showMessage('Failed!', $result['message'], 1);
+            	}
             }
         }
 
@@ -23,8 +38,8 @@
 	    }
 
         $patient = getPatientInfo($_GET['id']);
-        $result = getPatientLatestPicture($_GET['id']);
-        if($result == 0){
+        $result = getPatientPicture($patient['picture_id']);;
+        if(count($result) == 0){
         	$patientPicture = "assets/placeholder.gif";
         	$hasPhoto = false;
         }else{
@@ -48,7 +63,11 @@
 		   		<a href="patient" class="btn btn-default btn-md">
 	                <span class="glyphicon glyphicon-arrow-left"></span> Back
 	            </a>
-	            <button class="btn btn-default btn-md">
+	            <?php
+                  $relative = "/patient-print?id={$patient['ID']}";
+                  $onclick = "return printPopupWindow('$relative');";
+                ?>
+	            <button onclick="<?= $onclick; ?>" class="btn btn-default btn-md">
 	                <span class="glyphicon glyphicon-print"></span> Print
 	            </button>
 
@@ -56,10 +75,10 @@
 	                <span class="glyphicon glyphicon-pencil"></span> Edit
 	            </button>
 	   			<form method="post" style="display:inline;" action="patient">
-	                <input type='hidden' name="adminID" value="<?php echo $_COOKIE['adminID']; ?>" />
+	                <input type='hidden' name="admin_uid" value="<?php echo $_COOKIE['adminID']; ?>" />
 	                <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
-	                <button title="Remove Patient" id="delete" type="submit" class="btn btn-default btn-md" name="action" value="delete_patient" onclick="return confirm('Are you sure you want to delete this record?');">
-	                    <span name="action" value="delete" class="glyphicon glyphicon-remove"></span> Remove
+	                <button title="Remove Patient" id="delete" type="submit" class="btn btn-default btn-md" name="action" value="<?= DELETE_PATIENT ?>" onclick="return confirm('Are you sure you want to delete this record?');">
+	                    <span class="glyphicon glyphicon-remove"></span> Remove
 	                </button>
 	            </form>
 	   		</div>
@@ -82,7 +101,7 @@
 						<div class="row" style="margin-top:10px;">
                             <div class="col-xs-4"></div>
                             <div class="col-xs-4">
-                                <form action="patient-page?id=<?= $patient['ID']; ?>#patient_record" method="post" enctype="multipart/form-data">
+                                <form action="patient-page?id=<?= $patient['ID']; ?>" method="post" enctype="multipart/form-data">
 									<input type='hidden' name="adminID" value="<?= $_COOKIE['adminID']; ?>" />
 				                    <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
 			                    	<input type='hidden' name="action" value="<?= UPDATE_PICTURE ?>" />
@@ -96,25 +115,25 @@
                         </div>
 
                         <!-- REMOVE PICTURE -->
-                        <div class="row" style="margin-top:10px">
-                            <div class="col-xs-4"></div>
-                            <div class="col-xs-4">
-                                <?php if($hasPhoto): ?>
-			                    <form action="patient-page?id=<?= $patient['PatientID']; ?>#patient_record" method="post" enctype="multipart/form-data">
-									<input type='hidden' name="usrn" value="<?php echo $_COOKIE['usrn']; ?>" />
-									<input type='hidden' name="token" value="<?php echo $_COOKIE['token']; ?>" />
-									<input type='hidden' name="adminID" value="<?php echo $_COOKIE['adminID']; ?>" />
-				                    <input type='hidden' name="patient_id" value="<?php echo $patient['PatientID']; ?>" />
+                        <?php if($hasPhoto): ?>
+	                        <div class="row" style="margin-top:10px">
+	                            <div class="col-xs-4"></div>
+	                            <div class="col-xs-4">
+	                                
+				                    <form action="patient-page?id=<?= $patient['ID']; ?>" method="post" enctype="multipart/form-data">
+										<input type='hidden' name="usrn" value="<?= $_COOKIE['usrn']; ?>" />
+										<input type='hidden' name="adminID" value="<?= $_COOKIE['adminID']; ?>" />
+					                    <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
 
-				                    <button type="submit" name="action" value="remove_picture" class="btn btn-danger btn-md form-control">
-				                    	Remove Picture
-				                    </button>
-								</form>
-		                    	<?php endif; ?>
-                            </div>
-                            <div class="col-xs-4"></div>
-                        </div>
-
+					                    <button type="submit" name="action" value="<?= DELETE_PICTURE ?>" class="btn btn-danger btn-md form-control">
+					                    	Remove Picture
+					                    </button>
+									</form>
+			                    	
+	                            </div>
+	                            <div class="col-xs-4"></div>
+	                        </div>
+						<?php endif; ?>
                         <!-- PATIENT INFO -->
                         <br>
                         <div class="col-md-6">
@@ -235,10 +254,11 @@
 					</div>
 
 					<div class="row">
-					<b>Electronic Health Records:</b>
+						<b>Electronic Health Records:</b>
 					</div>
+					<br>
 					<div class="row">
-						<form  method="post" action="patient-page?id=<?= $patient['ID']; ?>#patient_ehr" enctype="multipart/form-data">
+						<form  method="post" action="patient-page?id=<?= $patient['ID']; ?>" enctype="multipart/form-data">
 							<input type='hidden' name="adminID" value="<?php echo $_COOKIE['adminID']; ?>" />
 		                    <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
 	                    	<input type='hidden' name="action" value="<?= ADD_EHR ?>" />
@@ -253,8 +273,8 @@
 					<?php if(count($patientEHR) > 0): ?>
 						<div class="row" id="ehr_images">
 						<?php foreach ($patientEHR as $ehr_img): ?>
-							<a class="imgmodaled" href="#" data-image-id="" data-toggle="modal" data-title="Electronic Health Record" data-caption="<?php echo $ehr_img["ID"]; ?>" data-image="<?= $ehr_img["url"]; ?>" data-target="#image-gallery">
-							<img class="center-cropped img-rounded" src="<?= $ehr_img["url"];
+							<a class="imgmodaled" href="#" data-image-id="" data-toggle="modal" data-title="Electronic Health Record" data-caption="<?= $ehr_img["ID"]; ?>" data-image="<?= $ehr_img["url"]; ?>" data-target="#image-gallery">
+							<img class="center-cropped img-rounded" style="margin:5px 0;" src="<?= $ehr_img["url"];
 							?>" /> 
 							</a> 
 						<?php endforeach; ?>
@@ -280,17 +300,15 @@
 					<div class="col-md-8 text-justify" id="image-gallery-caption">
 						
 					</div>
-					<form action="patient-info?patient_id=<?= $patient_info['PatientID']; ?>#patient_record" method="post" enctype="multipart/form-data">
-						<input type='hidden' name="usrn" value="<?php echo $_COOKIE['usrn']; ?>" />
-						<input type='hidden' name="token" value="<?php echo $_COOKIE['token']; ?>" />
+					<form action="patient-page?id=<?= $patient['ID']; ?>" method="post" enctype="multipart/form-data">
 						<input type='hidden' name="adminID" value="<?php echo $_COOKIE['adminID']; ?>" />
-	                    <input type='hidden' name="patient_id" value="<?php echo $patient_info['PatientID']; ?>" />
+	                    <input type='hidden' name="patient_id" value="<?php echo $patient['ID']; ?>" />
 	                    <input type='hidden' name="ehr_id" value="0" />
 
-	                    <button id="remove_picture_button" type="submit" name="action" value="remove_picture" class="btn btn-danger btn-md form-control">
+	                    <button id="remove_picture_button" type="submit" name="action" value="<?= DELETE_PICTURE ?>" class="btn btn-danger btn-md form-control">
 	                    	Remove Picture
 	                    </button>
-	                    <button id="remove_ehr_button" type="submit" name="action" value="remove_ehr" class="btn btn-danger btn-md form-control">
+	                    <button id="remove_ehr_button" type="submit" name="action" value="<?= DELETE_EHR ?>" class="btn btn-danger btn-md form-control">
 	                    	Remove EHR
 	                    </button>
 					</form>
@@ -299,6 +317,107 @@
 		</div>
 	</div>
 
+ 	<div id="addPatientModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <form class="modal-content" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Patient</h4>
+                </div>
+				<input type='hidden' name="admin_ulid" value="<?= $_COOKIE['adminID']; ?>" />
+                <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
+                <div class="modal-body">
+                    <label>First Name:</label>
+				    <input class="form-control" type="text" name="first_name" value="<?php echo $patient['first_name']; ?>" required />
+                    <label>Middle Name:</label>
+				    <input class="form-control" type="text" name="middle_name" value="<?= $patient['middle_name']; ?>" required />
+				    <label>Last Name:</label>
+				    <input class="form-control" type="text" name="last_name" value="<?php echo $patient['last_name']; ?>" required />
+				    <label>Ward/Room/Bed/Service:</label>
+				    <input class="form-control" type="text" name="ward" value="<?= $patient['ward']; ?>" />
+                    <label>Permanent Address:</label>
+                    <input class="form-control" type="text" name="address" value="<?= $patient['address']; ?>" required/>
+					<label>Telephone No.:</label>
+                    <input class="form-control" type="text" name="telephone" value="<?= $patient['telephone']; ?>" />
+                    <label>Gender:</label><br/>
+                    <select class="form-control" name="gender" required>
+                        <option disabled selected value>Select Gender</option>
+                        <?php 
+                            $gender = $patient['gender'];
+                        ?>
+                        <option value='Male' <?php if($gender == 'Male') echo 'selected'; ?>>Male</option>
+                        <option value='Female' <?php if($gender == 'Female') echo 'selected'; ?>>Female</option>
+                    </select>
+
+					<label>Civil Status:</label>
+                    <select class="form-control" name="status" required>
+                        <?php  $stat = $patient['status']; ?>
+                        <option disabled selected value>Select Status</option>
+                        <option value='Single' <?php if($stat == 'Single') echo 'selected'; ?>>Single</option>
+                        <option value='Married' <?php if($stat == 'Married') echo 'selected'; ?>>Married</option>
+                        <option value='Divorced' <?php if($stat == 'Divorced') echo 'selected'; ?>>Divorced</option>
+                        <option value='Separated' <?php if($stat == 'Separated') echo 'selected'; ?>>Separated</option>
+                        <option value='Widowed' <?php if($stat == 'Widowed') echo 'selected'; ?>>Widowed</option>
+                    </select>
+
+                    <label>Date of Birth:</label>
+                    <input class="form-control" type='date' name='date_of_birth' value="<?php echo $patient['date_of_birth']; ?>" required />
+					<label>Age:</label>
+                    <input class="form-control" type="number" name="age" value="<?= $patient['age']; ?>" required/>
+					<label>Birthplace:</label>
+                    <input class="form-control" type="text" name="place_of_birth" value="<?= $patient['place_of_birth']; ?>" required/>
+					<label>Nationality:</label>
+                    <input class="form-control" type="text" name="nationality" value="<?= $patient['nationality']; ?>" required/>
+					<label>Religion:</label>
+                    <input class="form-control" type="text" name="religion" value="<?= $patient['religion']; ?>" required/>
+					<label>Occupation:</label>
+                    <input class="form-control" type="text" name="occupation" value="<?= $patient['occupation']; ?>" required/>
+                    <br/>
+
+					<label>Employer (Type of Business):</label>
+                    <input class="form-control" type="text" name="employer" value="<?= $patient['employer']; ?>" />
+					<label>Address:</label>
+                    <input class="form-control" type="text" name="emp_address" value="<?= $patient['emp_address']; ?>" />
+					<label>Telephone No.:</label>
+                    <input class="form-control" type="text" name="emp_telephone" value="<?= $patient['emp_telephone']; ?>" />
+                    <br/>
+					
+					<label>Mother's Name:</label>
+                    <input class="form-control" type="text" name="mother" value="<?= $patient['mother']; ?>" required/>
+					<label>Address:</label>
+                    <input class="form-control" type="text" name="mom_address" value="<?= $patient['mom_address']; ?>" required/>
+					<label>Telephone No.:</label>
+                    <input class="form-control" type="text" name="mom_telephone" value="<?= $patient['mom_telephone']; ?>" required/>
+                    <br/>
+					
+					<label>Spouse Name:</label>
+                    <input class="form-control" type="text" name="spouse" value="<?= $patient['spouse']; ?>" />
+					<label>Address:</label>
+                    <input class="form-control" type="text" name="sp_address" value="<?= $patient['sp_address']; ?>" />
+					<label>Telephone No.:</label>
+                    <input class="form-control" type="text" name="sp_telephone" value="<?= $patient['sp_telephone']; ?>" />
+                    <br/>
+
+                    <label>Height:</label>
+                    <input class="form-control" type="text" name="height" value="<?php echo $patient['height']; ?>" required />
+                    <label>Weight:</label>
+                    <input class="form-control" type="text" name="weight" value="<?php echo $patient['weight']; ?>" required />
+                    <label>Blood Pressure:</label>
+                    <input class="form-control" type="text" name="blood_pressure" value="<?php echo $patient['blood_pressure']; ?>" required />
+                    <label>Body Temperature:</label>
+                    <input class="form-control" type="text" name="body_temperature" value="<?php echo $patient['body_temperature']; ?>" required />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="action" value="<?= UPDATE_PATIENT ?>" class="btn btn-default">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
 	<footer>
 		<script>
 			$(document).ready(function(){
