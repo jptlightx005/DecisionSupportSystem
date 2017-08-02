@@ -86,10 +86,11 @@
 				              	<span id="title" style="font-weight:bold">Failed!</span>: <span id="message">ERROR TEXT</span>
 				            </div>
 
-				            <?php if($_COOKIE['privilege_level'] == 0): ?>
+				            <?php if($privilege_level == 0): ?>
 						   		<script>
 						   			showErrorMessage('Access denied', 'In order to have access to the data available here, you have to request access from the Administrator.');
 						   		</script>
+						   		<?php exit(); ?>
 						   	<?php endif; ?>
 						</div>
 						

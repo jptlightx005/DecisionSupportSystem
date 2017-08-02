@@ -1,5 +1,5 @@
 <?php
-//priviledge levels:
+//privilege levels:
 // 3 - master account level
 // 2 - doctor account level
 // 1 - authorized nurse level
@@ -117,4 +117,10 @@ if(isset($action)){
 
 $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 
+$privilege_level = 0;
+if($_SESSION['isLoggedIn']){
+	if(isset($_COOKIE['privilege_level'])){
+		$privilege_level = $_COOKIE['privilege_level'];
+	}
+}
 ?>
