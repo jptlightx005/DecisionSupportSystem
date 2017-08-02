@@ -84,6 +84,28 @@ function addNewPatient($post, $files){
 	return response(1, "Successfully added patient!");
 }
 
+function updatePatient($post){
+	global $conn;
+	$setFieldValue = "";
+	foreach($post as $key => $value){
+		if($key != "action" &&
+			$key != "patient_id"){
+				$newValue = addslashes($value);
+				$setFieldValue .= "`$key` = '$newValue', ";
+			}
+	}
+	$setFieldValue = substr($setFieldValue, 0, strlen($setFieldValue) - 2);
+
+	$query = "UPDATE `dss_patients` SET $setFieldValue WHERE `ID` = '{$post['patient_id']}'";
+	
+	$stmt = $conn->prepare($query);
+	if($stmt->execute()){
+		return response(1, "Successfully updated patient!");
+	}else{
+		return response(0, "Operation failed!");
+	}
+}
+
 function changePicture($post, $file){
 	global $conn;
 

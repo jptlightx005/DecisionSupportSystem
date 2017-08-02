@@ -12,7 +12,7 @@
 	<?php
         if(isset($action)){
             if($action == UPDATE_PATIENT){
-                // addNewPatient($_POST, $_FILES);
+                $result = updatePatient($_POST);
             }else if($action == UPDATE_PICTURE){
                 $result = changePicture($_POST, $_FILES);
             }else if($action == ADD_EHR){
@@ -26,6 +26,8 @@
             if(isset($result)){
             	if($result['response'] == 1){
             		showMessage('Success!', $result['message']);
+            	}else if($result['response'] == 0){
+            		showMessage('Failed!', $result['message'], 1);
             	}
             }
         }
@@ -310,6 +312,107 @@
 		</div>
 	</div>
 
+ 	<div id="addPatientModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <form class="modal-content" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Patient</h4>
+                </div>
+				<input type='hidden' name="admin_ulid" value="<?php echo $_COOKIE['adminID']; ?>" />
+                <input type='hidden' name="patient_id" value="<?php echo $patient['ID']; ?>" />
+                <div class="modal-body">
+                    <label>First Name:</label>
+				    <input class="form-control" type="text" name="first_name" value="<?php echo $patient['first_name']; ?>" required />
+                    <label>Middle Name:</label>
+				    <input class="form-control" type="text" name="middle_name" value="<?= $patient['middle_name']; ?>" required />
+				    <label>Last Name:</label>
+				    <input class="form-control" type="text" name="last_name" value="<?php echo $patient['last_name']; ?>" required />
+				    <label>Ward/Room/Bed/Service:</label>
+				    <input class="form-control" type="text" name="ward" value="<?= $patient['ward']; ?>" />
+                    <label>Permanent Address:</label>
+                    <input class="form-control" type="text" name="address" value="<?= $patient['address']; ?>" required/>
+					<label>Telephone No.:</label>
+                    <input class="form-control" type="text" name="telephone" value="<?= $patient['telephone']; ?>" />
+                    <label>Gender:</label><br/>
+                    <select class="form-control" name="gender" required>
+                        <option disabled selected value>Select Gender</option>
+                        <?php 
+                            $gender = $patient['gender'];
+                        ?>
+                        <option value='Male' <?php if($gender == 'Male') echo 'selected'; ?>>Male</option>
+                        <option value='Female' <?php if($gender == 'Female') echo 'selected'; ?>>Female</option>
+                    </select>
+
+					<label>Civil Status:</label>
+                    <select class="form-control" name="status" required>
+                        <?php  $stat = $patient['status']; ?>
+                        <option disabled selected value>Select Status</option>
+                        <option value='Single' <?php if($stat == 'Single') echo 'selected'; ?>>Single</option>
+                        <option value='Married' <?php if($stat == 'Married') echo 'selected'; ?>>Married</option>
+                        <option value='Divorced' <?php if($stat == 'Divorced') echo 'selected'; ?>>Divorced</option>
+                        <option value='Separated' <?php if($stat == 'Separated') echo 'selected'; ?>>Separated</option>
+                        <option value='Widowed' <?php if($stat == 'Widowed') echo 'selected'; ?>>Widowed</option>
+                    </select>
+
+                    <label>Date of Birth:</label>
+                    <input class="form-control" type='date' name='date_of_birth' value="<?php echo $patient['date_of_birth']; ?>" required />
+					<label>Age:</label>
+                    <input class="form-control" type="number" name="age" value="<?= $patient['age']; ?>" required/>
+					<label>Birthplace:</label>
+                    <input class="form-control" type="text" name="place_of_birth" value="<?= $patient['place_of_birth']; ?>" required/>
+					<label>Nationality:</label>
+                    <input class="form-control" type="text" name="nationality" value="<?= $patient['nationality']; ?>" required/>
+					<label>Religion:</label>
+                    <input class="form-control" type="text" name="religion" value="<?= $patient['religion']; ?>" required/>
+					<label>Occupation:</label>
+                    <input class="form-control" type="text" name="occupation" value="<?= $patient['occupation']; ?>" required/>
+                    <br/>
+
+					<label>Employer (Type of Business):</label>
+                    <input class="form-control" type="text" name="employer" value="<?= $patient['employer']; ?>" />
+					<label>Address:</label>
+                    <input class="form-control" type="text" name="emp_address" value="<?= $patient['emp_address']; ?>" />
+					<label>Telephone No.:</label>
+                    <input class="form-control" type="text" name="emp_telephone" value="<?= $patient['emp_telephone']; ?>" />
+                    <br/>
+					
+					<label>Mother's Name:</label>
+                    <input class="form-control" type="text" name="mother" value="<?= $patient['mother']; ?>" required/>
+					<label>Address:</label>
+                    <input class="form-control" type="text" name="mom_address" value="<?= $patient['mom_address']; ?>" required/>
+					<label>Telephone No.:</label>
+                    <input class="form-control" type="text" name="mom_telephone" value="<?= $patient['mom_telephone']; ?>" required/>
+                    <br/>
+					
+					<label>Spouse Name:</label>
+                    <input class="form-control" type="text" name="spouse" value="<?= $patient['spouse']; ?>" />
+					<label>Address:</label>
+                    <input class="form-control" type="text" name="sp_address" value="<?= $patient['sp_address']; ?>" />
+					<label>Telephone No.:</label>
+                    <input class="form-control" type="text" name="sp_telephone" value="<?= $patient['sp_telephone']; ?>" />
+                    <br/>
+
+                    <label>Height:</label>
+                    <input class="form-control" type="text" name="height" value="<?php echo $patient['height']; ?>" required />
+                    <label>Weight:</label>
+                    <input class="form-control" type="text" name="weight" value="<?php echo $patient['weight']; ?>" required />
+                    <label>Blood Pressure:</label>
+                    <input class="form-control" type="text" name="blood_pressure" value="<?php echo $patient['blood_pressure']; ?>" required />
+                    <label>Body Temperature:</label>
+                    <input class="form-control" type="text" name="body_temperature" value="<?php echo $patient['body_temperature']; ?>" required />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="action" value="<?= UPDATE_PATIENT ?>" class="btn btn-default">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
 	<footer>
 		<script>
 			$(document).ready(function(){
