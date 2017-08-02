@@ -46,6 +46,10 @@ function addNewPatient($post, $files){
 	$query = "INSERT INTO `dss_patients` $field_names VALUES $field_values;";
 
 	$patient_id = executeQueryGetInsertID($query);
+	$patient_uid = createUniqueIDUsingID($patient_id);
+	
+	$query = "UPDATE `dss_patients` SET PatientID = '$patient_uid' WHERE ID = $patient_id";
+	executeQuery($query);
 
 	if($files["patient_picture"]["error"] != UPLOAD_ERR_NO_FILE){
 		$full_name = $post["first_name"] . " " . $post["last_name"];
@@ -56,7 +60,7 @@ function addNewPatient($post, $files){
 
 		$query = "INSERT INTO `dss_uploads` (PatientID, url, type, date_uploaded) VALUES ($patient_id, '$file_name', 'patient_picture', CURRENT_TIMESTAMP)";
 		$file_id = executeQueryGetInsertID($query);
-		$query = "UPDATE `dss_patients` SET picture_id = $file_id";
+		$query = "UPDATE `dss_patients` SET picture_id = $file_id WHERE ID = $patient_id";
 		executeQuery($query);
 	}	
 

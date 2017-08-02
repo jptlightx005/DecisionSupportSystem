@@ -321,8 +321,8 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Add Patient</h4>
                 </div>
-				<input type='hidden' name="admin_ulid" value="<?php echo $_COOKIE['adminID']; ?>" />
-                <input type='hidden' name="patient_id" value="<?php echo $patient['ID']; ?>" />
+				<input type='hidden' name="admin_ulid" value="<?= $_COOKIE['adminID']; ?>" />
+                <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
                 <div class="modal-body">
                     <label>First Name:</label>
 				    <input class="form-control" type="text" name="first_name" value="<?php echo $patient['first_name']; ?>" required />

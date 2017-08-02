@@ -241,3 +241,7 @@ function showMessage($title, $message, $type = 0){
         echo '<script>' . "showErrorMessage('$final_title', '$final_message');" . '</script>';
     }
 }
+
+function createUniqueIDUsingID($id){
+    return date("y") . "-" . str_pad($id, 5, "0", STR_PAD_LEFT);
+}
