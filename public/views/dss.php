@@ -16,6 +16,7 @@ require_once(LIB_DIR . 'phpti-0.9/ti.php');
 
 require_once(LIB_DIR . 'dss/data/admin.php');
 require_once(LIB_DIR . 'dss/data/patient.php');
+require_once(LIB_DIR . 'dss/data/symptom.php');
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
