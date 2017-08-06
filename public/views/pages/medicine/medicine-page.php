@@ -48,10 +48,10 @@
 					<button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#editMedicineModal">
 	                    <span class="glyphicon glyphicon-pencil"></span> Edit
 	                </button>
-					<form method="post" style="display:inline;" action="symptoms">
+					<form method="post" style="display:inline;" action="medicine">
 		                <input type='hidden' name="admin_uid" value="<?= $_COOKIE['adminID']; ?>" />
-		                <input type='hidden' name="symptom_id" value="<?= $symptom['ID']; ?>" />
-		                <button title="Remove Symptom" id="delete" type="submit" class="btn btn-default btn-md" name="action" value="<?= DELETE_SYMPTOM ?>" onclick="return confirm('Are you sure you want to delete this record?');">
+		                <input type='hidden' name="medicine_id" value="<?= $medicine['ID']; ?>" />
+		                <button title="Remove Medicine" id="delete" type="submit" class="btn btn-default btn-md" name="action" value="<?= DELETE_MEDICINE ?>" onclick="return confirm('Are you sure you want to delete this record?');">
 		                    <span class="glyphicon glyphicon-remove"></span> Remove
 		                </button>
 		            </form>
