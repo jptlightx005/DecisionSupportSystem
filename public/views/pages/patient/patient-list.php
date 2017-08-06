@@ -21,10 +21,11 @@
             }
         }
 
-        $patients = getPatientList();
+        $patients = getPatientList($search_text);
     ?>
 	<?php startblock('main') ?>
 	   	<?php if($_COOKIE['privilege_level'] != 0): ?>
+
 	   		<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addPatientModal">
                  <span class="glyphicon glyphicon-plus"></span> Add Patient
             </button>

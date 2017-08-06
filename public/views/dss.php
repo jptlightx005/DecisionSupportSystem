@@ -32,7 +32,7 @@ $site = array(
 	);
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
-
+$search_text = isset($_REQUEST['search_text']) ? $_REQUEST['search_text'] : null;
 if(isset($action)){
 	$ulogin = new uLogin('appLogin', 'appLoginFail');
 	if($action == SIGN_UP){

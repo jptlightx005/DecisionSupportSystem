@@ -21,7 +21,7 @@
 	    <link rel="stylesheet" type="text/css" href="css/generic.css" />
 	    
 	    <link rel="stylesheet" type="text/css" href="css/login.css" />
-	    <!-- <link rel="stylesheet" type="text/css" href="css/search.css" /> -->
+	    <link rel="stylesheet" type="text/css" href="css/search.css" />
 	</head>
 	<body>
 		<!-- TOP NAVBAR -->
@@ -78,20 +78,39 @@
 					<div class="page-content inset" style="margin-left: 10px; margin-right: 10px;">
 						&nbsp;
 						<div id="main">
-							<div class="hidden alert alert-success" id="success_alert">
-					          	<span id="title" style="font-weight:bold">Success!</span>: <span id="message">SUCCESS TEXT</span>
-					        </div>
 
-					        <div class="hidden alert alert-danger" id="fail_alert">
-				              	<span id="title" style="font-weight:bold">Failed!</span>: <span id="message">ERROR TEXT</span>
+							<div class="row" style="margin-bottom: 10px;">
+				                <div class="col-sm-6 col-sm-offset-3">
+				                    <div id="imaginary_container"> 
+				                        <form class="input-group stylish-input-group">
+				                            <input type="text" class="form-control" name="search_text" value="<?= $search_text; ?>" required>
+				                            <span class="input-group-addon">
+				                                <button type="submit">
+				                                    <span class="glyphicon glyphicon-search"></span>
+				                                </button>  
+				                            </span>
+				                        </form>
+				                    </div>
+				                </div>
 				            </div>
 
-				            <?php if($privilege_level == 0): ?>
-						   		<script>
-						   			showErrorMessage('Access denied', 'In order to have access to the data available here, you have to request access from the Administrator.');
-						   		</script>
-						   		<?php exit(); ?>
-						   	<?php endif; ?>
+				            <div class="row">
+					            <div class="hidden alert alert-success" id="success_alert">
+						          	<span id="title" style="font-weight:bold">Success!</span>: <span id="message">SUCCESS TEXT</span>
+						        </div>
+
+						        <div class="hidden alert alert-danger" id="fail_alert">
+					              	<span id="title" style="font-weight:bold">Failed!</span>: <span id="message">ERROR TEXT</span>
+					            </div>
+
+					            <?php if($privilege_level == 0): ?>
+							   		<script>
+							   			showErrorMessage('Access denied', 'In order to have access to the data available here, you have to request access from the Administrator.');
+							   		</script>
+							   		<?php exit(); ?>
+							   	<?php endif; ?>
+				            </div>
+							
 						</div>
 						
 

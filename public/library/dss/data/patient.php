@@ -1,7 +1,7 @@
 <?php
 require_once('db.php');
 
-function getPatientList(){
+	}
 	global $conn;
 	$query = "SELECT ID, PatientID, first_name, middle_name, last_name, gender, address, last_visit FROM dss_patients WHERE is_removed = 0";
 	return selectQuery($query);

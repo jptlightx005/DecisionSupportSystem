@@ -33,6 +33,11 @@
             }
         }
 
+		if($search_text != ""){
+	    	redirectToURL("", "/patient?search_text=$search_text", 0);
+	    	exit();
+	    }
+
         if(!isset($_GET['id'])){
 	    	exit();
 	    }
