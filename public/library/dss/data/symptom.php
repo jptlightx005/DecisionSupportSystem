@@ -11,6 +11,11 @@ function getSymptomList($search){
 	return selectQuery($query);
 }
 
+function getSymptomInfo($id){
+	global $conn;
+	return selectFirstFromQuery('dss_symptoms', 'ID', $id);
+}
+
 function addNewSymptom($post){
 	global $conn;
 	$field_names = "(";
@@ -34,5 +39,34 @@ function addNewSymptom($post){
 	}else{
 		return response(0, "Operation failed!");
 	}
+}
+
+function updateSymptom($post){
+	global $conn;
+	$setFieldValue = "";
+	foreach($post as $key => $value){
+		if($key != "action" &&
+			$key != "symptom_id"){
+				$newValue = addslashes($value);
+				$setFieldValue .= "`$key` = '$newValue', ";
+			}
+	}
+	$setFieldValue = substr($setFieldValue, 0, strlen($setFieldValue) - 2);
+
+	$query = "UPDATE `dss_symptoms` SET $setFieldValue WHERE `ID` = '{$post['symptom_id']}'";
+	
+	$stmt = $conn->prepare($query);
+	if($stmt->execute()){
+		return response(1, "Successfully updated symptom!");
+	}else{
+		return response(0, "Operation failed!");
+	}
+}
+
+function removeSymptom($id){
+	global $conn;
+
+	executeQuery("UPDATE dss_symptoms SET is_removed = 1 WHERE ID = $id");
+	return response(1, "Successfully removed Symptom!");
 }
 ?>

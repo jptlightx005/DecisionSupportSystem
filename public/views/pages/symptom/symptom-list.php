@@ -8,6 +8,8 @@
         if(isset($action)){
             if($action == ADD_SYMPTOM){
                 $result = addNewSymptom($_POST);
+            }else if($action == DELETE_SYMPTOM){
+                $result = removeSymptom($_POST['symptom_id']);
             }
 
             if(isset($result)){
@@ -54,7 +56,7 @@
 	   <?php endif; ?>
 	<?php endblock() ?>
 
-	 <div id="addSymptomModal" class="modal fade" role="dialog">
+	<div id="addSymptomModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->

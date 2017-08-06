@@ -335,11 +335,11 @@
                 <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
                 <div class="modal-body">
                     <label>First Name:</label>
-				    <input class="form-control" type="text" name="first_name" value="<?php echo $patient['first_name']; ?>" required />
+				    <input class="form-control" type="text" name="first_name" value="<?= $patient['first_name']; ?>" required />
                     <label>Middle Name:</label>
 				    <input class="form-control" type="text" name="middle_name" value="<?= $patient['middle_name']; ?>" required />
 				    <label>Last Name:</label>
-				    <input class="form-control" type="text" name="last_name" value="<?php echo $patient['last_name']; ?>" required />
+				    <input class="form-control" type="text" name="last_name" value="<?= $patient['last_name']; ?>" required />
 				    <label>Ward/Room/Bed/Service:</label>
 				    <input class="form-control" type="text" name="ward" value="<?= $patient['ward']; ?>" />
                     <label>Permanent Address:</label>

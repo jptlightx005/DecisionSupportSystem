@@ -38,10 +38,10 @@ function addNewPatient($post, $files){
 	$field_values = "(";
 	foreach($post as $key => $value){
 		if($key != "action"){
-				$newValue = addslashes($value);
-				$field_names .= "`$key`, ";
-				$field_values .= "'$newValue', ";
-			}
+			$newValue = addslashes($value);
+			$field_names .= "`$key`, ";
+			$field_values .= "'$newValue', ";
+		}
 	}
 
     $field_names .= "`last_visit`)";

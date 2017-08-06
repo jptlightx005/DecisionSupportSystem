@@ -16,6 +16,7 @@ function homeIsActive(){
 	$homePages[] = "/views/pages/patient/patient-list.php";
     $homePages[] = "/views/pages/patient/patient-page.php";
     $homePages[] = "/views/pages/symptom/symptom-list.php";
+    $homePages[] = "/views/pages/symptom/symptom-page.php";
 	return(pageIsActive($homePages));
 }
 
@@ -48,6 +49,7 @@ function patientIsActive(){
 
 function symptomIsActive(){
     $symptomPages[] = "/views/pages/symptom/symptom-list.php"; //make sure to add this at homeIsActive();
+    $symptomPages[] = "/views/pages/symptom/symptom-page.php";
     return(pageIsActive($symptomPages));
 }
 
