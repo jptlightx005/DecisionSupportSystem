@@ -12,6 +12,9 @@ RewriteRule ^patient$ /views/pages/patient/patient-list.php [L]
 RewriteRule ^patient-page$ /views/pages/patient/patient-page.php [L]
 RewriteRule ^patient-print$ /views/print/patient-information.php [L]
 
+RewriteRule ^symptoms$ /views/pages/symptom/symptom-list.php [L]
+RewriteRule ^symptom-page$ /views/pages/symptom/symptom-page.php [L]
+
 RewriteRule ^css/(.*)$ /scripts/stylesheet/$1 [NC,L]
 RewriteRule ^js/(.*)$ /scripts/javascript/$1 [NC,L]
 RewriteRule ^bootstrap/(.*)$ /library/bootstrap/$1 [NC,L]

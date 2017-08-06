@@ -15,6 +15,8 @@ function homeIsActive(){
 	$homePages[] = "/views/pages/case/case-list.php";
 	$homePages[] = "/views/pages/patient/patient-list.php";
     $homePages[] = "/views/pages/patient/patient-page.php";
+    $homePages[] = "/views/pages/symptom/symptom-list.php";
+    $homePages[] = "/views/pages/symptom/symptom-page.php";
 	return(pageIsActive($homePages));
 }
 
@@ -43,6 +45,12 @@ function patientIsActive(){
 	$patientPages[] = "/views/pages/patient/patient-list.php"; //make sure to add this at homeIsActive();
     $patientPages[] = "/views/pages/patient/patient-page.php";
 	return(pageIsActive($patientPages));
+}
+
+function symptomIsActive(){
+    $symptomPages[] = "/views/pages/symptom/symptom-list.php"; //make sure to add this at homeIsActive();
+    $symptomPages[] = "/views/pages/symptom/symptom-page.php";
+    return(pageIsActive($symptomPages));
 }
 
 //navigation functions

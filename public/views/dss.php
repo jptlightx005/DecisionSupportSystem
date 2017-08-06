@@ -1,5 +1,5 @@
 <?php
-//priviledge levels:
+//privilege levels:
 // 3 - master account level
 // 2 - doctor account level
 // 1 - authorized nurse level
@@ -16,6 +16,7 @@ require_once(LIB_DIR . 'phpti-0.9/ti.php');
 
 require_once(LIB_DIR . 'dss/data/admin.php');
 require_once(LIB_DIR . 'dss/data/patient.php');
+require_once(LIB_DIR . 'dss/data/symptom.php');
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -31,7 +32,7 @@ $site = array(
 	);
 
 $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : null;
-
+$search_text = isset($_REQUEST['search_text']) ? $_REQUEST['search_text'] : null;
 if(isset($action)){
 	$ulogin = new uLogin('appLogin', 'appLoginFail');
 	if($action == SIGN_UP){
@@ -117,4 +118,10 @@ if(isset($action)){
 
 $_SESSION['isLoggedIn'] = isset($_COOKIE['usrn']);
 
+$privilege_level = 0;
+if($_SESSION['isLoggedIn']){
+	if(isset($_COOKIE['privilege_level'])){
+		$privilege_level = $_COOKIE['privilege_level'];
+	}
+}
 ?>
