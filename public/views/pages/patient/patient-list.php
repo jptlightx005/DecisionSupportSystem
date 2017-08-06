@@ -41,7 +41,7 @@
                         <th>Gender</th>
                         <th>Address</th>
                         <th>Last Visit</th>
-                        <th>Options</th>
+                        <!-- <th>Options</th> -->
                     </tr>
                 </thead>
             <?php if(count($patients) == 0): ?>

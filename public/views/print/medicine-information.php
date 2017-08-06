@@ -1,7 +1,7 @@
 <?php
 	include_once('../dss.php');
 
-	$symptom = getSymptomInfo($_GET['id']);
+	$medicine = getMedicineInfo($_GET['id']);
 ?>
 
 <html>
@@ -64,10 +64,15 @@
 			</div>
 		</header> -->
 		<br/>
-		<div class="container" id="symptom_record">
+		<div class="container" id="medicine_record">
 			<div class="row">
-				<h1><?php echo $symptom['name']; ?></h1>
-				<h3><?php echo $symptom['description']; ?></h3>
+				<h1><?php echo $medicine['name']; ?></h1>
+				<h3>Generic Name: <?php echo $medicine['generic_name']; ?></h3>
+				<h3>Brands: <?php echo $medicine['brand_name']; ?></h3>
+				<h3>Overview: </h3> <p> <?php echo nl2br($medicine['overview'], false); ?></p>
+				<h3>Side Effects: </h3> <p> <?php echo nl2br($medicine['side_effects'], false); ?></p>
+				<h3>Dosage: </h3> <p> <?php echo nl2br($medicine['dosage'], false); ?></p>
+				<h3>Professional: </h3> <p> <?php echo nl2br($medicine['warning'], false); ?></p>
 			</div>
 		</div>
 	</body>
