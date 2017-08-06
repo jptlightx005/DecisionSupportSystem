@@ -39,7 +39,7 @@
 	                    <span class="glyphicon glyphicon-arrow-left"></span> Back
 	                </a>
 	                <?php
-	                  $relative = "/symptom=print?id={$symptom['ID']}";
+	                  $relative = "/symptom-print?id={$symptom['ID']}";
 	                  $onclick = "return printPopupWindow('$relative');";
 	                ?>
 	                <button onclick="<?php echo $onclick; ?>" class="btn btn-default btn-md">
