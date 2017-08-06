@@ -16,6 +16,7 @@ RewriteRule ^symptoms$ /views/pages/symptom/symptom-list.php [L]
 RewriteRule ^symptom-page$ /views/pages/symptom/symptom-page.php [L]
 
 RewriteRule ^medicine$ /views/pages/medicine/medicine-list.php [L]
+RewriteRule ^medicine-page$ /views/pages/medicine/medicine-page.php [L]
 
 RewriteRule ^css/(.*)$ /scripts/stylesheet/$1 [NC,L]
 RewriteRule ^js/(.*)$ /scripts/javascript/$1 [NC,L]
