@@ -11,9 +11,17 @@
             if($action == UPDATE_SYMPTOM){
                 $result = updateSymptom($_POST);
             }
+
+            if(isset($result)){
+            	if($result['response'] == 1){
+            		showMessage('Success!', $result['message']);
+            	}else if($result['response'] == 0){
+            		showMessage('Failed!', $result['message'], 1);
+            	}
+            }
         }
 		if($search_text != ""){
-	    	redirectToURL("", "/patient?search_text=$search_text", 0);
+	    	redirectToURL("", "/symptoms?search_text=$search_text", 0);
 	    	exit();
 	    }
 
@@ -31,7 +39,7 @@
 	                    <span class="glyphicon glyphicon-arrow-left"></span> Back
 	                </a>
 	                <?php
-	                  $relative = "/symptom=print?id={$symptom['ID']}";
+	                  $relative = "/symptom-print?id={$symptom['ID']}";
 	                  $onclick = "return printPopupWindow('$relative');";
 	                ?>
 	                <button onclick="<?php echo $onclick; ?>" class="btn btn-default btn-md">
