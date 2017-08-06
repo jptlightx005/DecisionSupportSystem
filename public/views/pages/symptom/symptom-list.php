@@ -19,7 +19,7 @@
             }
         }
 
-        $symptoms = getSymptomList();
+        $symptoms = getSymptomList($search_text);
     ?>
 	<?php startblock('main') ?>
 	   <?php if($_COOKIE['privilege_level'] != 0): ?>

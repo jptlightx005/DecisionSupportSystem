@@ -1,9 +1,13 @@
 <?php
 require_once('db.php');
 
-function getSymptomList(){
+function getSymptomList($search){
 	global $conn;
 	$query = "SELECT ID, name, description FROM dss_symptoms WHERE is_removed = 0";
+	if($search != ""){
+		$query .= " AND name LIKE '%$search%'";
+		$query .= " OR description LIKE '%$search%'";
+	}
 	return selectQuery($query);
 }
 
