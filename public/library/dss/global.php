@@ -19,6 +19,8 @@ function homeIsActive(){
     $homePages[] = "/views/pages/symptom/symptom-page.php";
     $homePages[] = "/views/pages/medicine/medicine-list.php";
     $homePages[] = "/views/pages/medicine/medicine-page.php";
+    $homePages[] = "/views/pages/disease/disease-list.php";
+    $homePages[] = "/views/pages/disease/disease-page.php";
 	return(pageIsActive($homePages));
 }
 
@@ -59,6 +61,12 @@ function medicineIsActive(){
     $medicinePages[] = "/views/pages/medicine/medicine-list.php"; //make sure to add this at homeIsActive();
     $medicinePages[] = "/views/pages/medicine/medicine-page.php";
     return(pageIsActive($medicinePages));
+}
+
+function diseaseIsActive(){
+    $diseasePages[] = "/views/pages/disease/disease-list.php"; //make sure to add this at homeIsActive();
+    $diseasePages[] = "/views/pages/disease/disease-page.php";
+    return(pageIsActive($diseasePages));
 }
 //navigation functions
 function redirectToURL($msg, $rurl, $timeout = 1000){
