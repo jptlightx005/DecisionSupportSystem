@@ -21,6 +21,7 @@ RewriteRule ^medicine-page$ /views/pages/medicine/medicine-page.php [L]
 RewriteRule ^medicine-print$ /views/print/medicine-information.php [L]
 
 RewriteRule ^disease$ /views/pages/disease/disease-list.php [L]
+RewriteRule ^disease-page$ /views/pages/disease/disease-page.php [L]
 
 RewriteRule ^css/(.*)$ /scripts/stylesheet/$1 [NC,L]
 RewriteRule ^js/(.*)$ /scripts/javascript/$1 [NC,L]

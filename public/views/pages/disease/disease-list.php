@@ -40,9 +40,9 @@
             <table class="table">
             	<thead>
                     <tr>
-                        <th>Disease Name</th>
-                        <th>Diagnosis</th>
-                        <th>Medication</th>
+                        <th class="col-md-2">Disease Name</th>
+                        <th class="col-md-6">Diagnosis</th>
+                        <th class="col-md-4">Medication</th>
                     </tr>
                 </thead>
             <?php if(count($disease) == 0): ?>

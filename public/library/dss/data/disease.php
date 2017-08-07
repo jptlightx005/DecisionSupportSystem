@@ -10,6 +10,30 @@ function getDiseaseList($search){
 	return selectQuery($query);
 }
 
+function getDiseaseInfo($id){
+	global $conn;
+	$disease = selectFirstFromQuery('dss_diseases', 'ID', $id);
+
+	$query = "SELECT * FROM dss_diseases WHERE ID = $id";
+	$disease = selectFirstQuery($query);
+	
+	if(isset($disease)){
+		
+		$sympQuery = "SELECT * FROM dss_symptoms_used JOIN dss_symptoms ON dss_symptoms_used.SymptomID = dss_symptoms.ID WHERE DiseaseID = $id";
+		$symptomsList = selectQuery($sympQuery);
+
+		$medQuery = "SELECT * FROM dss_medicine_used JOIN dss_medicine ON dss_medicine_used.MedicineID = dss_medicine.ID WHERE DiseaseID = $id";
+		$medicineList = selectQuery($medQuery);
+
+		$disease["symptoms"] = $symptomsList;
+		$disease["prescription"] = $medicineList;
+		
+		return $disease;
+	}else{
+		return response(0, "Case ID Not Found!");
+	}
+}
+
 function addNewDisease($post){
 	global $conn;
 	$field_names = "(";
