@@ -46,9 +46,6 @@
 	                <button onclick="<?php echo $onclick; ?>" class="btn btn-default btn-md">
 	                    <span class="glyphicon glyphicon-print"></span> Print Disease
 	                </button>
-					<button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#editSymptomModal">
-	                    <span class="glyphicon glyphicon-pencil"></span> Edit
-	                </button>
 					<form method="post" style="display:inline;" action="symptoms">
 		                <input type='hidden' name="admin_uid" value="<?php echo $_COOKIE['adminID']; ?>" />
 		                <input type='hidden' name="symptom_id" value="<?= $symptom['ID']; ?>" />

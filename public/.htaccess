@@ -1,5 +1,7 @@
 RewriteEngine On    # Turn on the rewriting engine
 
+Options -Indexes
+
 RewriteRule ^$ /views/pages/$1 [L]
 RewriteRule ^about$ /views/pages/about.php [L]
 RewriteRule ^help$ /views/pages/help.php [L]
@@ -22,6 +24,7 @@ RewriteRule ^medicine-print$ /views/print/medicine-information.php [L]
 
 RewriteRule ^disease$ /views/pages/disease/disease-list.php [L]
 RewriteRule ^disease-page$ /views/pages/disease/disease-page.php [L]
+RewriteRule ^disease-print$ /views/print/disease-information.php [L]
 
 RewriteRule ^css/(.*)$ /scripts/stylesheet/$1 [NC,L]
 RewriteRule ^js/(.*)$ /scripts/javascript/$1 [NC,L]
