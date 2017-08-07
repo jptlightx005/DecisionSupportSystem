@@ -46,10 +46,10 @@
 	                <button onclick="<?php echo $onclick; ?>" class="btn btn-default btn-md">
 	                    <span class="glyphicon glyphicon-print"></span> Print Disease
 	                </button>
-					<form method="post" style="display:inline;" action="symptoms">
+					<form method="post" style="display:inline;" action="disease">
 		                <input type='hidden' name="admin_uid" value="<?php echo $_COOKIE['adminID']; ?>" />
-		                <input type='hidden' name="symptom_id" value="<?= $symptom['ID']; ?>" />
-		                <button title="Remove Symptom" id="delete" type="submit" class="btn btn-default btn-md" name="action" value="<?= DELETE_SYMPTOM ?>" onclick="return confirm('Are you sure you want to delete this record?');">
+		                <input type='hidden' name="disease_id" value="<?= $disease['ID']; ?>" />
+		                <button title="Remove Disease" id="delete" type="submit" class="btn btn-default btn-md" name="action" value="<?= DELETE_DISEASE ?>" onclick="return confirm('Are you sure you want to delete this record?');">
 		                    <span class="glyphicon glyphicon-remove"></span> Remove
 		                </button>
 		            </form>

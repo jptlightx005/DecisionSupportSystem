@@ -98,3 +98,10 @@ function addNewDisease($post){
 		return response(0, "Operation failed!");
 	}
 }
+
+function removeDisease($id){
+	global $conn;
+
+	executeQuery("UPDATE dss_diseases SET is_removed = 1 WHERE ID = $id");
+	return response(1, "Successfully removed Disease!");
+}

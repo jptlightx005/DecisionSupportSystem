@@ -11,7 +11,7 @@
             if($action == ADD_DISEASE){
                 $result = addNewDisease($_POST);
             }else if($action == DELETE_DISEASE){
-                // $result = removeSymptom($_POST['symptom_id']);
+                $result = removeDisease($_POST['disease_id']);
             }
 
             if(isset($result)){
