@@ -18,6 +18,7 @@ require_once(LIB_DIR . 'dss/data/admin.php');
 require_once(LIB_DIR . 'dss/data/patient.php');
 require_once(LIB_DIR . 'dss/data/symptom.php');
 require_once(LIB_DIR . 'dss/data/medicine.php');
+require_once(LIB_DIR . 'dss/data/disease.php');
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

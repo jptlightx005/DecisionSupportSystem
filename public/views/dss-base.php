@@ -67,7 +67,7 @@
 		                <li <?= patientIsActive() ?>><a href="patient">Patients</a></li>
 		                <li <?= symptomIsActive() ?>><a href="symptoms">Symptoms</a></li>
 		                <li <?= medicineIsActive() ?>><a href="medicine">Medicine</a></li>
-		                <li><a href="disease">Diseases</a></li>
+		                <li <?= diseaseIsActive() ?>><a href="disease">Diseases</a></li>
 		                <li><a href="nurse">Nurses</a></li>
 					</ul>
 				</div>
