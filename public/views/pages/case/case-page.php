@@ -47,7 +47,7 @@
 	                    <span class="glyphicon glyphicon-print"></span> Print Case
 	                </button>
 	                <?php
-	                  $relative = "/print-prescription?id={$case['CaseID']}";
+	                  $relative = "/prescription-print?id={$case['ID']}";
 	                  $onclick = "return printPopupWindow('$relative');";
 	                ?>
 	                <button onclick="<?php echo $onclick; ?>" class="btn btn-default btn-md">
