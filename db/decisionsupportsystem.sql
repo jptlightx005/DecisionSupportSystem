@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 07, 2017 at 05:15 PM
+-- Generation Time: Aug 08, 2017 at 05:14 PM
 -- Server version: 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -68,6 +68,16 @@ CREATE TABLE `dss_cases` (
   `is_removed` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `dss_cases`
+--
+
+INSERT INTO `dss_cases` (`ID`, `CaseID`, `disease`, `PatientID`, `diagnosis`, `treatment`, `remarks`, `case_date`, `admin_ulid`, `is_removed`) VALUES
+(1, '', 'disease', 3, 'asdfasdfsad', 'sadfsadf', NULL, '2017-08-08 17:11:32', 8, 1),
+(2, '', 'sadfsafsad', 3, 'asdfsad', 'sdafsad', NULL, '2017-08-08 17:17:45', 8, 1),
+(3, '', 'try', 3, 'asdfsda', 'asdfasdfsad', NULL, '2017-08-08 18:12:54', 8, 1),
+(4, 'C17-00004', 'Fever', 4, 'Body exceeds normal temperature', 'Take 4 times a day', NULL, '2017-08-08 18:19:54', 8, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -92,7 +102,9 @@ INSERT INTO `dss_diseases` (`ID`, `name`, `diagnosis`, `treatment`, `admin_ulid`
 (2, 'sadfsafsad', 'fsadsdafsa', 'dfsdafsda', 8, 1),
 (3, 'sadfsafsad', 'fsadsdafsa', 'dfsdafsda', 8, 1),
 (4, 'sadfsafsad', 'fsadsdafsa', 'dfsdafsda', 8, 0),
-(5, 'asdfsdaf', 'asdfasdfsad', 'asdfsadfsad', 8, 1);
+(5, 'asdfsdaf', 'asdfasdfsad', 'asdfsadfsad', 8, 1),
+(6, 'try', 'asdfsda', 'asdfasdfsad', 8, 0),
+(7, 'Fever', 'Body exceeds normal temperature', 'Take 4 times a day', 8, 0);
 
 -- --------------------------------------------------------
 
@@ -143,7 +155,13 @@ CREATE TABLE `dss_medicine_used` (
 
 INSERT INTO `dss_medicine_used` (`ID`, `MedicineID`, `CaseID`, `DiseaseID`, `medicine`, `date_added`, `is_removed`) VALUES
 (1, 1, 0, 4, 'Biogesic', '2017-08-07 15:17:54', 0),
-(2, 1, 0, 5, 'Biogesic', '2017-08-07 18:15:05', 0);
+(2, 1, 0, 5, 'Biogesic', '2017-08-07 18:15:05', 0),
+(3, 1, 0, 6, 'Biogesic', '2017-08-08 16:26:16', 0),
+(4, 1, 1, 0, 'Biogesic', '2017-08-08 17:11:32', 0),
+(5, 1, 2, 0, 'Biogesic', '2017-08-08 17:17:45', 0),
+(6, 1, 0, 7, 'Biogesic', '2017-08-08 17:48:43', 0),
+(7, 1, 3, 0, 'Biogesic', '2017-08-08 18:12:55', 0),
+(8, 1, 4, 0, 'Biogesic', '2017-08-08 18:19:54', 0);
 
 -- --------------------------------------------------------
 
@@ -225,7 +243,8 @@ CREATE TABLE `dss_symptoms` (
 
 INSERT INTO `dss_symptoms` (`ID`, `name`, `description`, `admin_ulid`, `is_removed`) VALUES
 (1, 'Headache', 'kariage!', 8, 0),
-(2, 'Aother ', 'adsfafas', 8, 1);
+(2, 'Aother ', 'adsfafas', 8, 1),
+(3, 'Hot body', 'exceeds temperature', 8, 0);
 
 -- --------------------------------------------------------
 
@@ -249,7 +268,15 @@ CREATE TABLE `dss_symptoms_used` (
 
 INSERT INTO `dss_symptoms_used` (`ID`, `SymptomID`, `CaseID`, `DiseaseID`, `symptom`, `date_added`, `is_removed`) VALUES
 (1, 1, 0, 4, 'Headache', '0000-00-00 00:00:00', 0),
-(2, 1, 0, 5, 'Headache', '0000-00-00 00:00:00', 0);
+(2, 1, 0, 5, 'Headache', '0000-00-00 00:00:00', 0),
+(3, 1, 0, 6, 'Headache', '0000-00-00 00:00:00', 0),
+(4, 1, 1, 0, 'Headache', '0000-00-00 00:00:00', 0),
+(5, 1, 2, 0, 'Headache', '0000-00-00 00:00:00', 0),
+(6, 1, 0, 7, 'Headache', '0000-00-00 00:00:00', 0),
+(7, 3, 0, 7, '', '0000-00-00 00:00:00', 0),
+(9, 1, 3, 0, 'Headache', '0000-00-00 00:00:00', 0),
+(10, 1, 4, 0, 'Headache', '0000-00-00 00:00:00', 0),
+(11, 3, 4, 0, 'Hot body', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -426,6 +453,8 @@ CREATE TABLE `ul_sessions` (
 --
 
 INSERT INTO `ul_sessions` (`id`, `data`, `session_expires`, `lock_expires`) VALUES
+('9qeu548t3oh02k1ejdil09tf01', 0x737365737c613a343a7b733a393a22495061646472657373223b733a333a223a3a31223b733a31303a22686f7374446f6d61696e223b733a303a22223b733a393a22757365724167656e74223b733a3131343a224d6f7a696c6c612f352e30202857696e646f7773204e5420362e313b2057696e36343b2078363429204170706c655765624b69742f3533372e333620284b48544d4c2c206c696b65204765636b6f29204368726f6d652f35392e302e333037312e313135205361666172692f3533372e3336223b733a373a2245585049524553223b693a313530323138363637383b7d756c4e6f6e6365737c613a313a7b733a31343a22756c53657373696f6e546f6b656e223b613a323a7b733a343a22636f6465223b733a36343a2230306164393662343861326432636263663935653732366366326634613333373631323539313834303933336332386463353937343730313766633365383536223b733a363a22657870697265223b733a32353a22323031372d30382d30385431323a30343a33382b30323a3030223b7d7d, '2017-08-08T12:08:38+02:00', '1017-08-08T17:44:39+08:00'),
+('i6edkt7ie8u4ohfd97f43j9oi3', 0x737365737c613a343a7b733a393a22495061646472657373223b733a333a223a3a31223b733a31303a22686f7374446f6d61696e223b733a303a22223b733a393a22757365724167656e74223b733a3131343a224d6f7a696c6c612f352e30202857696e646f7773204e5420362e313b2057696e36343b2078363429204170706c655765624b69742f3533372e333620284b48544d4c2c206c696b65204765636b6f29204368726f6d652f35392e302e333037312e313135205361666172692f3533372e3336223b733a373a2245585049524553223b693a313530323230363236323b7d756c4e6f6e6365737c613a313a7b733a31343a22756c53657373696f6e546f6b656e223b613a323a7b733a343a22636f6465223b733a36343a2233313538613435313562353239636439613837303565376163623262663866316430303961356433373933643433616234393132323539653265396531646535223b733a363a22657870697265223b733a32353a22323031372d30382d30385431373a33313a30322b30323a3030223b7d7d69734c6f67676564496e7c623a313b, '2017-08-08T17:35:02+02:00', '1017-08-08T23:11:02+08:00'),
 ('ntpkbnt3cllvbc1bqihqkc1om1', 0x737365737c613a343a7b733a393a22495061646472657373223b733a333a223a3a31223b733a31303a22686f7374446f6d61696e223b733a303a22223b733a393a22757365724167656e74223b733a3131343a224d6f7a696c6c612f352e30202857696e646f7773204e5420362e313b2057696e36343b2078363429204170706c655765624b69742f3533372e333620284b48544d4c2c206c696b65204765636b6f29204368726f6d652f35392e302e333037312e313135205361666172692f3533372e3336223b733a373a2245585049524553223b693a313530323131393938393b7d756c4e6f6e6365737c613a313a7b733a31343a22756c53657373696f6e546f6b656e223b613a323a7b733a343a22636f6465223b733a36343a2262323730313235653563393833336636366562353861633963336166383632313034393838373232376636366330663233663032653461653463653837656535223b733a363a22657870697265223b733a32353a22323031372d30382d30375431373a33333a30392b30323a3030223b7d7d69734c6f67676564496e7c623a313b61707052656d656d6265724d655265717565737465647c623a313b, '2017-08-07T17:37:09+02:00', '1017-08-07T23:13:09+08:00');
 
 --
@@ -525,12 +554,12 @@ ALTER TABLE `dss_accounts`
 -- AUTO_INCREMENT for table `dss_cases`
 --
 ALTER TABLE `dss_cases`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `dss_diseases`
 --
 ALTER TABLE `dss_diseases`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `dss_medicine`
 --
@@ -540,7 +569,7 @@ ALTER TABLE `dss_medicine`
 -- AUTO_INCREMENT for table `dss_medicine_used`
 --
 ALTER TABLE `dss_medicine_used`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `dss_patients`
 --
@@ -550,12 +579,12 @@ ALTER TABLE `dss_patients`
 -- AUTO_INCREMENT for table `dss_symptoms`
 --
 ALTER TABLE `dss_symptoms`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `dss_symptoms_used`
 --
 ALTER TABLE `dss_symptoms_used`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `dss_uploads`
 --
