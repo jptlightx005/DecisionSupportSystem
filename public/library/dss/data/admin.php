@@ -62,3 +62,10 @@ function updateProfile($post){
 		return response(1, "Succesfully Added Profile");
 	}
 }
+
+function setAsNurse($ulid){
+	global $conn;
+
+	executeQuery("UPDATE dss_accounts SET privilege_level = 1 WHERE UL_ID = $ulid");
+	return response(1, "Successfully Added Nurse!");
+}

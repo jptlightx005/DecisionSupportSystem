@@ -15,7 +15,7 @@
 	<?php
         if(isset($action)){
             if($action == SET_AS_NURSE){
-                $result = setAsNurse($_POST);
+                $result = setAsNurse($_POST['UL_ID']);
             }
 
             if(isset($result)){
@@ -32,7 +32,6 @@
     ?>
 
 	<?php startblock('main') ?>
-		<?php printArray($accounts) ?>
 	    <?php if($_COOKIE['privilege_level'] == 2 || $_COOKIE['privilege_level'] == 3): ?>
 	    	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addNurseModal">
                  <span class="glyphicon glyphicon-plus"></span> Add Nurse
@@ -57,10 +56,8 @@
                 <?php foreach($nurses as $dict): ?>
                     <tr>
                     	<td><?= $dict['UL_ID'] ?></td>
-                        <td><a href="case-page?id=<?= $dict['ID'] ?>"><?= $dict['disease'] ?></a></td>
-                        <td><a href="patient-page?id=<?= $dict['PatientID'] ?>"><?= returnFullNameFromObject($dict) ?></a></td>
-                        <td><?= $dict['diagnosis'] ?></td>
-                        <td><?= $dict['treatment'] ?></td>
+                        <td><?= returnFullNameFromObject($dict) ?></td>
+                        <td><?= $dict['job'] ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -68,4 +65,71 @@
             </table>
 	    <?php endif; ?>
 	<?php endblock() ?>
+
+    <div id="addNurseModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <form class="modal-content" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Nurse</h4>
+                </div>
+                <input type='hidden' name="adminID" value="<?= $_COOKIE['adminID']; ?>" />
+                <div class="modal-body">
+                    <label>Nurse:</label>
+                    <select class="form-control" name="UL_ID" required>
+                        <option disabled selected value>Select Account</option>
+                        <?php
+                            foreach($accounts as $dict){ ?>
+                            <option value="<?php echo $dict["UL_ID"]; ?>"><?= returnFullNameFromObject($dict) ?></option>
+                        <?php }
+                        ?>
+                    </select>
+
+                    <label>Account Information</label>
+                    <dl class="row">
+                        <dt class="col-sm-3">First Name:</dt>
+                        <dd class="col-sm-9" id="first_name">&nbsp;</dd>
+
+                        <dt class="col-sm-3">Last Name:</dt>
+                        <dd class="col-sm-9" id="last_name">&nbsp;</dd>
+
+                        <dt class="col-sm-3">Gender:</dt>
+                        <dd class="col-sm-9" id="gender">&nbsp;</dd>
+                        
+                        <dt class="col-sm-3">Job:</dt>
+                        <dd class="col-sm-9" id="job">&nbsp;</dd>
+
+                        <dt class="col-sm-3">Address:</dt>
+                        <dd class="col-sm-9" id="address">&nbsp;</dd>
+
+                        <dt class="col-sm-3">Contact No:</dt>
+                        <dd class="col-sm-9" id="contactno">&nbsp;</dd>                    
+                    </dl>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="action" value="<?= SET_AS_NURSE ?>" class="btn btn-default">Set as Nurse</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        $("select[name='UL_ID']").on('change', function () {
+            var val = this.value;
+            
+            $.getJSON("/api/account?id=" + val, { get_param: 'value' }, function(data) {
+                $("dd#first_name").text(data.first_name);
+                $("dd#last_name").text(data.last_name);
+                $("dd#gender").text(data.gender);
+                $("dd#job").text(data.job);
+                $("dd#address").text(data.address);
+                $("dd#contactno").text(data.contact_no);
+            });
+        });
+    </script>
 <?php endif; ?>
