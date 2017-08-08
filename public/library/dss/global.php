@@ -13,6 +13,7 @@ function pageIsActive($pages){
 function homeIsActive(){
 	$homePages[] = "/views/pages/index.php";
 	$homePages[] = "/views/pages/case/case-list.php";
+    $homePages[] = "/views/pages/case/case-page.php";
 	$homePages[] = "/views/pages/patient/patient-list.php";
     $homePages[] = "/views/pages/patient/patient-page.php";
     $homePages[] = "/views/pages/symptom/symptom-list.php";
@@ -42,6 +43,7 @@ function profileIsActive(){
 //side nav module pages
 function caseIsActive(){
 	$casePages[] = "/views/pages/case/case-list.php"; //make sure to add this at homeIsActive();
+    $casePages[] = "/views/pages/case/case-page.php";
 	return(pageIsActive($casePages));
 }
 
