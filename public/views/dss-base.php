@@ -104,10 +104,12 @@
 					            </div>
 
 					            <?php if($privilege_level == 0): ?>
-							   		<script>
-							   			showErrorMessage('Access denied', 'In order to have access to the data available here, you have to request access from the Administrator.');
-							   		</script>
+					            	<?php if(!allowedPageForAll()): ?>
+					            		<script>
+								   			showErrorMessage('Access denied', 'In order to have access to the data available here, you have to request access from the Administrator.');
+								   		</script>
 							   		<?php exit(); ?>
+					            	<?php endif; ?>
 							   	<?php endif; ?>
 				            </div>
 							

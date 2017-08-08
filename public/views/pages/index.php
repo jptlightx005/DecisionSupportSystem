@@ -1,6 +1,7 @@
 <?php require_once('../dss-base.php') ?>
 
 <?php if($_SESSION['isLoggedIn']): ?>
+	<?php if(!isset($_COOKIE['job'])) exit(); ?>
 	<?php startblock('main') ?>
 	   <h1>Welcome, <?= $_COOKIE['job']. " " . returnAdminFullName(); ?>!</h1>
 	   <p>Please select an operation from the left panel.

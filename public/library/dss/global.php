@@ -9,6 +9,14 @@ function pageIsActive($pages){
 	return in_array(strtolower($currentPage), $pages) ? " class=\"active\"" : "";
 }
 
+function allowedPageForAll(){
+    $currentPage = $_SERVER['PHP_SELF'];
+    $pages[] = "/views/pages/index.php";
+    $pages[] = "/views/pages/about.php";
+    $pages[] = "/views/pages/help.php";
+    $pages[] = "/views/pages/profile.php";
+    return in_array(strtolower($currentPage), $pages);
+}
 //top nav pages
 function homeIsActive(){
 	$homePages[] = "/views/pages/index.php";
@@ -93,7 +101,7 @@ function resetCookies(){
     setcookie('first_name', '', time() - 7200, "/");
 	setcookie('middle_name', '', time() - 7200, "/");
     setcookie('last_name', '', time() - 7200, "/");
-    setcookie('priviledge_level', '', time() - 7200, "/");
+    setcookie('privilege_level', '', time() - 7200, "/");
     setcookie('job', '', time() - 7200, "/");
 }
 
