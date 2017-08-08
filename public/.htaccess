@@ -31,6 +31,8 @@ RewriteRule ^disease-page$ /views/pages/disease/disease-page.php [L]
 RewriteRule ^disease-print$ /views/print/disease-information.php [L]
 RewriteRule ^api/disease$ /library/dss/api/get-disease.php [L]
 
+RewriteRule ^nurse$ /views/pages/nurse/nurse-list.php [L]
+
 RewriteRule ^css/(.*)$ /scripts/stylesheet/$1 [NC,L]
 RewriteRule ^js/(.*)$ /scripts/javascript/$1 [NC,L]
 RewriteRule ^bootstrap/(.*)$ /library/bootstrap/$1 [NC,L]
