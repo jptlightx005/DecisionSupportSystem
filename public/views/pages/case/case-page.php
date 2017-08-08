@@ -53,10 +53,10 @@
 	                <button onclick="<?php echo $onclick; ?>" class="btn btn-default btn-md">
 	                    <span class="glyphicon glyphicon-print"></span> Print Prescription
 	                </button>
-					<form method="post" style="display:inline;" action="disease">
+					<form method="post" style="display:inline;" action="case">
 		                <input type='hidden' name="admin_uid" value="<?php echo $_COOKIE['adminID']; ?>" />
-		                <input type='hidden' name="disease_id" value="<?= $case['ID']; ?>" />
-		                <button title="Remove Disease" id="delete" type="submit" class="btn btn-default btn-md" name="action" value="<?= DELETE_DISEASE ?>" onclick="return confirm('Are you sure you want to delete this record?');">
+		                <input type='hidden' name="case_id" value="<?= $case['ID']; ?>" />
+		                <button title="Remove Case" id="delete" type="submit" class="btn btn-default btn-md" name="action" value="<?= DELETE_CASE ?>" onclick="return confirm('Are you sure you want to delete this record?');">
 		                    <span class="glyphicon glyphicon-remove"></span> Remove
 		                </button>
 		            </form>
@@ -69,7 +69,7 @@
 							<div class="col-md-6">
 								<dl class="row">
 	                                <dt class="col-sm-5">Case ID:</dt>
-	                                <dd class="col-sm-7"><?php echo $case["CaseID"] ?></dd>
+	                                <dd class="col-sm-7"><?= returnSpaceIfBlank($case["CaseID"]) ?></dd>
 
 									<dt class="col-sm-5">Disease Name:</dt>
 	                                <dd class="col-sm-7"><?php echo $case["disease"] ?></dd>

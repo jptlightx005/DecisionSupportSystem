@@ -101,3 +101,10 @@ function addNewCase($post){
 		response(0, "Failed to add case");
 	}
 }
+
+function removeCase($id){
+	global $conn;
+
+	executeQuery("UPDATE dss_cases SET is_removed = 1 WHERE ID = $id");
+	return response(1, "Successfully removed Case!");
+}

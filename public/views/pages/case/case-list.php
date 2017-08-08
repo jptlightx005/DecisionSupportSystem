@@ -11,7 +11,7 @@
             if($action == ADD_CASE){
                 $result = addNewCase($_POST);
             }else if($action == DELETE_CASE){
-                // $result = removeCase($_POST['case_id']);
+                $result = removeCase($_POST['case_id']);
             }
 
             if(isset($result)){
