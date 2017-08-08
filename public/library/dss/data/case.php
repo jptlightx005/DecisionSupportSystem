@@ -3,11 +3,33 @@ require_once('db.php');
 
 function getCaseList($search){
 	global $conn;
-	$query = "SELECT ID, disease, diagnosis, treatment FROM dss_cases WHERE is_removed = 0";
+	$query = "SELECT dss_cases.ID, CaseID, dss_cases.PatientID,  dss_patients.first_name, dss_patients.middle_name, dss_patients.last_name, disease, diagnosis, treatment FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE dss_cases.is_removed = 0";
 	if($search != ""){
 		$query .= " AND (name LIKE '%$search%' OR diagnosis LIKE '%$search%' OR treatment LIKE '%$search%')";
 	}
 	return selectQuery($query);
+}
+
+function getCaseInfo($id){
+	global $conn;
+	$query = "SELECT * FROM dss_cases WHERE ID = $id";
+	$case = selectFirstQuery($query);
+	
+	if(isset($case)){
+		
+		$sympQuery = "SELECT * FROM dss_symptoms_used JOIN dss_symptoms ON dss_symptoms_used.SymptomID = dss_symptoms.ID WHERE CaseID = $id";
+		$symptomsList = selectQuery($sympQuery);
+
+		$medQuery = "SELECT * FROM dss_medicine_used JOIN dss_medicine ON dss_medicine_used.MedicineID = dss_medicine.ID WHERE CaseID = $id";
+		$medicineList = selectQuery($medQuery);
+
+		$case["symptoms"] = $symptomsList;
+		$case["prescription"] = $medicineList;
+		
+		return $case;
+	}else{
+		return response(0, "Case ID Not Found!");
+	}
 }
 
 function addNewCase($post){
@@ -30,6 +52,10 @@ function addNewCase($post){
 	$query = "INSERT INTO `dss_cases` $field_names VALUES $field_values;";
 
 	$case_id = executeQueryGetInsertID($query);
+	$case_uid = createUniqueIDUsingID($case_id);
+	
+	$query = "UPDATE `dss_cases` SET CaseID = 'C$case_uid' WHERE ID = $case_id";
+	executeQuery($query);
 
 	if($case_id != 0){
 		//IMPORTS SYMPTOMS FROM SYMPTOM DATABASE AND SAVES
