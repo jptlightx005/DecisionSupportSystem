@@ -11,6 +11,7 @@ RewriteRule ^test$ /views/pages/test.php [L]
 RewriteRule ^case$ /views/pages/case/case-list.php [L]
 RewriteRule ^case-page$ /views/pages/case/case-page.php [L]
 RewriteRule ^case-print$ /views/print/case-information.php [L]
+RewriteRule ^case-report-print$ /views/print/case-report.php [L]
 RewriteRule ^prescription-print$ /views/print/case-prescription.php [L]
 RewriteRule ^api/case$ /library/dss/api/get-case.php [L]
 
