@@ -68,7 +68,9 @@
 		                <li <?= symptomIsActive() ?>><a href="symptoms">Symptoms</a></li>
 		                <li <?= medicineIsActive() ?>><a href="medicine">Medicine</a></li>
 		                <li <?= diseaseIsActive() ?>><a href="disease">Diseases</a></li>
+		                <?php if($_COOKIE['privilege_level'] != 0 && $_COOKIE['privilege_level'] != 1): ?>
 		                <li <?= nurseIsActive() ?>><a href="nurse">Nurses</a></li>
+		            	<?php endif; ?>
 					</ul>
 				</div>
 				  

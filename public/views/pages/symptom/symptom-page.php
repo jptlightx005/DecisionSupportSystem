@@ -45,6 +45,7 @@
 	                <button onclick="<?php echo $onclick; ?>" class="btn btn-default btn-md">
 	                    <span class="glyphicon glyphicon-print"></span> Print Symptom
 	                </button>
+					<?php if($_COOKIE['privilege_level'] != 1): ?>
 					<button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#editSymptomModal">
 	                    <span class="glyphicon glyphicon-pencil"></span> Edit
 	                </button>
@@ -55,6 +56,7 @@
 		                    <span class="glyphicon glyphicon-remove"></span> Remove
 		                </button>
 		            </form>
+		            <?php endif; ?>
 	            </div>
 	            <br>
 	            <div class="row" id="patient_record">

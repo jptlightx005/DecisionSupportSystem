@@ -33,9 +33,11 @@
 
 	<?php startblock('main') ?>
 	   <?php if($_COOKIE['privilege_level'] != 0): ?>
-		   	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addCaseModal">
-                 <span class="glyphicon glyphicon-plus"></span> Add Case
-            </button>
+            <?php if($_COOKIE['privilege_level'] != 1): ?>
+    		   	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addCaseModal">
+                     <span class="glyphicon glyphicon-plus"></span> Add Case
+                </button>
+            <?php endif; ?>
             <a href="case" class="btn btn-primary btn-md">
                  <span class="glyphicon glyphicon-refresh"></span> Refresh
             </a>
@@ -208,7 +210,7 @@
 
         </div>
     </div>
-    
+
     <script type="text/javascript">
        //Checkbox functionalities
 	    $('li.dropdown-li').click(
