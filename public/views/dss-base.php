@@ -68,7 +68,9 @@
 		                <li <?= symptomIsActive() ?>><a href="symptoms">Symptoms</a></li>
 		                <li <?= medicineIsActive() ?>><a href="medicine">Medicine</a></li>
 		                <li <?= diseaseIsActive() ?>><a href="disease">Diseases</a></li>
-		                <li><a href="nurse">Nurses</a></li>
+		                <?php if($_COOKIE['privilege_level'] != 0 && $_COOKIE['privilege_level'] != 1): ?>
+		                <li <?= nurseIsActive() ?>><a href="nurse">Nurses</a></li>
+		            	<?php endif; ?>
 					</ul>
 				</div>
 				  
@@ -78,7 +80,7 @@
 					<div class="page-content inset" style="margin-left: 10px; margin-right: 10px;">
 						&nbsp;
 						<div id="main">
-
+						<?php if(!allowedPageForAll() && ($privilege_level != 0)): ?>
 							<div class="row" style="margin-bottom: 10px;">
 				                <div class="col-sm-6 col-sm-offset-3">
 				                    <div id="imaginary_container"> 
@@ -93,7 +95,7 @@
 				                    </div>
 				                </div>
 				            </div>
-
+				            <?php endif; ?>
 				            <div class="row">
 					            <div class="hidden alert alert-success" id="success_alert">
 						          	<span id="title" style="font-weight:bold">Success!</span>: <span id="message">SUCCESS TEXT</span>
@@ -104,10 +106,12 @@
 					            </div>
 
 					            <?php if($privilege_level == 0): ?>
-							   		<script>
-							   			showErrorMessage('Access denied', 'In order to have access to the data available here, you have to request access from the Administrator.');
-							   		</script>
+					            	<?php if(!allowedPageForAll()): ?>
+					            		<script>
+								   			showErrorMessage('Access denied', 'In order to have access to the data available here, you have to request access from the Administrator.');
+								   		</script>
 							   		<?php exit(); ?>
+					            	<?php endif; ?>
 							   	<?php endif; ?>
 				            </div>
 							

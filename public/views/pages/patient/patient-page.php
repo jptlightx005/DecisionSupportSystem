@@ -79,6 +79,7 @@
 	            <button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#addPatientModal">
 	                <span class="glyphicon glyphicon-pencil"></span> Edit
 	            </button>
+	            <?php if($_COOKIE['privilege_level'] != 1): ?>
 	   			<form method="post" style="display:inline;" action="patient">
 	                <input type='hidden' name="admin_uid" value="<?php echo $_COOKIE['adminID']; ?>" />
 	                <input type='hidden' name="patient_id" value="<?= $patient['ID']; ?>" />
@@ -86,6 +87,7 @@
 	                    <span class="glyphicon glyphicon-remove"></span> Remove
 	                </button>
 	            </form>
+	            <?php endif; ?>
 	   		</div>
 	   		<br>
 	   		<div class="row" id="patient_record">

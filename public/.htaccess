@@ -11,6 +11,7 @@ RewriteRule ^test$ /views/pages/test.php [L]
 RewriteRule ^case$ /views/pages/case/case-list.php [L]
 RewriteRule ^case-page$ /views/pages/case/case-page.php [L]
 RewriteRule ^case-print$ /views/print/case-information.php [L]
+RewriteRule ^case-report-print$ /views/print/case-report.php [L]
 RewriteRule ^prescription-print$ /views/print/case-prescription.php [L]
 RewriteRule ^api/case$ /library/dss/api/get-case.php [L]
 
@@ -30,6 +31,9 @@ RewriteRule ^disease$ /views/pages/disease/disease-list.php [L]
 RewriteRule ^disease-page$ /views/pages/disease/disease-page.php [L]
 RewriteRule ^disease-print$ /views/print/disease-information.php [L]
 RewriteRule ^api/disease$ /library/dss/api/get-disease.php [L]
+
+RewriteRule ^nurse$ /views/pages/nurse/nurse-list.php [L]
+RewriteRule ^api/account$ /library/dss/api/get-account.php [L]
 
 RewriteRule ^css/(.*)$ /scripts/stylesheet/$1 [NC,L]
 RewriteRule ^js/(.*)$ /scripts/javascript/$1 [NC,L]

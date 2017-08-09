@@ -33,9 +33,11 @@
 
 	<?php startblock('main') ?>
 	   <?php if($_COOKIE['privilege_level'] != 0): ?>
-		   	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addCaseModal">
-                 <span class="glyphicon glyphicon-plus"></span> Add Case
-            </button>
+            <?php if($_COOKIE['privilege_level'] != 1): ?>
+    		   	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addCaseModal">
+                     <span class="glyphicon glyphicon-plus"></span> Add Case
+                </button>
+            <?php endif; ?>
             <a href="case" class="btn btn-primary btn-md">
                  <span class="glyphicon glyphicon-refresh"></span> Refresh
             </a>
@@ -47,7 +49,7 @@
                         <th class="col-md-2">Disease Name</th>
                         <th class="col-md-3">Patient Name</th>
                         <th class="col-md-3">Diagnosis</th>
-                        <th class="col-md-3">Medication</th>
+                        <th class="col-md-3">Treatment</th>
                     </tr>
                 </thead>
             <?php if(count($cases) == 0): ?>
@@ -60,6 +62,9 @@
                     	<td><?= $dict['CaseID'] ?></td>
                         <td><a href="case-page?id=<?= $dict['ID'] ?>"><?= $dict['disease'] ?></a></td>
                         <td><a href="patient-page?id=<?= $dict['PatientID'] ?>"><?= returnFullNameFromObject($dict) ?></a></td>
+                        <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#printReportsModal">
+                             <span class="glyphicon glyphicon-print"></span> Print Reports
+                        </button>
                         <td><?= $dict['diagnosis'] ?></td>
                         <td><?= $dict['treatment'] ?></td>
                     </tr>
@@ -155,6 +160,53 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </form>
+
+        </div>
+    </div>
+
+    <div id="printReportsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Print Reports</h4>
+                </div>
+                    
+                <div class="modal-body">
+                    <label>Gender:</label><br/>
+                    <select class="form-control" name="filter" required>
+                        <option value='age' selected>Age</option>
+                        <!-- <option value='diagnosis'>Diagnosis</option> -->
+                        <!-- <option value='brgy'>Brgy</option> -->
+                    </select>
+                </div>
+
+                
+                <div class="modal-footer">
+                    <button id="printReport" class="btn btn-default btn-md">
+                        <span class="glyphicon glyphicon-print"></span> Print
+                    </button>
+                    <script>
+                        $('#printReport').click(function(){
+
+                            var height = screen.height - 100;
+                            if(height >= 792)
+                                height = 792;
+                            var url = '/case-report-print?filter=';
+                            var filter = $('select[name=filter]').find(":selected").val()
+                            url = url + filter;
+
+                            if(filter != "")
+                                window.open(url, '', 'width=900,height='+(height));
+
+                            return false;
+                        });
+                    </script>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
 
         </div>
     </div>

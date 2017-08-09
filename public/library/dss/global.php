@@ -9,6 +9,14 @@ function pageIsActive($pages){
 	return in_array(strtolower($currentPage), $pages) ? " class=\"active\"" : "";
 }
 
+function allowedPageForAll(){
+    $currentPage = $_SERVER['PHP_SELF'];
+    $pages[] = "/views/pages/index.php";
+    $pages[] = "/views/pages/about.php";
+    $pages[] = "/views/pages/help.php";
+    $pages[] = "/views/pages/profile.php";
+    return in_array(strtolower($currentPage), $pages);
+}
 //top nav pages
 function homeIsActive(){
 	$homePages[] = "/views/pages/index.php";
@@ -22,6 +30,7 @@ function homeIsActive(){
     $homePages[] = "/views/pages/medicine/medicine-page.php";
     $homePages[] = "/views/pages/disease/disease-list.php";
     $homePages[] = "/views/pages/disease/disease-page.php";
+    $homePages[] = "/views/pages/nurse/nurse-list.php";
 	return(pageIsActive($homePages));
 }
 
@@ -70,6 +79,13 @@ function diseaseIsActive(){
     $diseasePages[] = "/views/pages/disease/disease-page.php";
     return(pageIsActive($diseasePages));
 }
+
+function nurseIsActive(){
+    $nursePages[] = "/views/pages/nurse/nurse-list.php"; //make sure to add this at homeIsActive();
+    // $nursePages[] = "/views/pages/disease/nurse-page.php";
+    return(pageIsActive($nursePages));
+}
+
 //navigation functions
 function redirectToURL($msg, $rurl, $timeout = 1000){
     echo "<h1>$msg</h1>";
@@ -85,7 +101,7 @@ function resetCookies(){
     setcookie('first_name', '', time() - 7200, "/");
 	setcookie('middle_name', '', time() - 7200, "/");
     setcookie('last_name', '', time() - 7200, "/");
-    setcookie('priviledge_level', '', time() - 7200, "/");
+    setcookie('privilege_level', '', time() - 7200, "/");
     setcookie('job', '', time() - 7200, "/");
 }
 

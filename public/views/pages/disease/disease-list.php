@@ -30,9 +30,11 @@
     ?>
 	<?php startblock('main') ?>
 	   <?php if($_COOKIE['privilege_level'] != 0): ?>
+            <?php if($_COOKIE['privilege_level'] != 1): ?>
 		   	<button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#addDiseaseModal">
                  <span class="glyphicon glyphicon-plus"></span> Add Disease
             </button>
+            <?php endif; ?>
             <a href="disease" class="btn btn-primary btn-md">
                  <span class="glyphicon glyphicon-refresh"></span> Refresh
             </a>

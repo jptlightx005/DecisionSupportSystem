@@ -100,7 +100,7 @@
 	    echo returnSpaceIfBlank(substr($medicines, 0, strlen($medicines) - 2));
 	                                    ?></dd>
 
-	                                <dt class="col-sm-5">Medication:</dt>
+	                                <dt class="col-sm-5">Treatment:</dt>
 	                                <dd class="col-sm-7"><?php echo $case["treatment"]; ?></dd>
 								</dl>
 							</div>
