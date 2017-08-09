@@ -49,7 +49,7 @@
                         <th class="col-md-2">Disease Name</th>
                         <th class="col-md-3">Patient Name</th>
                         <th class="col-md-3">Diagnosis</th>
-                        <th class="col-md-3">Medication</th>
+                        <th class="col-md-3">Treatment</th>
                     </tr>
                 </thead>
             <?php if(count($cases) == 0): ?>
