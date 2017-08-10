@@ -10,6 +10,12 @@ function getCaseList($search){
 	return selectQuery($query);
 }
 
+function getCaseListByPatientID($id){
+	global $conn;
+	$query = "SELECT * FROM dss_cases WHERE PatientID = $id AND is_removed = 0";
+	return selectQuery($query);
+}
+
 function getCaseInfo($id){
 	global $conn;
 	$query = "SELECT dss_cases.*,  dss_patients.first_name, dss_patients.middle_name, dss_patients.last_name FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE dss_cases.ID = $id";

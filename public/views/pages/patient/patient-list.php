@@ -77,12 +77,21 @@
                 <div class="modal-body">
                     <div class="image-selection">
                         <img style="margin-bottom:10px;" class="img-responsive center-block img-rounded image-selected" id="patient_photo" src="assets/placeholder.gif" alt="Insert Image" width="304" height="236">
-                        <div class="row">
+                        <div class="row" style="margin-bottom: 5px;">
                             <div class="col-xs-4"></div>
                             <div class="col-xs-4">
                                 <label class="btn btn-primary btn-file center-block btn-md">
-                                    Browse <input type="file" style="display: none;" name="patient_picture" class="image-browser"  accept="image/*">
+                                    Browse <input type="file" style="display: none;" name="patient_picture" class="image-browser"  accept="image/*" capture>
                                 </label>
+                            </div>
+                            <div class="col-xs-4"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4"></div>
+                            <div class="col-xs-4">
+                                <button type="button" class="btn btn-primary btn-md" style="width: 100%" data-toggle="modal" data-target="#capturePhotoModal">
+                                     <span class="glyphicon glyphicon-camera"></span> Capture
+                                </button>
                             </div>
                             <div class="col-xs-4"></div>
                         </div>
@@ -203,6 +212,51 @@
                 </div>
             </form>
 
+        </div>
+    </div>
+
+    <div id="capturePhotoModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Print Reports</h4>
+                </div>
+                    
+                <div class="modal-body">
+                    <video id="video" width="640" height="480" autoplay></video>
+                </div>
+
+                
+                <div class="modal-footer">
+                    <button id="captureImage" class="btn btn-default btn-md">
+                        <span class="glyphicon glyphicon-print"></span> Print
+                    </button>
+                    <script>
+                        // Elements for taking the snapshot
+                        var canvas = document.getElementById('canvas');
+                        var context = canvas.getContext('2d');
+                        var video = document.getElementById('video');
+
+                        // Get access to the camera!
+                        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                            // Not adding `{ audio: true }` since we only want video now
+                            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                                video.src = window.URL.createObjectURL(stream);
+                                video.play();
+                            });
+                        }
+
+                        // Trigger photo take
+                        document.getElementById("captureImage").addEventListener("click", function() {
+                            context.drawImage(video, 0, 0, 640, 480);
+                        });
+                    </script>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 
