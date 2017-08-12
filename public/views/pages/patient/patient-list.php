@@ -81,7 +81,7 @@
                             <div class="col-xs-4"></div>
                             <div class="col-xs-4">
                                 <label class="btn btn-primary btn-file center-block btn-md">
-                                    Browse <input type="file" style="display: none;" name="patient_picture" class="image-browser"  accept="image/*" capture>
+                                    Browse <input type="file" style="display: none;" name="patient_picture" class="image-browser"  accept="image/*">
                                 </label>
                             </div>
                             <div class="col-xs-4"></div>
@@ -96,7 +96,7 @@
                             <div class="col-xs-4"></div>
                         </div>
                     </div>
-                    
+                    <input type="hidden" name="picture_from_camera" />
                     <label>First Name:</label>
                     <input class="form-control" type="text" name="first_name" required />
                     <label>Middle Name:</label>
@@ -222,38 +222,19 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Print Reports</h4>
+                    <h4 class="modal-title">Capture Image</h4>
                 </div>
                     
                 <div class="modal-body">
-                    <video id="video" width="640" height="480" autoplay></video>
+                    <center><video id="video" width="480" height="360" autoplay></video></center>
+					<canvas id="canvas" width="640" height="480"></canvas>
                 </div>
 
                 
                 <div class="modal-footer">
-                    <button id="captureImage" class="btn btn-default btn-md">
-                        <span class="glyphicon glyphicon-print"></span> Print
+                    <button id="captureImage" class="btn btn-default btn-md" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-camera"></span> Capture
                     </button>
-                    <script>
-                        // Elements for taking the snapshot
-                        var canvas = document.getElementById('canvas');
-                        var context = canvas.getContext('2d');
-                        var video = document.getElementById('video');
-
-                        // Get access to the camera!
-                        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                            // Not adding `{ audio: true }` since we only want video now
-                            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-                                video.src = window.URL.createObjectURL(stream);
-                                video.play();
-                            });
-                        }
-
-                        // Trigger photo take
-                        document.getElementById("captureImage").addEventListener("click", function() {
-                            context.drawImage(video, 0, 0, 640, 480);
-                        });
-                    </script>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -276,6 +257,46 @@
                 }
                 
             });
+			
+			 // Elements for taking the snapshot
+			// var canvas = document.getElementById('canvas');
+			// var context = canvas.getContext('2d');
+			// var video = document.getElementById('video');
+
+			// Get access to the camera!
+			// if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+				// Not adding `{ audio: true }` since we only want video now
+				// navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+					// video.src = window.URL.createObjectURL(stream);
+					// video.play();
+				// });
+			// }
+
+			// Trigger photo take
+			// document.getElementById("captureImage").addEventListener("click", function() {
+				// context.drawImage(video, 0, 0, 640, 480);
+									draw cloud
+			  // context.beginPath();
+			  // context.moveTo(170, 80);
+			  // context.bezierCurveTo(130, 100, 130, 150, 230, 150);
+			  // context.bezierCurveTo(250, 180, 320, 180, 340, 150);
+			  // context.bezierCurveTo(420, 150, 420, 120, 390, 100);
+			  // context.bezierCurveTo(430, 40, 370, 30, 340, 50);
+			  // context.bezierCurveTo(320, 5, 250, 20, 250, 50);
+			  // context.bezierCurveTo(200, 5, 150, 20, 170, 80);
+			  // context.closePath();
+			  // context.lineWidth = 5;
+			  // context.fillStyle = '#8ED6FF';
+			  // context.fill();
+			  // context.strokeStyle = '#0000ff';
+			  // context.stroke();
+
+			  save canvas image as data url (png format by default)
+			  // var dataURL = canvas.toDataURL('image/png');
+			  // $("#patient_photo").attr("src",dataURL);
+			  // $("input[name=picture_from_camera]").attr("value",dataURL);
+			  // $("input[name=patient_picture]").attr("value, "");
+			// });
         </script>
     </footer>
 <?php endif; ?>
