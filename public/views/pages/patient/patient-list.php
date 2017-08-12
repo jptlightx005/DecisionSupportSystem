@@ -89,7 +89,7 @@
                         <div class="row">
                             <div class="col-xs-4"></div>
                             <div class="col-xs-4">
-                                <button type="button" class="btn btn-primary btn-md" style="width: 100%" data-toggle="modal" data-target="#capturePhotoModal">
+                                <button type="button" class="btn btn-primary btn-md" id="camera_button" style="width: 100%" data-toggle="modal" data-target="#capturePhotoModal">
                                      <span class="glyphicon glyphicon-camera"></span> Capture
                                 </button>
                             </div>
@@ -227,7 +227,6 @@
                     
                 <div class="modal-body">
                     <center><video id="video" width="480" height="360" autoplay></video></center>
-					<canvas id="canvas" width="640" height="480"></canvas>
                 </div>
 
                 
@@ -241,6 +240,14 @@
         </div>
     </div>
 
+	 <div class="modal fade" role="dialog">
+        <div class="modal-dialog">
+                <div class="modal-body">
+					<canvas id="canvas" width="640" height="480"></canvas>
+                </div>               
+        </div>
+    </div>
+	
     <footer>
         <script type="text/javascript">
             $(".image-browser").change(function() {
@@ -255,48 +262,38 @@
 
                     reader.readAsDataURL(input.files[0]);
                 }
-                
             });
+		
 			
-			 // Elements for taking the snapshot
-			// var canvas = document.getElementById('canvas');
-			// var context = canvas.getContext('2d');
-			// var video = document.getElementById('video');
+			document.getElementById("camera_button").addEventListener("click", function() {
+				 // Elements for taking the snapshot
+			
+				var video = document.getElementById('video');
 
-			// Get access to the camera!
-			// if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-				// Not adding `{ audio: true }` since we only want video now
-				// navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-					// video.src = window.URL.createObjectURL(stream);
-					// video.play();
-				// });
-			// }
-
+				// Get access to the camera!
+				if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+					// Not adding `{ audio: true }` since we only want video now
+					navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+						video.src = window.URL.createObjectURL(stream);
+						video.play();
+					});
+				}
+			});
+			
 			// Trigger photo take
-			// document.getElementById("captureImage").addEventListener("click", function() {
-				// context.drawImage(video, 0, 0, 640, 480);
-									draw cloud
-			  // context.beginPath();
-			  // context.moveTo(170, 80);
-			  // context.bezierCurveTo(130, 100, 130, 150, 230, 150);
-			  // context.bezierCurveTo(250, 180, 320, 180, 340, 150);
-			  // context.bezierCurveTo(420, 150, 420, 120, 390, 100);
-			  // context.bezierCurveTo(430, 40, 370, 30, 340, 50);
-			  // context.bezierCurveTo(320, 5, 250, 20, 250, 50);
-			  // context.bezierCurveTo(200, 5, 150, 20, 170, 80);
-			  // context.closePath();
-			  // context.lineWidth = 5;
-			  // context.fillStyle = '#8ED6FF';
-			  // context.fill();
-			  // context.strokeStyle = '#0000ff';
-			  // context.stroke();
+			document.getElementById("captureImage").addEventListener("click", function() {
+				var video = document.getElementById('video');
+				var canvas = document.getElementById('canvas');
+				var context = canvas.getContext('2d');
+			
+				context.drawImage(video, 0, 0, 640, 480);
 
-			  save canvas image as data url (png format by default)
-			  // var dataURL = canvas.toDataURL('image/png');
-			  // $("#patient_photo").attr("src",dataURL);
-			  // $("input[name=picture_from_camera]").attr("value",dataURL);
-			  // $("input[name=patient_picture]").attr("value, "");
-			// });
+				// save canvas image as data url (png format by default)
+				var dataURL = canvas.toDataURL('image/png');
+				$("#patient_photo").attr("src",dataURL);
+				$("input[name=picture_from_camera]").attr("value",dataURL);
+				$("input[name=patient_picture]").val('');
+			});
         </script>
     </footer>
 <?php endif; ?>

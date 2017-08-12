@@ -56,19 +56,6 @@ function addNewPatient($post, $files){
 	$query = "UPDATE `dss_patients` SET PatientID = '$patient_uid' WHERE ID = $patient_id";
 	executeQuery($query);
 
-	if($files["patient_picture"]["error"] != UPLOAD_ERR_NO_FILE){
-		$full_name = $post["first_name"] . " " . $post["last_name"];
-		$subfile_name = replace_accents(friendly_url($full_name));
-		$file_name = "$patient_id-$subfile_name.jpg";
-		saveFile($files["patient_picture"], $file_name);
-		$file_name = "uploads/$file_name";
-
-		$query = "INSERT INTO `dss_uploads` (PatientID, url, type, date_uploaded) VALUES ($patient_id, '$file_name', 'patient_picture', CURRENT_TIMESTAMP)";
-		$file_id = executeQueryGetInsertID($query);
-		$query = "UPDATE `dss_patients` SET picture_id = $file_id WHERE ID = $patient_id";
-		executeQuery($query);
-	}
-
 	if(isset($post['picture_from_camera'])){
 		$full_name = $post["first_name"] . " " . $post["last_name"];
 		$subfile_name = replace_accents(friendly_url($full_name));
@@ -81,6 +68,19 @@ function addNewPatient($post, $files){
 		$query = "UPDATE `dss_patients` SET picture_id = $file_id WHERE ID = $patient_id";
 		executeQuery($query);
 	}
+	
+	if($files["patient_picture"]["error"] != UPLOAD_ERR_NO_FILE){
+		$full_name = $post["first_name"] . " " . $post["last_name"];
+		$subfile_name = replace_accents(friendly_url($full_name));
+		$file_name = "$patient_id-$subfile_name.jpg";
+		saveFile($files["patient_picture"], $file_name);
+		$file_name = "uploads/$file_name";
+
+		$query = "INSERT INTO `dss_uploads` (PatientID, url, type, date_uploaded) VALUES ($patient_id, '$file_name', 'patient_picture', CURRENT_TIMESTAMP)";
+		$file_id = executeQueryGetInsertID($query);
+		$query = "UPDATE `dss_patients` SET picture_id = $file_id WHERE ID = $patient_id";
+		executeQuery($query);
+	}	
 	
 	$file_name = "assets/placeholder.gif";
 	if(isset($files["ehr_img"])){
