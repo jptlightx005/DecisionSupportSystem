@@ -18,6 +18,8 @@
 		}
     }
     $patientEHR = getPatientEHR($_GET['id']);
+
+    $cases = getCaseListByPatientID($_GET['id']);
 ?>
 
 <html>
@@ -166,28 +168,28 @@
 					<span class="detail" style="width:100;text-align: center"><?= $patient["telephone"] ?></span>
 				</span>
 			</div>
-
+			<br>
 			<center>OUT PATIENT RECORD </center>
-
-			<!-- <table class="table">
+			<br>
+			<table class="table" style="font-size: 14px;">
 				<thead>
 					<tr>
 						<th>DATE/TIME</th>
 						<th>DIAGNOSIS</th>
 						<th>TREATMENT</th>
-						<th>REMARKS</th>
+						<!-- <th>REMARKS</th> -->
 					</tr>
 				</thead>
 				<tbody>
 					<?php foreach($cases as $case): ?>
-						<td><?= $case["case_date"] ?></td>
+						<td><?= returnFullDateTimeStringWithDate($case["case_date"]) ?></td>
 						<td><?= $case["diagnosis"] ?></td>
 						<td><?= $case["treatment"] ?></td>
-						<td><?= $case["remarks"] ?></td>
+<!-- 						<td><?= $case["remarks"] ?></td> -->
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
-			</table> -->
+			</table>
 		</div>
 
 		<div class="row" id="ehr_images">

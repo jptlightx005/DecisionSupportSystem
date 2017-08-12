@@ -42,6 +42,10 @@
                  <span class="glyphicon glyphicon-refresh"></span> Refresh
             </a>
 
+            <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#printReportsModal">
+                 <span class="glyphicon glyphicon-print"></span> Print Reports
+            </button>
+
             <table class="table">
             	<thead>
                     <tr>
@@ -62,9 +66,6 @@
                     	<td><?= $dict['CaseID'] ?></td>
                         <td><a href="case-page?id=<?= $dict['ID'] ?>"><?= $dict['disease'] ?></a></td>
                         <td><a href="patient-page?id=<?= $dict['PatientID'] ?>"><?= returnFullNameFromObject($dict) ?></a></td>
-                        <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#printReportsModal">
-                             <span class="glyphicon glyphicon-print"></span> Print Reports
-                        </button>
                         <td><?= $dict['diagnosis'] ?></td>
                         <td><?= $dict['treatment'] ?></td>
                     </tr>

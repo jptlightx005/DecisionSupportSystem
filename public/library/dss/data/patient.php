@@ -37,7 +37,8 @@ function addNewPatient($post, $files){
 	$field_names = "(";
 	$field_values = "(";
 	foreach($post as $key => $value){
-		if($key != "action"){
+		if($key != "action" &&
+		$key != "picture_from_camera"){
 			$newValue = addslashes($value);
 			$field_names .= "`$key`, ";
 			$field_values .= "'$newValue', ";
@@ -55,6 +56,19 @@ function addNewPatient($post, $files){
 	$query = "UPDATE `dss_patients` SET PatientID = '$patient_uid' WHERE ID = $patient_id";
 	executeQuery($query);
 
+	if(isset($post['picture_from_camera'])){
+		$full_name = $post["first_name"] . " " . $post["last_name"];
+		$subfile_name = replace_accents(friendly_url($full_name));
+		$file_name = "$patient_id-$subfile_name.jpg";
+		saveFileFromData($post['picture_from_camera'], $file_name);
+		$file_name = "uploads/$file_name";
+
+		$query = "INSERT INTO `dss_uploads` (PatientID, url, type, date_uploaded) VALUES ($patient_id, '$file_name', 'patient_picture', CURRENT_TIMESTAMP)";
+		$file_id = executeQueryGetInsertID($query);
+		$query = "UPDATE `dss_patients` SET picture_id = $file_id WHERE ID = $patient_id";
+		executeQuery($query);
+	}
+	
 	if($files["patient_picture"]["error"] != UPLOAD_ERR_NO_FILE){
 		$full_name = $post["first_name"] . " " . $post["last_name"];
 		$subfile_name = replace_accents(friendly_url($full_name));
@@ -67,7 +81,7 @@ function addNewPatient($post, $files){
 		$query = "UPDATE `dss_patients` SET picture_id = $file_id WHERE ID = $patient_id";
 		executeQuery($query);
 	}	
-
+	
 	$file_name = "assets/placeholder.gif";
 	if(isset($files["ehr_img"])){
 		$ehr_files = reArrayFiles($files["ehr_img"]);

@@ -77,7 +77,7 @@
                 <div class="modal-body">
                     <div class="image-selection">
                         <img style="margin-bottom:10px;" class="img-responsive center-block img-rounded image-selected" id="patient_photo" src="assets/placeholder.gif" alt="Insert Image" width="304" height="236">
-                        <div class="row">
+                        <div class="row" style="margin-bottom: 5px;">
                             <div class="col-xs-4"></div>
                             <div class="col-xs-4">
                                 <label class="btn btn-primary btn-file center-block btn-md">
@@ -86,8 +86,17 @@
                             </div>
                             <div class="col-xs-4"></div>
                         </div>
+                        <div class="row">
+                            <div class="col-xs-4"></div>
+                            <div class="col-xs-4">
+                                <button type="button" class="btn btn-primary btn-md" id="camera_button" style="width: 100%" data-toggle="modal" data-target="#capturePhotoModal">
+                                     <span class="glyphicon glyphicon-camera"></span> Capture
+                                </button>
+                            </div>
+                            <div class="col-xs-4"></div>
+                        </div>
                     </div>
-                    
+                    <input type="hidden" name="picture_from_camera" />
                     <label>First Name:</label>
                     <input class="form-control" type="text" name="first_name" required />
                     <label>Middle Name:</label>
@@ -206,6 +215,39 @@
         </div>
     </div>
 
+    <div id="capturePhotoModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Capture Image</h4>
+                </div>
+                    
+                <div class="modal-body">
+                    <center><video id="video" width="480" height="360" autoplay></video></center>
+                </div>
+
+                
+                <div class="modal-footer">
+                    <button id="captureImage" class="btn btn-default btn-md" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-camera"></span> Capture
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	 <div class="modal fade" role="dialog">
+        <div class="modal-dialog">
+                <div class="modal-body">
+					<canvas id="canvas" width="640" height="480"></canvas>
+                </div>               
+        </div>
+    </div>
+	
     <footer>
         <script type="text/javascript">
             $(".image-browser").change(function() {
@@ -220,8 +262,38 @@
 
                     reader.readAsDataURL(input.files[0]);
                 }
-                
             });
+		
+			
+			document.getElementById("camera_button").addEventListener("click", function() {
+				 // Elements for taking the snapshot
+			
+				var video = document.getElementById('video');
+
+				// Get access to the camera!
+				if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+					// Not adding `{ audio: true }` since we only want video now
+					navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+						video.src = window.URL.createObjectURL(stream);
+						video.play();
+					});
+				}
+			});
+			
+			// Trigger photo take
+			document.getElementById("captureImage").addEventListener("click", function() {
+				var video = document.getElementById('video');
+				var canvas = document.getElementById('canvas');
+				var context = canvas.getContext('2d');
+			
+				context.drawImage(video, 0, 0, 640, 480);
+
+				// save canvas image as data url (png format by default)
+				var dataURL = canvas.toDataURL('image/png');
+				$("#patient_photo").attr("src",dataURL);
+				$("input[name=picture_from_camera]").attr("value",dataURL);
+				$("input[name=patient_picture]").val('');
+			});
         </script>
     </footer>
 <?php endif; ?>

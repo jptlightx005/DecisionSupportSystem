@@ -227,6 +227,32 @@ function convertImage($originalImage, $tempImageLoc, $outputImage, $quality)
     return 1;
 }
 
+function saveFileFromData($data, $targetFileName){
+    $images_folder = UPLOADS_FOLDER;
+
+    if (!file_exists($images_folder)) {
+        mkdir($images_folder, 0777);
+    } 
+
+    return convertImageFromData($data, $images_folder.$targetFileName, 100);
+}
+
+function convertImageFromData($data, $outputImage, $quality)
+{
+	list($type, $data) = explode(';', $data);
+	list(, $data)      = explode(',', $data);
+	$data = base64_decode($data);
+		$imageTmp = imagecreatefromstring($data);
+    // quality is a value from 0 (worst) to 100 (best)
+    if(file_exists($outputImage))
+        unlink($outputImage);
+    
+    imagejpeg($imageTmp, $outputImage, $quality);
+    imagedestroy($imageTmp);
+
+    return 1;
+}
+
 function friendly_url($url) {
     // everything to lower and no spaces begin or end
     $url = strtolower(trim($url));
