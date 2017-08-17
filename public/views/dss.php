@@ -47,11 +47,25 @@ if(isset($action)){
 				$ulid = getULIDforUsrn($_POST['usrn']);
 				if(isset($ulid)){
 					$ulid = $ulid['id'];
-					$email = returnMysqlEscapedString($_POST['email']);
-					$first_name = returnMysqlEscapedString($_POST['first_name']);
-					$last_name = returnMysqlEscapedString($_POST['last_name']);
-					$job = returnMysqlEscapedString($_POST['job']);
-					$query = "INSERT INTO dss_accounts(UL_ID, email, first_name, last_name, job) VALUES ($ulid, '$email', '$first_name', '$last_name', '$job')";
+
+					$field_names = "(`UL_ID`, ";
+					$field_values = "('$ulid', ";
+					foreach($_POST as $key => $value){
+						if($key != "usrn" &&
+						$key != "pssw" &&
+						$key != "conf_pssw" &&
+						$key != "action"){
+							$newValue = addslashes($value);
+							$field_names .= "`$key`, ";
+							$field_values .= "'$newValue', ";
+						}
+					}
+
+					$field_names = substr($field_names, 0, strlen($field_names) - 2) . ")";
+					$field_values = substr($field_values, 0, strlen($field_values) - 2) . ")";
+					
+					$query = "INSERT INTO `dss_accounts` $field_names VALUES $field_values;";
+					
 					if(executeQuery($query)){
 						$msg = 'Account registered successfully';
 					}else{

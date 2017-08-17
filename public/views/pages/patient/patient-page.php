@@ -344,7 +344,7 @@
 				    <input class="form-control" type="text" name="last_name" value="<?= $patient['last_name']; ?>" required />
 				    <label>Ward/Room/Bed/Service:</label>
 				    <input class="form-control" type="text" name="ward" value="<?= $patient['ward']; ?>" />
-                    <label>Permanent Address:</label>
+                    <label>Address:</label>
                     <input class="form-control" type="text" name="address" value="<?= $patient['address']; ?>" required/>
 					<label>Telephone No.:</label>
                     <input class="form-control" type="text" name="telephone" value="<?= $patient['telephone']; ?>" />

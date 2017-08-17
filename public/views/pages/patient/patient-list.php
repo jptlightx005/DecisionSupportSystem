@@ -105,7 +105,7 @@
                     <input class="form-control" type="text" name="last_name" required />
                     <label>Ward/Room/Bed/Service:</label>
                     <input class="form-control" type="text" name="ward" />
-                    <label>Permanent Address:</label>
+                    <label>Address:</label>
                     <input class="form-control" type="text" name="address" required/>
                     <label>Telephone No.:</label>
                     <input class="form-control" type="text" name="telephone" />

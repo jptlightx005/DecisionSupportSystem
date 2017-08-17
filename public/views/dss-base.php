@@ -143,30 +143,59 @@
                 </div>
             </div>
 
-	        <!-- Signup Modal -->
-			<div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="Signup " aria-hidden="true" style="display: none;">
-                <div class="modal-dialog">
-                    <div class="loginmodal-container">
-                        <h1>Signup new account</h1><br>
-                        <form id="signup_form" method="post">
-							<input class="form-control" type="text" name="usrn" placeholder="Username" required />
-							<input class="form-control" type="password" name="pssw" placeholder="Password" required />
-							<input class="form-control" type="password" name="conf_pssw" placeholder="Confirm Password" required />
-							<input class="form-control" type="text" name="email" placeholder="Email" required />
-							<br>
-							<input class="form-control" type="text" name="first_name" placeholder="First Name" required />
-							<input class="form-control" type="text" name="middle_name" placeholder="Middle Name" />
-							<input class="form-control" type="text" name="last_name" placeholder="Last Name" required />
-							<input class="form-control" type="text" name="job" placeholder="Position" />
-							<input type="submit" name="action" class="login loginmodal-submit" value="<?= SIGN_UP ?>" />
-                        </form>
+            <div id="signup-modal" class="modal fade" role="dialog">
+		        <div class="modal-dialog">
 
-                        <div class="login-help">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
+		            <!-- Modal content-->
+		            <form class="modal-content" method="post">
+		                <div class="modal-header">
+		                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                    <h4 class="modal-title">Sign Up</h4>
+		                </div>
+		                <div class="modal-body">
+							<label>Username</label>
+		                	<input class="form-control" type="text" name="usrn" placeholder="Username" required />
+		                	<label>Password</label>
+							<input class="form-control" type="password" name="pssw" placeholder="Password" required />
+							<label>Confirm Password</label>
+							<input class="form-control" type="password" name="conf_pssw" placeholder="Confirm Password" required />
+							<br>
+							<label>First Name:</label>
+						    <input class="form-control" type="text" name="first_name" placeholder="First Name" required />
+		                    <label>Middle Name:</label>
+						    <input class="form-control" type="text" name="middle_name" placeholder="Middle Name" required />
+							<label>Last Name:</label>
+						    <input class="form-control" type="text" name="last_name" placeholder="Last Name" required />
+
+		                    <label>Gender:</label><br/>
+		                    <select class="form-control" name="gender" required>
+		                        <option disabled selected value>Select Gender</option>
+		                        <option value='Male'>Male</option>
+		                        <option value='Female'>Female</option>
+		                    </select>
+
+		                    <label>Email:</label>
+						    <input class="form-control" type="email" name="email" placeholder="Email" required />
+
+							<label>Date of Birth:</label>
+		                    <input class="form-control" type='date' name='date_of_birth' placeholder="Date of Birth" required />
+
+		                    <label>Job:</label>
+		                    <input class="form-control" type="text" name="job" placeholder="Job" required />
+							<label>Address:</label>
+		                    <input class="form-control" type="text" name="address" placeholder="Address" />
+		                    <label>Contact No:</label>
+		                    <input class="form-control" type="text" name="contact_no" placeholder="Contact No" />
+
+		                </div>
+		                <div class="modal-footer">
+		                    <button type="submit" name="action" value="<?= SIGN_UP ?>" class="btn btn-default">Submit</button>
+		                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                </div>
+		            </form>
+
+		        </div>
+		    </div>
 		<?php endif; ?>
 	</body>
 </html>
