@@ -3,7 +3,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/library/ulogin/config/all.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/library/ulogin/main.inc.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/library/dss/global.php');
 date_default_timezone_set("Asia/Taipei");
-$conn = new mysqli("localhost", "root", "", "decisionsupportsystemv2");    
+$conn = new mysqli("localhost", "root", "", "decisionsupportsystem");    
 
 if(mysqli_connect_errno()){
 	printf("Connection failed: %s", mysqli_connect_error());
