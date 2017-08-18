@@ -42,6 +42,11 @@ function getPatientEHR($id){
 	return $filteredEHR;
 }
 
+function getBrgyList(){
+	global $conn;
+	return selectQuery("SELECT * FROM `dss_brgy`");
+}
+
 function addNewPatient($post, $files){
 	global $conn;
 	$field_names = "(";

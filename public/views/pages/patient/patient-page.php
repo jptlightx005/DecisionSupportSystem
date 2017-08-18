@@ -60,7 +60,7 @@
         }
 
         $patientEHR = getPatientEHR($_GET['id']);
-        
+        $brgy_list = getBrgyList();
     ?>
 	<?php startblock('main') ?>
 	   	<?php if($_COOKIE['privilege_level'] != 0): ?>
@@ -163,18 +163,30 @@
 								<dt class="col-sm-5">&nbsp;</dt>
 								<dd class="col-sm-7">&nbsp;</dd>
 
+								<dt class="col-sm-5">Address:</dt>
+								<dd class="col-sm-7"><?php echo returnSpaceIfBlank($patient['address']); ?></dd>
+
+								<dt class="col-sm-5">Brgy:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['brgy']); ?></dd>
+								
+								<dt class="col-sm-5">Municipality:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['municipality']); ?></dd>
+
+								<dt class="col-sm-5">Province:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['province']); ?></dd>
+
+								<dt class="col-sm-5">&nbsp;</dt>
+								<dd class="col-sm-7">&nbsp;</dd>
+
 								<dt class="col-sm-5">Civil Status:</dt>
 								<dd class="col-sm-7"><?php echo returnSpaceIfBlank($patient['status']); ?></dd>
 
 								<dt class="col-sm-5">Nationality:</dt>
 								<dd class="col-sm-7"><?php echo returnSpaceIfBlank($patient['nationality']); ?></dd>
-
-								<dt class="col-sm-5">Address:</dt>
-								<dd class="col-sm-7"><?php echo returnSpaceIfBlank($patient['address']); ?></dd>
-
+								
 								<dt class="col-sm-5">Telephone/Cellphone No:</dt>
 								<dd class="col-sm-7"><?php echo returnSpaceIfBlank($patient['telephone']); ?></dd>
-
+								
 								<dt class="col-sm-5">&nbsp;</dt>
 								<dd class="col-sm-7">&nbsp;</dd>
 
@@ -349,6 +361,20 @@
 				    <input class="form-control" type="text" name="ward" value="<?= $patient['ward']; ?>" />
                     <label>Address:</label>
                     <input class="form-control" type="text" name="address" value="<?= $patient['address']; ?>" required/>
+                    <label>Brgy:</label>
+                    <select class="form-control" name="brgy" required>
+                        <option disabled selected value>Select Brgy</option>
+                        <?php foreach($brgy_list as $dict): ?>
+                            <option value="<?= $dict['name'] ?>" 
+                            	<?php if($patient['brgy'] == $dict['name']) echo 'selected'; ?>>
+                            	<?= $dict['name'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <label>Municipality:</label>
+                    <input class="form-control" type="text" name="municipality" value="<?= $patient['municipality']; ?>" required/>
+                    <label>Province:</label>
+                    <input class="form-control" type="text" name="province" value="<?= $patient['province']; ?>" required/>
 					<label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="telephone" value="<?= $patient['telephone']; ?>" />
                     <label>Gender:</label><br/>

@@ -22,6 +22,7 @@
         }
 
         $patients = getPatientList($search_text);
+        $brgy_list = getBrgyList();
     ?>
 	<?php startblock('main') ?>
 	   	<?php if($_COOKIE['privilege_level'] != 0): ?>
@@ -107,6 +108,17 @@
                     <input class="form-control" type="text" name="ward" />
                     <label>Address:</label>
                     <input class="form-control" type="text" name="address" required/>
+                    <label>Brgy:</label>
+                    <select class="form-control" name="brgy" required>
+                        <option disabled selected value>Select Brgy</option>
+                        <?php foreach($brgy_list as $dict): ?>
+                            <option value="<?= $dict['name'] ?>"><?= $dict['name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <label>Municipality:</label>
+                    <input class="form-control" type="text" name="municipality" value="Pototan" required/>
+                    <label>Province:</label>
+                    <input class="form-control" type="text" name="province" value="Iloilo" required/>
                     <label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="telephone" />
                     <label>Gender:</label><br/>
