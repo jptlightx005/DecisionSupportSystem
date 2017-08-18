@@ -107,7 +107,7 @@
                     <input class="form-control" type="text" name="ward" />
                     <label>Address:</label>
                     <input class="form-control" type="text" name="address" required/>
-                    <label>Telephone No.:</label>
+                    <label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="telephone" />
                     <label>Gender:</label><br/>
                     <select class="form-control" name="gender" required>
@@ -160,15 +160,15 @@
                     <input class="form-control" type="text" name="employer" />
                     <label>Address:</label>
                     <input class="form-control" type="text" name="emp_address" />
-                    <label>Telephone No.:</label>
+                    <label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="emp_telephone" />
                     <br/>
                     
-                    <label>Mother's Name:</label>
+                    <label>Guardian's Name:</label>
                     <input class="form-control" type="text" name="mother" required/>
                     <label>Address:</label>
                     <input class="form-control" type="text" name="mom_address" required/>
-                    <label>Telephone No.:</label>
+                    <label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="mom_telephone" required/>
                     <br/>
                     
@@ -176,7 +176,7 @@
                     <input class="form-control" type="text" name="spouse" />
                     <label>Address:</label>
                     <input class="form-control" type="text" name="sp_address" />
-                    <label>Telephone No.:</label>
+                    <label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="sp_telephone" />
                     <br/>
 
