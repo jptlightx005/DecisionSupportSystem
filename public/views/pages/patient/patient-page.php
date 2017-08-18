@@ -181,6 +181,9 @@
 								<dt class="col-sm-5">Guardian:</dt>
 								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['mother']); ?></dd>
 								
+								<dt class="col-sm-5">Relationship:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['g_relationship']); ?></dd>
+
 								<dt class="col-sm-5">Address:</dt>
 								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['mom_address']); ?></dd>
 								
@@ -393,6 +396,8 @@
 					
 					<label>Guardian's Name:</label>
                     <input class="form-control" type="text" name="mother" value="<?= $patient['mother']; ?>" required/>
+                    <label>Relationship:</label>
+                    <input class="form-control" type="text" name="g_relationship" value="<?= $patient['g_relationship']; ?>" required/>
 					<label>Address:</label>
                     <input class="form-control" type="text" name="mom_address" value="<?= $patient['mom_address']; ?>" required/>
 					<label>Telephone/Cellphone No:</label>

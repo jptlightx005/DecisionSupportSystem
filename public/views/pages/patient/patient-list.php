@@ -166,6 +166,8 @@
                     
                     <label>Guardian's Name:</label>
                     <input class="form-control" type="text" name="mother" required/>
+                    <label>Relationship:</label>
+                    <input class="form-control" type="text" name="g_relationship" required/>
                     <label>Address:</label>
                     <input class="form-control" type="text" name="mom_address" required/>
                     <label>Telephone/Cellphone No:</label>
