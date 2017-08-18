@@ -29,7 +29,17 @@ function getPatientPicture($id){
 
 function getPatientEHR($id){
 	global $conn;
-	return selectQuery("SELECT * FROM dss_uploads WHERE PatientID = $id AND type = 'patient_ehr' AND is_removed = 0 ORDER BY date_uploaded DESC");
+	$ehrs = selectQuery("SELECT * FROM dss_uploads WHERE PatientID = $id AND type = 'patient_ehr' AND is_removed = 0 ORDER BY date_uploaded DESC");
+
+	$filteredEHR = array();
+	foreach ($ehrs as $ehr) {
+		$ehrURL = $ehr['url'];
+    	if(file_exists(IMAGES_FOLDER . $ehrURL) || returnBlankIfNull($ehrURL) == ""){
+			$filteredEHR[] = $ehr;
+		}
+	}
+
+	return $filteredEHR;
 }
 
 function addNewPatient($post, $files){
