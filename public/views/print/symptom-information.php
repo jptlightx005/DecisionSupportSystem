@@ -9,7 +9,7 @@
 		<style type="text/css" media="print">
 			@page{
 				size: auto;
-				margin: 0mm;
+				margin: 10mm;
 			}
 			html{
 				background-color: #FFF;
@@ -66,8 +66,8 @@
 		<br/>
 		<div class="container" id="symptom_record">
 			<div class="row">
-				<h1><?php echo $symptom['name']; ?></h1>
-				<h3><?php echo $symptom['description']; ?></h3>
+				<h3><?php echo $symptom['name']; ?></h3>
+				<p><?php echo $symptom['description']; ?></p>
 			</div>
 		</div>
 	</body>

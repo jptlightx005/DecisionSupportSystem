@@ -22,6 +22,7 @@
         }
 
         $patients = getPatientList($search_text);
+        $brgy_list = getBrgyList();
     ?>
 	<?php startblock('main') ?>
 	   	<?php if($_COOKIE['privilege_level'] != 0): ?>
@@ -105,9 +106,20 @@
                     <input class="form-control" type="text" name="last_name" required />
                     <label>Ward/Room/Bed/Service:</label>
                     <input class="form-control" type="text" name="ward" />
-                    <label>Permanent Address:</label>
+                    <label>Address:</label>
                     <input class="form-control" type="text" name="address" required/>
-                    <label>Telephone No.:</label>
+                    <label>Brgy:</label>
+                    <select class="form-control" name="brgy" required>
+                        <option disabled selected value>Select Brgy</option>
+                        <?php foreach($brgy_list as $dict): ?>
+                            <option value="<?= $dict['name'] ?>"><?= $dict['name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <label>Municipality:</label>
+                    <input class="form-control" type="text" name="municipality" value="Pototan" required/>
+                    <label>Province:</label>
+                    <input class="form-control" type="text" name="province" value="Iloilo" required/>
+                    <label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="telephone" />
                     <label>Gender:</label><br/>
                     <select class="form-control" name="gender" required>
@@ -160,15 +172,17 @@
                     <input class="form-control" type="text" name="employer" />
                     <label>Address:</label>
                     <input class="form-control" type="text" name="emp_address" />
-                    <label>Telephone No.:</label>
+                    <label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="emp_telephone" />
                     <br/>
                     
-                    <label>Mother's Name:</label>
+                    <label>Guardian's Name:</label>
                     <input class="form-control" type="text" name="mother" required/>
+                    <label>Relationship:</label>
+                    <input class="form-control" type="text" name="g_relationship" required/>
                     <label>Address:</label>
                     <input class="form-control" type="text" name="mom_address" required/>
-                    <label>Telephone No.:</label>
+                    <label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="mom_telephone" required/>
                     <br/>
                     
@@ -176,7 +190,7 @@
                     <input class="form-control" type="text" name="spouse" />
                     <label>Address:</label>
                     <input class="form-control" type="text" name="sp_address" />
-                    <label>Telephone No.:</label>
+                    <label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="sp_telephone" />
                     <br/>
 

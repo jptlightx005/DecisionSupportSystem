@@ -81,7 +81,7 @@
         <div class="modal-dialog">
 
             <!-- Modal content-->
-            <form class="modal-content" method="post" name="case_form" onSubmit="return validateForm()">
+            <form class="modal-content" method="post" name="case_form" id="case_form">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Add Case</h4>
@@ -115,7 +115,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                         	<div class="button-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="dropdown-text">Select Symptoms</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
+                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="dropdown-text" title="Select Symptoms">Select Symptoms</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
                                 <ul class="dropdown-menu" id="symptom-ul">
                                     <?php foreach($symptom_list as $dict): ?>
                                     <li class="dropdown-li">
@@ -138,7 +138,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="button-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="dropdown-text">Select Medicine</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
+                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="dropdown-text" title="Select Medicine">Select Medicine</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
                                 <ul class="dropdown-menu" id="medicine-ul">
                                     <?php foreach($medicine_list as $dict): ?>
                                     <li class="dropdown-li">
@@ -157,7 +157,7 @@
                     <textarea class="form-control" rows="5" id="medication" name="treatment" required></textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" name="action" value="<?= ADD_CASE ?>" class="btn btn-default">Submit</button>
+                    <button type="submit" id="submit_case" name="action" value="<?= ADD_CASE ?>" class="btn btn-default">Submit</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </form>
@@ -230,10 +230,11 @@
 	    $(".checkbox-input").change(function () {
 	        var checked_boxes = $(this).closest('.button-group').find('.checkbox-input:checked');
 	        var text = checked_boxes.map(function() {
-	            return $(this).next("label").text().split(' ').join(',');
+	            return $(this).next("label").text();
 	        }).get();
 
-	        $(this).closest('.button-group').find('.dropdown-text').text(text);
+            var title = $(this).closest('.button-group').find('.dropdown-text').attr('title');
+	        $(this).closest('.button-group').find('.dropdown-text').text(text.length > 0 ? text : title);
 	     });
 
 	    $(".dropdown-li").click(function(e){
@@ -269,5 +270,45 @@
 	        	$("textarea[name='treatment']").text(data.treatment);
 			});
 		});
+
+         $("#submit_case").on('click', function () {
+            var case_form = document.forms["case_form"];
+
+            var symptoms = case_form["symptom[]"];
+            var symptom_count = 0;
+            var symlen = symptoms.length;
+            if(symlen == undefined){
+                if(symptoms.checked)
+                    symptom_count++;
+            }else{
+                for (var i=0; i < symlen; i++) {
+                    if(symptoms[i].checked)
+                        symptom_count++;
+                }
+            }
+
+            var medicine = case_form["medicine[]"];
+            var prescription_count = 0;
+            var medlen = medicine.length;
+            if(medlen == undefined){
+                if(medicine.checked)
+                    prescription_count++;
+            }else{
+                for (var i=0; i < medlen; i++) {
+                    if (medicine[i].checked)
+                        prescription_count++;
+                }
+            }
+
+            if (symptom_count == 0){
+                alert("Please add symptoms! ");
+                return false;
+            }
+
+            if (prescription_count == 0){
+                alert("Please add medicine! ");
+                return false;
+            }
+         });
     </script>
 <?php endif; ?>

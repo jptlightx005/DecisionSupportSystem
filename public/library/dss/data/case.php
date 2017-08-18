@@ -13,7 +13,17 @@ function getCaseList($search){
 function getCaseListByPatientID($id){
 	global $conn;
 	$query = "SELECT * FROM dss_cases WHERE PatientID = $id AND is_removed = 0";
-	return selectQuery($query);
+
+	$cases = selectQuery($query);
+	foreach($cases as $key => $field){
+		$case = $cases[$key];
+		
+		$medQuery = "SELECT * FROM dss_medicine_used JOIN dss_medicine ON dss_medicine_used.MedicineID = dss_medicine.ID WHERE CaseID = {$case['ID']}";
+		$medicineList = selectQuery($medQuery);
+		$cases[$key]["prescription"] = $medicineList;
+	}
+
+	return $cases;
 }
 
 function getCaseInfo($id){
@@ -65,42 +75,43 @@ function addNewCase($post){
 
 	if($case_id != 0){
 		//IMPORTS SYMPTOMS FROM SYMPTOM DATABASE AND SAVES
-		$symptomIDs = "";
 		if(!empty($_POST["symptom"])){
+			$symptomIDs = "";
 			foreach($_POST["symptom"] as $symptomID)
 				$symptomIDs .= "ID = $symptomID OR ";
 
 			$symptomIDs = substr($symptomIDs, 0, strlen($symptomIDs) - 4);
+
+			$getSymptomsQuery = "SELECT * FROM dss_symptoms WHERE $symptomIDs";
+			$selectedSymptoms = selectQuery($getSymptomsQuery);
+			$symptomValues = "";
+			foreach($selectedSymptoms as $dict){
+				$symptomValues .= "({$dict['ID']}, '{$dict['name']}', $case_id), ";
+			}
+			$symptomValues = substr($symptomValues, 0, strlen($symptomValues) - 2);
+			$symptomQuery = "INSERT INTO dss_symptoms_used (SymptomID, symptom, CaseID) VALUES $symptomValues";
+			if(!executeQuery($symptomQuery))
+				return response(0, $symptomQuery);
 		}
-		
-		$getSymptomsQuery = "SELECT * FROM dss_symptoms WHERE $symptomIDs";
-		$selectedSymptoms = selectQuery($getSymptomsQuery);
-		$symptomValues = "";
-		foreach($selectedSymptoms as $dict){
-			$symptomValues .= "({$dict['ID']}, '{$dict['name']}', $case_id), ";
-		}
-		$symptomValues = substr($symptomValues, 0, strlen($symptomValues) - 2);
-		$symptomQuery = "INSERT INTO dss_symptoms_used (SymptomID, symptom, CaseID) VALUES $symptomValues";
-		if(!executeQuery($symptomQuery))
-			return response(0, $symptomQuery);
 
 		//IMPORTS MEDICINE FROM MEDICINE DATABASE AND SAVES
-		$medicineIDs = "";
 		if(!empty($_POST["medicine"])){	
+			$medicineIDs = "";
 			foreach($_POST["medicine"] as $medicineID)
 				$medicineIDs .= "ID = $medicineID OR ";
+
+			$medicineIDs = substr($medicineIDs, 0, strlen($medicineIDs) - 4);
+			$getMedicineQuery = "SELECT * FROM dss_medicine WHERE $medicineIDs";
+			$selectedMedicine = selectQuery($getMedicineQuery);
+			$medicineValues = "";
+			foreach($selectedMedicine as $dict){
+				$medicineValues .= "({$dict['ID']}, '{$dict['name']}', $case_id), ";
+			}
+			$medicineValues = substr($medicineValues, 0, strlen($medicineValues) - 2);
+			$medicineQuery = "INSERT INTO dss_medicine_used (MedicineID, medicine, CaseID) VALUES $medicineValues";
+			if(!executeQuery($medicineQuery))
+				return response(0, $medicineQuery);
 		}
-		$medicineIDs = substr($medicineIDs, 0, strlen($medicineIDs) - 4);
-		$getMedicineQuery = "SELECT * FROM dss_medicine WHERE $medicineIDs";
-		$selectedMedicine = selectQuery($getMedicineQuery);
-		$medicineValues = "";
-		foreach($selectedMedicine as $dict){
-			$medicineValues .= "({$dict['ID']}, '{$dict['name']}', $case_id), ";
-		}
-		$medicineValues = substr($medicineValues, 0, strlen($medicineValues) - 2);
-		$medicineQuery = "INSERT INTO dss_medicine_used (MedicineID, medicine, CaseID) VALUES $medicineValues";
-		if(!executeQuery($medicineQuery))
-			return response(0, $medicineQuery);
 
 		return response(1, "Successfully added case!");
 	}else{

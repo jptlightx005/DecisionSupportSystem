@@ -60,7 +60,7 @@
         }
 
         $patientEHR = getPatientEHR($_GET['id']);
-        
+        $brgy_list = getBrgyList();
     ?>
 	<?php startblock('main') ?>
 	   	<?php if($_COOKIE['privilege_level'] != 0): ?>
@@ -145,92 +145,107 @@
                         <br>
                         <div class="col-md-6">
 							<dl class="row">						
-								<dt class="col-sm-4">Patient ID:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient["PatientID"]) ?></dd>
+								<dt class="col-sm-5">Patient ID:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient["PatientID"]) ?></dd>
 
-								<dt class="col-sm-4">Last Name:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['last_name']); ?></dd>
+								<dt class="col-sm-5">Last Name:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['last_name']); ?></dd>
 
-								<dt class="col-sm-4">First Name:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['first_name']); ?></dd>
+								<dt class="col-sm-5">First Name:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['first_name']); ?></dd>
 								
-								<dt class="col-sm-4">Middle Name:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['middle_name']); ?></dd>
+								<dt class="col-sm-5">Middle Name:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['middle_name']); ?></dd>
 
-								<dt class="col-sm-4">Gender:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['gender']); ?></dd>
+								<dt class="col-sm-5">Gender:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['gender']); ?></dd>
 								
-								<dt class="col-sm-4">&nbsp;</dt>
-								<dd class="col-sm-8">&nbsp;</dd>
+								<dt class="col-sm-5">&nbsp;</dt>
+								<dd class="col-sm-7">&nbsp;</dd>
 
-								<dt class="col-sm-4">Civil Status:</dt>
-								<dd class="col-sm-8"><?php echo returnSpaceIfBlank($patient['status']); ?></dd>
+								<dt class="col-sm-5">Address:</dt>
+								<dd class="col-sm-7"><?php echo returnSpaceIfBlank($patient['address']); ?></dd>
 
-								<dt class="col-sm-4">Nationality:</dt>
-								<dd class="col-sm-8"><?php echo returnSpaceIfBlank($patient['nationality']); ?></dd>
-
-								<dt class="col-sm-4">Address:</dt>
-								<dd class="col-sm-8"><?php echo returnSpaceIfBlank($patient['address']); ?></dd>
-
-								<dt class="col-sm-4">Telephone No.:</dt>
-								<dd class="col-sm-8"><?php echo returnSpaceIfBlank($patient['telephone']); ?></dd>
-
-								<dt class="col-sm-4">&nbsp;</dt>
-								<dd class="col-sm-8">&nbsp;</dd>
-
-								<dt class="col-sm-4">Mother:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['mother']); ?></dd>
+								<dt class="col-sm-5">Brgy:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['brgy']); ?></dd>
 								
-								<dt class="col-sm-4">Address:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['mom_address']); ?></dd>
+								<dt class="col-sm-5">Municipality:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['municipality']); ?></dd>
+
+								<dt class="col-sm-5">Province:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['province']); ?></dd>
+
+								<dt class="col-sm-5">&nbsp;</dt>
+								<dd class="col-sm-7">&nbsp;</dd>
+
+								<dt class="col-sm-5">Civil Status:</dt>
+								<dd class="col-sm-7"><?php echo returnSpaceIfBlank($patient['status']); ?></dd>
+
+								<dt class="col-sm-5">Nationality:</dt>
+								<dd class="col-sm-7"><?php echo returnSpaceIfBlank($patient['nationality']); ?></dd>
 								
-								<dt class="col-sm-4">Telephone No.:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['mom_telephone']); ?></dd>
+								<dt class="col-sm-5">Telephone/Cellphone No:</dt>
+								<dd class="col-sm-7"><?php echo returnSpaceIfBlank($patient['telephone']); ?></dd>
+								
+								<dt class="col-sm-5">&nbsp;</dt>
+								<dd class="col-sm-7">&nbsp;</dd>
+
+								<dt class="col-sm-5">Guardian:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['mother']); ?></dd>
+								
+								<dt class="col-sm-5">Relationship:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['g_relationship']); ?></dd>
+
+								<dt class="col-sm-5">Address:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['mom_address']); ?></dd>
+								
+								<dt class="col-sm-5">Telephone/Cellphone No:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['mom_telephone']); ?></dd>
 							</dl>
 						</div>
 						<div class="col-md-6">
 							<dl class="row">						
-								<dt class="col-sm-4">Ward/Room/Bed/Service:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient["ward"]) ?></dd>
+								<dt class="col-sm-5">Ward/Room/Bed/Service:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient["ward"]) ?></dd>
 
-								<dt class="col-sm-4">Date of Birth:</dt>
-								<dd class="col-sm-8"><?= returnFullDateStringWithDate($patient["date_of_birth"]); ?></dd>
+								<dt class="col-sm-5">Date of Birth:</dt>
+								<dd class="col-sm-7"><?= returnFullDateStringWithDate($patient["date_of_birth"]); ?></dd>
 
-								<dt class="col-sm-4">Age:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['age']); ?></dd>
+								<dt class="col-sm-5">Age:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['age']); ?></dd>
 
-								<dt class="col-sm-4">Place of Birth:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['place_of_birth']); ?></dd>
+								<dt class="col-sm-5">Place of Birth:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['place_of_birth']); ?></dd>
 								
-								<dt class="col-sm-4">Religion:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['religion']); ?></dd>
+								<dt class="col-sm-5">Religion:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['religion']); ?></dd>
 
-								<dt class="col-sm-4">&nbsp;</dt>
-								<dd class="col-sm-8">&nbsp;</dd>
+								<dt class="col-sm-5">&nbsp;</dt>
+								<dd class="col-sm-7">&nbsp;</dd>
 								
-								<dt class="col-sm-4">Occupation:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['occupation']); ?></dd>
+								<dt class="col-sm-5">Occupation:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['occupation']); ?></dd>
 								
-								<dt class="col-sm-4">Employer:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['employer']); ?></dd>
+								<dt class="col-sm-5">Employer:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['employer']); ?></dd>
 								
-								<dt class="col-sm-4">Address:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['emp_address']); ?></dd>
+								<dt class="col-sm-5">Address:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['emp_address']); ?></dd>
 								
-								<dt class="col-sm-4">Telephone No.:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['emp_telephone']); ?></dd>
+								<dt class="col-sm-5">Telephone/Cellphone No:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['emp_telephone']); ?></dd>
 
-								<dt class="col-sm-4">&nbsp;</dt>
-								<dd class="col-sm-8">&nbsp;</dd>
+								<dt class="col-sm-5">&nbsp;</dt>
+								<dd class="col-sm-7">&nbsp;</dd>
 
-								<dt class="col-sm-4">Spouse:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['spouse']); ?></dd>
+								<dt class="col-sm-5">Spouse:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['spouse']); ?></dd>
 								
-								<dt class="col-sm-4">Address:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['sp_address']); ?></dd>
+								<dt class="col-sm-5">Address:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['sp_address']); ?></dd>
 								
-								<dt class="col-sm-4">Telephone No.:</dt>
-								<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['sp_telephone']); ?></dd>
+								<dt class="col-sm-5">Telephone/Cellphone No:</dt>
+								<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['sp_telephone']); ?></dd>
 							</dl>
 						</div>
 					</div>
@@ -243,17 +258,17 @@
 					<div class="col-md-12">
 										
 						<dl class="row">							
-							<dt class="col-sm-4">Height:</dt>
-							<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['height']); ?></dd>
+							<dt class="col-sm-5">Height:</dt>
+							<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['height']); ?></dd>
 							
-							<dt class="col-sm-4">Weight:</dt>
-							<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['weight']); ?></dd>
+							<dt class="col-sm-5">Weight:</dt>
+							<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['weight']); ?></dd>
 							
-							<dt class="col-sm-4">Blood Pressure:</dt>
-							<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['blood_pressure']); ?></dd>
+							<dt class="col-sm-5">Blood Pressure:</dt>
+							<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['blood_pressure']); ?></dd>
 							
-							<dt class="col-sm-4">Body Temperature:</dt>
-							<dd class="col-sm-8"><?= returnSpaceIfBlank($patient['body_temperature']); ?></dd>
+							<dt class="col-sm-5">Body Temperature:</dt>
+							<dd class="col-sm-7"><?= returnSpaceIfBlank($patient['body_temperature']); ?></dd>
 						</dl>
 					</div>
 					<div class="row">
@@ -344,9 +359,23 @@
 				    <input class="form-control" type="text" name="last_name" value="<?= $patient['last_name']; ?>" required />
 				    <label>Ward/Room/Bed/Service:</label>
 				    <input class="form-control" type="text" name="ward" value="<?= $patient['ward']; ?>" />
-                    <label>Permanent Address:</label>
+                    <label>Address:</label>
                     <input class="form-control" type="text" name="address" value="<?= $patient['address']; ?>" required/>
-					<label>Telephone No.:</label>
+                    <label>Brgy:</label>
+                    <select class="form-control" name="brgy" required>
+                        <option disabled selected value>Select Brgy</option>
+                        <?php foreach($brgy_list as $dict): ?>
+                            <option value="<?= $dict['name'] ?>" 
+                            	<?php if($patient['brgy'] == $dict['name']) echo 'selected'; ?>>
+                            	<?= $dict['name'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <label>Municipality:</label>
+                    <input class="form-control" type="text" name="municipality" value="<?= $patient['municipality']; ?>" required/>
+                    <label>Province:</label>
+                    <input class="form-control" type="text" name="province" value="<?= $patient['province']; ?>" required/>
+					<label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="telephone" value="<?= $patient['telephone']; ?>" />
                     <label>Gender:</label><br/>
                     <select class="form-control" name="gender" required>
@@ -387,15 +416,17 @@
                     <input class="form-control" type="text" name="employer" value="<?= $patient['employer']; ?>" />
 					<label>Address:</label>
                     <input class="form-control" type="text" name="emp_address" value="<?= $patient['emp_address']; ?>" />
-					<label>Telephone No.:</label>
+					<label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="emp_telephone" value="<?= $patient['emp_telephone']; ?>" />
                     <br/>
 					
-					<label>Mother's Name:</label>
+					<label>Guardian's Name:</label>
                     <input class="form-control" type="text" name="mother" value="<?= $patient['mother']; ?>" required/>
+                    <label>Relationship:</label>
+                    <input class="form-control" type="text" name="g_relationship" value="<?= $patient['g_relationship']; ?>" required/>
 					<label>Address:</label>
                     <input class="form-control" type="text" name="mom_address" value="<?= $patient['mom_address']; ?>" required/>
-					<label>Telephone No.:</label>
+					<label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="mom_telephone" value="<?= $patient['mom_telephone']; ?>" required/>
                     <br/>
 					
@@ -403,7 +434,7 @@
                     <input class="form-control" type="text" name="spouse" value="<?= $patient['spouse']; ?>" />
 					<label>Address:</label>
                     <input class="form-control" type="text" name="sp_address" value="<?= $patient['sp_address']; ?>" />
-					<label>Telephone No.:</label>
+					<label>Telephone/Cellphone No:</label>
                     <input class="form-control" type="text" name="sp_telephone" value="<?= $patient['sp_telephone']; ?>" />
                     <br/>
 

@@ -53,6 +53,7 @@
 	                <button onclick="<?php echo $onclick; ?>" class="btn btn-default btn-md">
 	                    <span class="glyphicon glyphicon-print"></span> Print Prescription
 	                </button>
+	                <?php if($_COOKIE['privilege_level'] != 1): ?>
 					<form method="post" style="display:inline;" action="case">
 		                <input type='hidden' name="admin_uid" value="<?php echo $_COOKIE['adminID']; ?>" />
 		                <input type='hidden' name="case_id" value="<?= $case['ID']; ?>" />
@@ -60,6 +61,7 @@
 		                    <span class="glyphicon glyphicon-remove"></span> Remove
 		                </button>
 		            </form>
+		            <?php endif; ?>
 	            </div>
 	            <br>
 	           <div class="row">

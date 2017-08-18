@@ -87,11 +87,11 @@
 				<input type='hidden' name="UL_ID" value="<?php echo $_COOKIE['adminID']; ?>" />
                 <div class="modal-body">
 					<label>First Name:</label>
-				    <input class="form-control" type="text" name="first_name" value='<?php echo $profile['first_name']; ?>' required />
+				    <input class="form-control" type="text" name="first_name" value='<?= $profile['first_name']; ?>' required />
                     <label>Middle Name:</label>
-				    <input class="form-control" type="text" name="middle_name" value='<?php echo $profile['middle_name']; ?>' />
+				    <input class="form-control" type="text" name="middle_name" value='<?= $profile['middle_name']; ?>' />
 					<label>Last Name:</label>
-				    <input class="form-control" type="text" name="last_name"  value='<?php echo $profile['last_name']; ?>' required />
+				    <input class="form-control" type="text" name="last_name"  value='<?= $profile['last_name']; ?>' required />
 
                     <label>Gender:</label><br/>
                     <select class="form-control" name="gender" required>

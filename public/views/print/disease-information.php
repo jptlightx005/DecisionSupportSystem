@@ -9,7 +9,7 @@
 		<style type="text/css" media="print">
 			@page{
 				size: auto;
-				margin: 0mm;
+				margin: 10mm;
 			}
 			html{
 				background-color: #FFF;
@@ -66,21 +66,27 @@
 		<br/>
 		<div class="container">
 			<h1><?= $disease['name'] ?></h1>
-			<h3>Symptoms: <?php
-			    $symptoms = "";
-			    foreach($disease["symptoms"] as $symptom){
-			        $symptoms .= "{$symptom["name"]}, ";
-			    }
-			    echo substr($symptoms, 0, strlen($symptoms) - 2);
-	        ?></h3>
+			<h3>Symptoms: </h3>
+			<p>
+				<?php
+				    $symptoms = "";
+				    foreach($disease["symptoms"] as $symptom){
+				        $symptoms .= "{$symptom["name"]}, ";
+				    }
+				    echo substr($symptoms, 0, strlen($symptoms) - 2);
+		        ?>
+	        </p>
 			<h3>Diagnosis: </h3> <p> <?php echo nl2br($disease['diagnosis'], false); ?></p>
-			<h3>Prescription: <?php
-	    $medicines = "";
-	    foreach($disease["prescription"] as $medicine){
-	        $medicines .= "{$medicine["name"]}, ";
-	    }
-	    echo returnSpaceIfBlank(substr($medicines, 0, strlen($medicines) - 2));
-	                                    ?></h3>
+			<h3>Prescription: </h3>
+			<p>
+				<?php
+					$medicines = "";
+				    foreach($disease["prescription"] as $medicine){
+				        $medicines .= "{$medicine["name"]}, ";
+				    }
+				    echo returnSpaceIfBlank(substr($medicines, 0, strlen($medicines) - 2));
+			    ?>                             	
+	        </p>
 			<h3>Treatment: </h3> <p> <?php echo nl2br($disease['treatment'], false); ?></p>
 		</div>
 	</body>
