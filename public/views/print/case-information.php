@@ -9,7 +9,7 @@
 		<style type="text/css" media="print">
 			@page{
 				size: auto;
-				margin: 0mm;
+				margin: 10mm;
 			}
 			html{
 				background-color: #FFF;
