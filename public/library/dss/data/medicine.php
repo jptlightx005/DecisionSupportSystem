@@ -16,6 +16,14 @@ function getMedicineInfo($id){
 	return selectFirstFromQuery('dss_medicine', 'ID', $id);
 }
 
+function getMedicineListForCase($id){
+	global $conn;
+
+	$medQuery = "SELECT * FROM dss_medicine_used JOIN dss_medicine ON dss_medicine_used.MedicineID = dss_medicine.ID WHERE CaseID = $id";
+	
+	return selectQuery($medQuery);
+}
+
 function addNewMedicine($post){
 	global $conn;
 	$field_names = "(";

@@ -1,7 +1,7 @@
 <?php
 	include_once('../dss.php');
-
 	$case = getCaseInfo($_GET['id']);
+	$medicine_list = getMedicineListForCase($_GET['id']);
 ?>
 
 <html>
@@ -53,13 +53,10 @@
 	</head>
 	<body>
 		<h1><?php echo nl2br(returnFullNameFromObject($case), false); ?></h1>
-		<h3>Prescription: <?php
-			$medicines = "";
-			foreach($case["prescription"] as $medicine){
-				$medicines .= "{$medicine["name"]}, ";
-			}
-			echo $medicines = substr($medicines, 0, strlen($medicines) - 2);
-		?></h3>
-		<h3>Treatment: </h3> <p> <?php echo nl2br($case['treatment'], false); ?></p>
+		<h3>Prescription:</h3>
+		<?php foreach ($medicine_list as $medicine): ?>
+			<h4><?= $medicine['medicine'] ?></h4>
+			<p><?= $medicine['dosage'] ?></p>
+		<?php endforeach; ?>
 	</body>
 </html>
