@@ -71,8 +71,6 @@
                 </div>
 				<input type='hidden' name="admin_ulid" value="<?php echo $_COOKIE['adminID']; ?>" />
                 <div class="modal-body">
-					<label>Medicine Name:</label>
-				    <input class="form-control" class="form-control" type="text" name="name" required />
 					<label>Generic Name:</label>
 					<input class="form-control" type="text" name="generic_name" required />
 					<label>Brand Name:</label>

@@ -65,9 +65,6 @@
 						<div class="panel-body">
 							<div class="col-md-6">
 								<dl class="row">
-									<dt class="col-sm-5">Medicine Name:</dt>
-	                                <dd class="col-sm-7"><?= $medicine['name']; ?></dd>
-
 									<dt class="col-sm-5">Generic Name:</dt>
 	                                <dd class="col-sm-7"><?= $medicine['generic_name']; ?></dd>
 
@@ -83,7 +80,7 @@
 									<dt class="col-sm-5">Dosage:</dt>
 	                                <dd class="col-sm-7"><?= $medicine['dosage']; ?></dd>
 
-									<dt class="col-sm-5">Professional:</dt>
+									<dt class="col-sm-5">Warning:</dt>
 	                                <dd class="col-sm-7"><?= $medicine['warning']; ?></dd>
 								</dl>
 							</div>
@@ -113,8 +110,6 @@
 				<input type='hidden' name="medicine_id" value="<?= $medicine['ID']; ?>" />
 				<input type='hidden' name="admin_ulid" value="<?= $_COOKIE['adminID']; ?>" />
                 <div class="modal-body">
-					<label>Medicine Name:</label>
-				    <input class="form-control" class="form-control" type="text" name="name" value="<?= $medicine['name']; ?>" required />
 					<label>Generic Name:</label>
 					<input class="form-control" type="text" name="generic_name" value="<?= $medicine['generic_name']; ?>" required />
 					<label>Brand Name:</label>

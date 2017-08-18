@@ -72,7 +72,7 @@
 				<h3>Overview: </h3> <p> <?php echo nl2br($medicine['overview'], false); ?></p>
 				<h3>Side Effects: </h3> <p> <?php echo nl2br($medicine['side_effects'], false); ?></p>
 				<h3>Dosage: </h3> <p> <?php echo nl2br($medicine['dosage'], false); ?></p>
-				<h3>Professional: </h3> <p> <?php echo nl2br($medicine['warning'], false); ?></p>
+				<h3>Warning: </h3> <p> <?php echo nl2br($medicine['warning'], false); ?></p>
 			</div>
 		</div>
 	</body>

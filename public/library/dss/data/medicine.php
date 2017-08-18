@@ -29,16 +29,17 @@ function addNewMedicine($post){
 	$field_names = "(";
 	$field_values = "(";
 	foreach($post as $key => $value){
-		if($key != "action"){
+		if($key != "action" &&
+			$key != "name"){
 				$newValue = addslashes($value);
 				$field_names .= "`$key`, ";
 				$field_values .= "'$newValue', ";
 			}
 	}
 
-	$field_names = substr($field_names, 0, strlen($field_names) - 2) . ")";
-	$field_values = substr($field_values, 0, strlen($field_values) - 2) . ")";
-	
+	$field_names .= "`name`)";
+    $field_values .= "'" . $post['brand_name'] . "')";
+
 	$query = "INSERT INTO `dss_medicine` $field_names VALUES $field_values;";
 	
 	$stmt = $conn->prepare($query);
@@ -51,7 +52,7 @@ function addNewMedicine($post){
 
 function updateMedicine($post){
 	global $conn;
-	$setFieldValue = "";
+	$setFieldValue = "`name` = '" . $post['brand_name'] . "', ";
 	foreach($post as $key => $value){
 		if($key != "action" &&
 			$key != "medicine_id"){
