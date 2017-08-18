@@ -13,7 +13,17 @@ function getCaseList($search){
 function getCaseListByPatientID($id){
 	global $conn;
 	$query = "SELECT * FROM dss_cases WHERE PatientID = $id AND is_removed = 0";
-	return selectQuery($query);
+
+	$cases = selectQuery($query);
+	foreach($cases as $key => $field){
+		$case = $cases[$key];
+		
+		$medQuery = "SELECT * FROM dss_medicine_used JOIN dss_medicine ON dss_medicine_used.MedicineID = dss_medicine.ID WHERE CaseID = {$case['ID']}";
+		$medicineList = selectQuery($medQuery);
+		$cases[$key]["prescription"] = $medicineList;
+	}
+
+	return $cases;
 }
 
 function getCaseInfo($id){

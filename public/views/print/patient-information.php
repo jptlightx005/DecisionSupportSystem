@@ -83,7 +83,7 @@
 			<div id="heading">
 				<center>Republic of the Philippines</center>
 				<center>Province of Iloilo</center>
-				<center>ILOILO PROVINCIAL HOSPITAL</center>
+				<center>RURAL HEALTH UNIT</center>
 				<center>Pototan, Iloilo</center>
 			</div>
 			<div style="float">
@@ -101,7 +101,7 @@
 
 				<span>
 					<span class="label">HOSPITAL RECORD NO:</span>
-					<span class="detail" style="width:100px;text-align: center"><?=  $patient["PatientID"] ?></span>
+					<span class="detail" style="width:100px;text-align: center"><?=  returnSpaceIfBlank($patient["PatientID"]) ?></span>
 				</span>
 			</div>
 			<div class="row">
@@ -131,7 +131,7 @@
 
 				<span>
 					<span class="label">RELIGION:</span>
-					<span class="detail" style="width:110px;text-align: center"><?=  $patient["religion"] ?></span>
+					<span class="detail" style="width:120px;text-align: center"><?=  $patient["religion"] ?></span>
 				</span>
 
 				<span>
@@ -154,18 +154,18 @@
 			<div class="row">
 				<span>
 					<span class="label">GUARDIAN:</span>
-					<span class="detail" style="width:225;text-align: center"><?= $patient["mother"] ?></span>
+					<span class="detail" style="width:225;text-align: center"><?= returnSpaceIfBlank($patient["mother"]) ?></span>
 				</span>
 
 				<span>
 					<span class="label">RELATIONSHIP:</span>
-					<span class="detail" style="width:150;text-align: center"><?= 'MOTHER' ?></span>
+					<span class="detail" style="width:150;text-align: center"><?= returnSpaceIfBlank($patient["g_relationship"]) ?></span>
 				</span>
 			</div>
 			<div class="row">
 				<span>
 					<span class="label">CONTACT NO:</span>
-					<span class="detail" style="width:100;text-align: center"><?= $patient["telephone"] ?></span>
+					<span class="detail" style="width:100;text-align: center"><?= returnSpaceIfBlank($patient["telephone"]) ?></span>
 				</span>
 			</div>
 			<br>
@@ -176,6 +176,7 @@
 					<tr>
 						<th>DATE/TIME</th>
 						<th>DIAGNOSIS</th>
+						<th>PRESCRIPTION</th>
 						<th>TREATMENT</th>
 						<!-- <th>REMARKS</th> -->
 					</tr>
@@ -184,6 +185,15 @@
 					<?php foreach($cases as $case): ?>
 						<td><?= returnFullDateTimeStringWithDate($case["case_date"]) ?></td>
 						<td><?= $case["diagnosis"] ?></td>
+						<td>
+							<?php
+								$medicines = "";
+							    foreach($case["prescription"] as $medicine){
+							        $medicines .= "{$medicine["name"]}, ";
+							    }
+							    echo returnSpaceIfBlank(substr($medicines, 0, strlen($medicines) - 2));
+							?>
+						</td>
 						<td><?= $case["treatment"] ?></td>
 <!-- 						<td><?= $case["remarks"] ?></td> -->
 					</tr>
