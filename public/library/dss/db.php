@@ -42,6 +42,9 @@ function selectFirstFromQuery($table, $field, $value){
 	return selectFirstQuery("SELECT * FROM $table WHERE `$field` = '$value'");
 }
 
+function selectFromTable($table){
+	return selectQuery("SELECT * FROM $table");
+}
 function executeQuery($query){
     global $conn;
 
