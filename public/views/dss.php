@@ -125,10 +125,10 @@ if(isset($action)){
 		exit();
 	}else if($action == LOG_OUT){
 		resetCookies();
-		$msg = "Logged out successfully";
+		// $msg = "Logged out successfully";
 		$url = $site['root'];
 
-		redirectToURL($msg, $url);
+		redirectToURL("", $url, 0);
 		exit();
 	}
 }
