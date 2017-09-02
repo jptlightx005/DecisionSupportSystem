@@ -66,13 +66,19 @@
 		<br/>
 		<div class="container" id="medicine_record">
 			<div class="row">
-				<h1><?php echo $medicine['name']; ?></h1>
-				<h3>Generic Name: <?php echo $medicine['generic_name']; ?></h3>
-				<h3>Brands: <?php echo $medicine['brand_name']; ?></h3>
-				<h3>Overview: </h3> <p> <?php echo nl2br($medicine['overview'], false); ?></p>
-				<h3>Side Effects: </h3> <p> <?php echo nl2br($medicine['side_effects'], false); ?></p>
-				<h3>Dosage: </h3> <p> <?php echo nl2br($medicine['dosage'], false); ?></p>
-				<h3>Warning: </h3> <p> <?php echo nl2br($medicine['warning'], false); ?></p>
+				<h1><?= $medicine['name']; ?></h1>
+				<h3>Generic Name:</h3>
+				<p><?= $medicine['generic_name']; ?></p>
+				<h3>Brands:</h3>
+				<p><?= $medicine['brand_name']; ?></p>
+				<h3>Overview: </h3>
+				<p> <?= nl2br($medicine['overview'], false); ?></p>
+				<h3>Side Effects: </h3>
+				<p> <?= nl2br($medicine['side_effects'], false); ?></p>
+				<h3>Dosage: </h3>
+				<p> <?= nl2br($medicine['dosage'], false); ?></p>
+				<h3>Warning: </h3>
+				<p> <?= nl2br($medicine['warning'], false); ?></p>
 			</div>
 		</div>
 	</body>

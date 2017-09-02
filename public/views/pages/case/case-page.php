@@ -36,7 +36,7 @@
     	<?php if($_COOKIE['privilege_level'] != 0): ?>
 	   		<div class="main">
 	            <div class="row">
-	                <a href="disease" class="btn btn-default btn-md">
+	                <a href="case" class="btn btn-default btn-md">
 	                    <span class="glyphicon glyphicon-arrow-left"></span> Back
 	                </a>
 	                <?php
