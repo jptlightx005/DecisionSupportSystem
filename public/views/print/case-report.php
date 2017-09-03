@@ -1,6 +1,11 @@
 <?php
 	include_once('../dss.php');
-	$case_list = getCaseSummary($_REQUEST['filter'], $_REQUEST['from_date'], $_REQUEST['to_date']);
+
+	if($_REQUEST['filter'] == 'age'){
+		$case_list = getCaseByAge($_REQUEST['from_date'], $_REQUEST['to_date']);
+	}else{
+		
+	}
 ?>
 
 
