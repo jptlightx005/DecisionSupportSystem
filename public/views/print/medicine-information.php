@@ -56,7 +56,7 @@
 			<div id="heading">
 				<center>Republic of the Philippines</center>
 				<center>Province of Iloilo</center>
-				<center>ILOILO PROVINCIAL HOSPITAL</center>
+				<center>POTOTAN MUNICIPAL HEALTH CENTER</center>
 				<center>Pototan, Iloilo</center>
 			</div>
 			<div style="float">

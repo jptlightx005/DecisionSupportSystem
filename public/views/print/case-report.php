@@ -64,7 +64,7 @@
 			<div id="heading">
 				<center>Republic of the Philippines</center>
 				<center>Province of Iloilo</center>
-				<center>ILOILO PROVINCIAL HOSPITAL</center>
+				<center>POTOTAN MUNICIPAL HEALTH CENTER</center>
 				<center>Pototan, Iloilo</center>
 			</div>
 			<div style="float">
@@ -76,6 +76,7 @@
 			
 
 			<center>CASES SUMMARY</center>
+			<center><?= returnFullDateStringWithDate($_REQUEST['from_date']) . "-" . returnFullDateStringWithDate($_REQUEST['to_date']) ?></center>
 
 			<?php if($_REQUEST['filter'] == 'age'): ?>
 				<table class="table">
