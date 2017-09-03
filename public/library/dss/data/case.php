@@ -128,8 +128,8 @@ function removeCase($id){
 
 
 
-function getCaseSummary($filter){
-	$query = "SELECT disease, age FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID";
+function getCaseSummary($filter, $fromdate, $todate){
+	$query = "SELECT disease, age FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE case_date >= '$fromdate' AND case_date <= '$todate'";
 	$cases = selectQuery($query);
 	
 	$caseDisease = array();

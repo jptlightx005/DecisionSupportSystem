@@ -1,6 +1,6 @@
 <?php
 	include_once('../dss.php');
-	$case_list = getCaseSummary($_REQUEST['filter']);
+	$case_list = getCaseSummary($_REQUEST['filter'], $_REQUEST['from_date'], $_REQUEST['to_date']);
 ?>
 
 
