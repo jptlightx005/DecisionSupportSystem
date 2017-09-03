@@ -163,6 +163,21 @@ function getCaseByAge($fromdate, $todate){
 	return $caseDisease;
 }
 
+function getCaseByBrgy($fromdate, $todate){
+	$query = "SELECT disease, brgy FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE case_date >= '$fromdate' AND case_date <= '$todate'";
+
+	$cases = selectQuery($query);
+
+	$brgyList = array();
+
+	foreach($cases as $case){
+		$brgy_name = strtolower($case['brgy']);
+		$brgyList[$brgy_name][] = $case;
+	}
+
+	return $brgyList;
+}
+
 function belowEighteen($case){
     return  $case['age'] < 18;
 }

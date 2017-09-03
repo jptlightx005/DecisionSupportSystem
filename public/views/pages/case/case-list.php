@@ -180,7 +180,7 @@
                     <select class="form-control" name="filter" required>
                         <option value='age' selected>Age</option>
                         <!-- <option value='diagnosis'>Diagnosis</option> -->
-                        <!-- <option value='brgy'>Brgy</option> -->
+                        <option value='brgy'>Brgy</option>
                     </select><br/>
 
                     <label>From:</label>

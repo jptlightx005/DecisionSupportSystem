@@ -3,8 +3,8 @@
 
 	if($_REQUEST['filter'] == 'age'){
 		$case_list = getCaseByAge($_REQUEST['from_date'], $_REQUEST['to_date']);
-	}else{
-		
+	}else if($_REQUEST['filter'] == 'brgy'){
+		$case_list = getCaseByBrgy($_REQUEST['from_date'], $_REQUEST['to_date']);
 	}
 ?>
 
@@ -77,29 +77,47 @@
 
 			<center>CASES SUMMARY</center>
 
-			<table class="table">
-				<thead>
-					<tr>
-						<th>DISEASE</th>
-						<th>BELOW 18</th>
-						<th>18 TO 30</th>
-						<th>31 TO 50</th>
-						<th>51 TO 65</th>
-						<th>ABOVE 65</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach($case_list as $key => $value): ?>
-						<td><?= $key ?></td>
-						<td><?= $value["below18"] ?></td>
-						<td><?= $value["18to30"] ?></td>
-						<td><?= $value["31to50"] ?></td>
-						<td><?= $value["51to65"] ?></td>
-						<td><?= $value["above65"] ?></td>
-					</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
+			<?php if($_REQUEST['filter'] == 'age'): ?>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>DISEASE</th>
+							<th>BELOW 18</th>
+							<th>18 TO 30</th>
+							<th>31 TO 50</th>
+							<th>51 TO 65</th>
+							<th>ABOVE 65</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach($case_list as $key => $value): ?>
+							<td><?= $key ?></td>
+							<td><?= $value["below18"] ?></td>
+							<td><?= $value["18to30"] ?></td>
+							<td><?= $value["31to50"] ?></td>
+							<td><?= $value["51to65"] ?></td>
+							<td><?= $value["above65"] ?></td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			<?php elseif($_REQUEST['filter'] == 'brgy'): ?>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>BRGY</th>
+							<th>NO. OF PATIENTS</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach($case_list as $key => $value): ?>
+							<td><?= $key ?></td>
+							<td><?= count($value) ?></td>
+						</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			<?php endif; ?>
 		</div>
 	</body>
 </html>
