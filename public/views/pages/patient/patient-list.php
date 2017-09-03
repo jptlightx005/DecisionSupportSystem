@@ -33,7 +33,9 @@
             <a href="patient" class="btn btn-primary btn-md">
                  <span class="glyphicon glyphicon-refresh"></span> Refresh
             </a>
-
+            <button type="button" class="btn btn-primary btn-md" onclick="printPopupWindow('/patient-list-print')">
+                 <span class="glyphicon glyphicon-print"></span> Print Patient List
+            </button>
             <table class="table">
             	<thead>
                     <tr>

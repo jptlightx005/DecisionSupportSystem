@@ -1,8 +1,8 @@
 <?php
 	include_once('../dss.php');
-
-	$medicine = getMedicineInfo($_GET['id']);
+	$patients = getPatientList();
 ?>
+
 
 <html>
 	<head>
@@ -52,7 +52,10 @@
 	    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 	</head>
 	<body>
-		<!-- <header>
+		<div class="row">
+		<br/>
+		</div>
+		<header>
 			<div id="heading">
 				<center>Republic of the Philippines</center>
 				<center>Province of Iloilo</center>
@@ -62,24 +65,31 @@
 			<div style="float">
 				
 			</div>
-		</header> -->
+		</header>
 		<br/>
-		<div class="container" id="medicine_record">
-			<div class="row">
-				<h1><?= $medicine['name']; ?></h1>
-				<h3>Generic Name:</h3>
-				<p><?= $medicine['generic_name']; ?></p>
-				<h3>Brands:</h3>
-				<p><?= $medicine['brand_name']; ?></p>
-				<h3>Overview: </h3>
-				<p> <?= nl2br($medicine['overview'], false); ?></p>
-				<h3>Side Effects: </h3>
-				<p> <?= nl2br($medicine['side_effects'], false); ?></p>
-				<h3>Dosage: </h3>
-				<p> <?= nl2br($medicine['dosage'], false); ?></p>
-				<h3>Warning: </h3>
-				<p> <?= nl2br($medicine['warning'], false); ?></p>
-			</div>
+		<div class="container" id="patient_record">
+			<center>PATIENT LIST</center>
+			<table class="table">
+            	<thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Patient Name</th>
+                        <th>Gender</th>
+                        <th>Address</th>
+                        <th>Last Visit</th>
+                        <!-- <th>Options</th> -->
+                    </tr>
+                </thead>
+ 			<?php foreach($patients as $dict): ?>
+                <tr>
+                    <td><?= $dict['PatientID'] ?></td>
+                    <td><a href="patient-page?id=<?= $dict['ID'] ?>"><?= returnFullNameFromObject($dict) ?></a></td>
+                    <td><?= $dict['gender'] ?></td>
+                    <td><?= $dict['address'] ?></td>
+                    <td><?= returnFullDateTimeStringWithDate($dict['last_visit']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </table>
 		</div>
 	</body>
 </html>

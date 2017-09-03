@@ -128,52 +128,54 @@ function removeCase($id){
 
 
 
-function getCaseSummary($filter){
-	$query = "SELECT disease, age FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID";
+function getCaseByAge($fromdate, $todate){
+	$query = "SELECT disease, age FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE case_date >= '$fromdate' AND case_date <= '$todate'";
 	$cases = selectQuery($query);
 	
 	$caseDisease = array();
 	foreach ($cases as $case) {
-		// if(!isset($caseDisease[$case['disease_name']])){
 		$disease_name = strtolower($case['disease']);
-			$caseDisease[$disease_name][] = $case;
-		// }else{
-
-		// }
+		$caseDisease[$disease_name][] = $case;
 	}
 	
 	foreach ($caseDisease as $key => $value) {
-		switch($filter){
-			case 'age':{
-				$ageBrackets = array();
-				$casesFiltered = array_filter($caseDisease[$key], "belowEighteen");
-				$ageBrackets["below18"] = count($casesFiltered);
 
-				$casesFiltered = array_filter($caseDisease[$key], "eighteenToThirty");
-				$ageBrackets["18to30"] = count($casesFiltered);
+		$ageBrackets = array();
+		$casesFiltered = array_filter($caseDisease[$key], "belowEighteen");
+		$ageBrackets["below18"] = count($casesFiltered);
 
-				$casesFiltered = array_filter($caseDisease[$key], "thirtyOneToFifty");
-				$ageBrackets["31to50"] = count($casesFiltered);
+		$casesFiltered = array_filter($caseDisease[$key], "eighteenToThirty");
+		$ageBrackets["18to30"] = count($casesFiltered);
 
-				$casesFiltered = array_filter($caseDisease[$key], "fiftyOneToSixtyFive");
-				$ageBrackets["51to65"] = count($casesFiltered);
+		$casesFiltered = array_filter($caseDisease[$key], "thirtyOneToFifty");
+		$ageBrackets["31to50"] = count($casesFiltered);
 
-				$casesFiltered = array_filter($caseDisease[$key], "aboveSixtyFive");
-				$ageBrackets["above65"] = count($casesFiltered);
-				
-				unset($caseDisease[$key]);
-				$caseDisease[ucfirst($key)] = $ageBrackets;
-			}
-				break;
-			case 'diagnosis':{
+		$casesFiltered = array_filter($caseDisease[$key], "fiftyOneToSixtyFive");
+		$ageBrackets["51to65"] = count($casesFiltered);
 
-			}
-				break;
-			default:
-				break;
-		}
+		$casesFiltered = array_filter($caseDisease[$key], "aboveSixtyFive");
+		$ageBrackets["above65"] = count($casesFiltered);
+		
+		unset($caseDisease[$key]);
+		$caseDisease[ucfirst($key)] = $ageBrackets;
+
 	}
 	return $caseDisease;
+}
+
+function getCaseByBrgy($fromdate, $todate){
+	$query = "SELECT disease, brgy FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE case_date >= '$fromdate' AND case_date <= '$todate'";
+
+	$cases = selectQuery($query);
+
+	$brgyList = array();
+
+	foreach($cases as $case){
+		$brgy_name = strtolower($case['brgy']);
+		$brgyList[$brgy_name][] = $case;
+	}
+
+	return $brgyList;
 }
 
 function belowEighteen($case){

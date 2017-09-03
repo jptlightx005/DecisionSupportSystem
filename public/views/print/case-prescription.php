@@ -30,6 +30,15 @@
 				display: table-cell; border-bottom: 1px solid black;
 			}
 
+			h4 {
+				text-indent: 20px;
+			}
+			p {
+			    text-indent: 30px;
+			    padding: 0px 20px;
+			    text-align: justify;
+			}
+
 			#patient_picture {
 				position:relative;
 			}

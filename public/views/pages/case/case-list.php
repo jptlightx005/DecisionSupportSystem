@@ -180,8 +180,14 @@
                     <select class="form-control" name="filter" required>
                         <option value='age' selected>Age</option>
                         <!-- <option value='diagnosis'>Diagnosis</option> -->
-                        <!-- <option value='brgy'>Brgy</option> -->
-                    </select>
+                        <option value='brgy'>Brgy</option>
+                    </select><br/>
+
+                    <label>From:</label>
+                    <input type="date" name="from_date" required="">
+
+                    <label>To:</label>
+                    <input type="date" name="to_date" required=""><br/>
                 </div>
 
                 
@@ -198,6 +204,12 @@
                             var url = '/case-report-print?filter=';
                             var filter = $('select[name=filter]').find(":selected").val()
                             url = url + filter;
+
+                            var fromdate = $('input[name=from_date]').val()
+                            url = url + "&from_date=" + fromdate;
+
+                            var todate = $('input[name=to_date]').val()
+                            url = url + "&to_date=" + todate;
 
                             if(filter != "")
                                 window.open(url, '', 'width=900,height='+(height));
