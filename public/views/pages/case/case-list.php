@@ -63,8 +63,16 @@
             <?php else: ?>
                 <?php foreach($cases as $dict): ?>
                     <tr>
-                    	<td><?= $dict['CaseID'] ?></td>
-                        <td><a href="case-page?id=<?= $dict['ID'] ?>"><?= $dict['disease'] ?></a></td>
+                    	<td><a href="case-page?id=<?= $dict['ID'] ?>"><?= $dict['CaseID'] ?></a></td>
+                        <td>
+                            <?php if($dict['DiseaseID'] != 0): ?>
+                                <a href="disease-page?id=<?= $dict['DiseaseID'] ?>">
+                            <?php endif; ?>
+                                    <?= $dict['disease'] ?>
+                            <?php if($dict['DiseaseID'] != 0): ?>
+                                </a>
+                            <?php endif; ?>
+                        </td>
                         <td><a href="patient-page?id=<?= $dict['PatientID'] ?>"><?= returnFullNameFromObject($dict) ?></a></td>
                         <td><?= $dict['diagnosis'] ?></td>
                         <td><?= $dict['treatment'] ?></td>
@@ -87,22 +95,16 @@
                     <h4 class="modal-title">Add Case</h4>
                 </div>
                     <input type='hidden' name="admin_ulid" value="<?php echo $_COOKIE['adminID']; ?>" />
+                    <input type='hidden' name="DiseaseID" value="0" />
                 <div class="modal-body">
-                	<label>Disease Name:</label>
-					<input class="form-control"  list="diseases" name="disease" required>
-					  <datalist id="diseases">
-					  	<?php foreach($disease_list as $dict): ?>
-					  		<option id="<?= $dict['ID'] ?>" value="<?= $dict['name'] ?>">
-					    <?php endforeach; ?>
-					  </datalist>
-                	<label>Patient Name:</label>
-					<div class="row">
+                    <label>Patient Name:</label>
+                    <div class="row">
                         <div class="col-md-8">
                             <div style="margin-right:-25px;">
                                 <select class="form-control" name="PatientID" required>
                                     <option disabled selected value>Select Patient</option>
                                     <?php foreach($patient_list as $dict): ?>
-                                    	<option value="<?= $dict['ID'] ?>"><?= returnFullNameFromObject($dict) ?></option>
+                                        <option value="<?= $dict['ID'] ?>"><?= returnFullNameFromObject($dict) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -111,10 +113,10 @@
                             <a href="patient" class="btn btn-primary btn-md">Add Patient</a>
                         </div>
                     </div>
-					<label>Symptoms:</label>
+                    <label>Symptoms:</label>
                     <div class="row">
                         <div class="col-lg-12">
-                        	<div class="button-group">
+                            <div class="button-group">
                                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="dropdown-text" title="Select Symptoms">Select Symptoms</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
                                 <ul class="dropdown-menu" id="symptom-ul">
                                     <?php foreach($symptom_list as $dict): ?>
@@ -124,12 +126,17 @@
                                         </a>
                                         
                                     </li>
-                                   	<?php endforeach; ?>
+                                    <?php endforeach; ?>
                                 </ul>
                                 <a href="symptoms" class="btn btn-primary btn-md">Add Symptom</a>
                             </div>
                         </div>
                     </div>
+
+                	<label>Disease Name:</label>
+					<input class="form-control"  list="diseases" name="disease" autocomplete="off" required>
+					  <datalist id="diseases">
+					  </datalist>
 
                     <label for="diagnosis">Diagnosis:</label>
                     <textarea class="form-control" rows="5" id="diagnosis" name="diagnosis" required></textarea>
@@ -253,28 +260,60 @@
 	        e.stopPropagation();
 	    });
 
+        $("input[name='symptom[]']").change(function () {
+            var symptoms = case_form["symptom[]"];
+            var symptom_count = 0;
+            var symlen = symptoms.length;
 
+            var symurlparam = "?";
+            if(symlen == undefined){
+                if(symptoms.checked){
+                    symurlparam += "symptoms[0]=" + symptoms.value;
+                }
+            }else{
+                var j = 0;
+                for (var i=0; i < symlen; i++) {
+                    if(symptoms[i].checked){
+                        symurlparam += "symptoms[" + j + "]=" + symptoms[i].value + "&";
+                        j++;
+                    }
+                }
+
+                symurlparam = symurlparam.substring(0, symurlparam.length - 1);
+            }
+
+            if(symurlparam.length == 1){
+                symurlparam = "";
+            }
+            
+            $.getJSON("/api/diseases" + symurlparam, { get_param: 'value' }, function(data) {
+
+                $('#diseases').empty();
+                for(var i = 0; i < data.length; i++){
+                    
+                    $('#diseases').append($('<option>', {
+                        id: data[i].ID,
+                        value: data[i].name
+                    }));
+                }
+            });
+         });
 
 	    $("input[name='disease']").on('input', function () {
 		    var val = this.value;
 		    var c_id = $("#diseases").find('option[value="' +val + '"]').attr('id');
-
+            $("input[name='DiseaseID']").val(0);
 	        $.getJSON("/api/disease?id=" + c_id, { get_param: 'value' }, function(data) {
-	        	$("input[name='symptom[]']").prop('checked', false);
+	        	$("input[name='DiseaseID']").val(data.ID);
+                $("input[name='symptom[]']").prop('checked', false);
 	        	$.each(data.symptoms, function(index, value){
 	        		$("input[name='symptom[]'][value='" + value.ID + "']").prop('checked', true);
-	        		$('body').append($('<div>', {
-		                text: value.name
-		            }));
 	        	});
 				$("input[name='symptom[]']").change();
 
 				$("input[name='medicine[]']").prop('checked', false);
 	        	$.each(data.prescription, function(index, value){
 	        		$("input[name='medicine[]'][value='" + value.ID + "']").prop('checked', true);
-	        		$('body').append($('<div>', {
-		                text: value.name
-		            }));
 	        	});
 				$("input[name='medicine[]']").change();
 

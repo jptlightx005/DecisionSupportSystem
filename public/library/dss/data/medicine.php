@@ -1,5 +1,5 @@
 <?php
-require_once('db.php');
+require_once(DSS_LIBRARY . 'db.php');
 
 function getMedicineList($search){
 	global $conn;

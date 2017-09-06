@@ -1,9 +1,9 @@
 <?php
-require_once('db.php');
+require_once(DSS_LIBRARY . 'db.php');
 
 function getCaseList($search){
 	global $conn;
-	$query = "SELECT dss_cases.ID, CaseID, dss_cases.PatientID,  dss_patients.first_name, dss_patients.middle_name, dss_patients.last_name, disease, diagnosis, treatment FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE dss_cases.is_removed = 0";
+	$query = "SELECT dss_cases.ID, CaseID, dss_cases.PatientID, dss_cases.DiseaseID, dss_patients.first_name, dss_patients.middle_name, dss_patients.last_name, disease, diagnosis, treatment FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE dss_cases.is_removed = 0";
 	if($search != ""){
 		$query .= " AND ((first_name LIKE '%$search%' OR middle_name LIKE '%$search%' OR last_name LIKE '%$search%') OR disease LIKE '%$search%' OR diagnosis LIKE '%$search%' OR treatment LIKE '%$search%')";
 	}
