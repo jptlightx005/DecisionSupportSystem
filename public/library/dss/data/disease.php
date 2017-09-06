@@ -34,6 +34,40 @@ function getDiseaseInfo($id){
 	}
 }
 
+function getDiseaseBySymptoms($symptoms){
+	global $conn;
+	$subquery = "WHERE ";
+	foreach($symptoms as $id){
+		$subquery .= "SymptomID = $id OR ";
+	}
+
+	$diseases = array();
+	if(count($symptoms) > 0){
+		$subquery = substr($subquery, 0, strlen($subquery) - 4);
+		$query = "SELECT * FROM dss_symptoms_used $subquery";
+
+		$used_symptoms = selectQuery($query);
+
+		$subquery = "WHERE ";
+
+		foreach($used_symptoms as $dict){
+			$id = $dict['DiseaseID'];
+			if($id != 0){
+				$subquery .= "ID = $id AND ";
+			}
+		}
+
+		if(count($used_symptoms) > 0){
+			$subquery = substr($subquery, 0, strlen($subquery) - 5);
+			$query = "SELECT * FROM dss_diseases $subquery";
+
+			$diseases = selectQuery($query);
+		}
+	}
+
+	return $diseases;
+}
+
 function addNewDisease($post){
 	global $conn;
 	$field_names = "(";

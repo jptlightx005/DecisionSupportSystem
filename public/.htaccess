@@ -32,6 +32,7 @@ RewriteRule ^disease$ /views/pages/disease/disease-list.php [L]
 RewriteRule ^disease-page$ /views/pages/disease/disease-page.php [L]
 RewriteRule ^disease-print$ /views/print/disease-information.php [L]
 RewriteRule ^api/disease$ /library/dss/api/get-disease.php [L]
+RewriteRule ^api/diseases$ /library/dss/api/get-diseases.php [L]
 
 RewriteRule ^nurse$ /views/pages/nurse/nurse-list.php [L]
 RewriteRule ^api/account$ /library/dss/api/get-account.php [L]
