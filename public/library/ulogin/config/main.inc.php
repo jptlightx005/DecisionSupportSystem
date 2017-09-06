@@ -13,7 +13,7 @@ define('UL_DOMAIN', 'localhost');
 
 // Set to the path of the "ulogin" directory containing the source files.
 // Do not use a trailing slash.
-define('UL_INC_DIR', $_SERVER['DOCUMENT_ROOT'] . '\library\uLogin');
+define('UL_INC_DIR', $_SERVER['DOCUMENT_ROOT'] . '/library/uLogin');
 
 // A random string. Make it as random as possible and keep it secure.
 // This is a crypthographic key that uLogin will use to generate some data

@@ -63,8 +63,16 @@
             <?php else: ?>
                 <?php foreach($cases as $dict): ?>
                     <tr>
-                    	<td><?= $dict['CaseID'] ?></td>
-                        <td><a href="case-page?id=<?= $dict['ID'] ?>"><?= $dict['disease'] ?></a></td>
+                    	<td><a href="case-page?id=<?= $dict['ID'] ?>"><?= $dict['CaseID'] ?></a></td>
+                        <td>
+                            <?php if($dict['DiseaseID'] != 0): ?>
+                                <a href="disease-page?id=<?= $dict['DiseaseID'] ?>">
+                            <?php endif; ?>
+                                    <?= $dict['disease'] ?>
+                            <?php if($dict['DiseaseID'] != 0): ?>
+                                </a>
+                            <?php endif; ?>
+                        </td>
                         <td><a href="patient-page?id=<?= $dict['PatientID'] ?>"><?= returnFullNameFromObject($dict) ?></a></td>
                         <td><?= $dict['diagnosis'] ?></td>
                         <td><?= $dict['treatment'] ?></td>
@@ -87,6 +95,7 @@
                     <h4 class="modal-title">Add Case</h4>
                 </div>
                     <input type='hidden' name="admin_ulid" value="<?php echo $_COOKIE['adminID']; ?>" />
+                    <input type='hidden' name="DiseaseID" value="0" />
                 <div class="modal-body">
                 	<label>Disease Name:</label>
 					<input class="form-control"  list="diseases" name="disease" required>
@@ -258,23 +267,18 @@
 	    $("input[name='disease']").on('input', function () {
 		    var val = this.value;
 		    var c_id = $("#diseases").find('option[value="' +val + '"]').attr('id');
-
+            $("input[name='DiseaseID']").val(0);
 	        $.getJSON("/api/disease?id=" + c_id, { get_param: 'value' }, function(data) {
-	        	$("input[name='symptom[]']").prop('checked', false);
+	        	$("input[name='DiseaseID']").val(data.ID);
+                $("input[name='symptom[]']").prop('checked', false);
 	        	$.each(data.symptoms, function(index, value){
 	        		$("input[name='symptom[]'][value='" + value.ID + "']").prop('checked', true);
-	        		$('body').append($('<div>', {
-		                text: value.name
-		            }));
 	        	});
 				$("input[name='symptom[]']").change();
 
 				$("input[name='medicine[]']").prop('checked', false);
 	        	$.each(data.prescription, function(index, value){
 	        		$("input[name='medicine[]'][value='" + value.ID + "']").prop('checked', true);
-	        		$('body').append($('<div>', {
-		                text: value.name
-		            }));
 	        	});
 				$("input[name='medicine[]']").change();
 

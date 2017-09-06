@@ -1,4 +1,5 @@
 <?php
+define('DSS_LIBRARY', $_SERVER['DOCUMENT_ROOT'] . '/library/dss/');
 define('IMAGES_FOLDER', $_SERVER['DOCUMENT_ROOT'] . '/images/');
 define('ASSETS_FOLDER', $_SERVER['DOCUMENT_ROOT'] . '/images/assets/');
 define('UPLOADS_FOLDER', $_SERVER['DOCUMENT_ROOT'] . '/images/uploads/');

@@ -1,5 +1,5 @@
 <?php
-require_once('db.php');
+require_once(DSS_LIBRARY . '/db.php');
 
 function getProfileByID($adminID){
 	return selectFirstFromQuery('dss_accounts', 'UL_ID', $adminID);
