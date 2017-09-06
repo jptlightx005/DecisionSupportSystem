@@ -4,10 +4,49 @@ require_once(DSS_LIBRARY . 'db.php');
 function getDiseaseList($search){
 	global $conn;
 	$query = "SELECT ID, name, diagnosis, treatment FROM dss_diseases WHERE is_removed = 0";
+
+	$result = selectQuery($query);
 	if($search != ""){
 		$query .= " AND (name LIKE '%$search%' OR diagnosis LIKE '%$search%' OR treatment LIKE '%$search%')";
+
+		$result = selectQuery($query);
+		
+		$symp_query = "SELECT ID FROM dss_symptoms WHERE is_removed = 0 AND (name LIKE '%$search%' OR description LIKE '%$search%')";
+
+		$symptoms = selectQuery($symp_query);
+		$subquery = "WHERE ";
+		foreach($symptoms as $dict){
+			$id = $dict['ID'];
+			$subquery .= "SymptomID = $id OR ";
+		}
+
+		$diseases = array();
+		if(count($symptoms) > 0){
+			$subquery = substr($subquery, 0, strlen($subquery) - 4);
+			$query = "SELECT * FROM dss_symptoms_used $subquery";
+			
+			$used_symptoms = selectQuery($query);
+
+			$subquery = "WHERE ";
+
+			foreach($used_symptoms as $dict){
+				$id = $dict['DiseaseID'];
+				if($id != 0){
+					$subquery .= "ID = $id AND ";
+				}
+			}
+
+			if(count($used_symptoms) > 0){
+				$subquery = substr($subquery, 0, strlen($subquery) - 5);
+				$query = "SELECT ID, name, diagnosis, treatment FROM dss_diseases $subquery";
+
+				$diseases = selectQuery($query);
+			}
+
+			$result = array_unique(array_merge($result,$diseases), SORT_REGULAR);
+		}
 	}
-	return selectQuery($query);
+	return $result;
 }
 
 function getDiseaseInfo($id){
