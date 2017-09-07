@@ -132,7 +132,7 @@ function removeCase($id){
 
 
 function getCaseByAge($fromdate, $todate){
-	$query = "SELECT disease, age FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE case_date >= '$fromdate' AND case_date <= '$todate'";
+	$query = "SELECT disease, age FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE dss_cases.is_removed = 0 AND case_date >= '$fromdate' AND case_date <= '$todate'";
 	$cases = selectQuery($query);
 	
 	$caseDisease = array();
@@ -167,7 +167,7 @@ function getCaseByAge($fromdate, $todate){
 }
 
 function getCaseByBrgy($fromdate, $todate){
-	$query = "SELECT disease, brgy FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE case_date >= '$fromdate' AND case_date <= '$todate'";
+	$query = "SELECT disease, brgy FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE dss_cases.is_removed = 0 AND CAST(case_date AS DATE) >= '$fromdate' AND CAST(case_date AS DATE) <= '$todate'";
 
 	$cases = selectQuery($query);
 
