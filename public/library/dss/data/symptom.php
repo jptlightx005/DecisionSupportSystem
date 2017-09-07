@@ -3,7 +3,7 @@ require_once(DSS_LIBRARY . 'db.php');
 
 function getSymptomList($search){
 	global $conn;
-	$query = "SELECT ID, name, description FROM dss_symptoms WHERE is_removed = 0";
+	$query = "SELECT ID, name, description FROM dss_symptoms WHERE is_removed = 0 ORDER BY name ASC";
 	if($search != ""){
 		$query .= " AND (name LIKE '%$search%'";
 		$query .= " OR description LIKE '%$search%')";
@@ -22,7 +22,7 @@ function addNewSymptom($post){
 	$field_values = "(";
 	foreach($post as $key => $value){
 		if($key != "action"){
-				$newValue = addslashes($value);
+				$newValue = addslashes(trim($value));
 				$field_names .= "`$key`, ";
 				$field_values .= "'$newValue', ";
 			}
