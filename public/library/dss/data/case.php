@@ -73,6 +73,9 @@ function addNewCase($post){
 	$query = "UPDATE `dss_cases` SET CaseID = 'C$case_uid' WHERE ID = $case_id";
 	executeQuery($query);
 
+	$query = "UPDATE `dss_patients` SET last_visit = CURRENT_TIMESTAMP WHERE ID = " . $post['PatientID'];
+	executeQuery($query);
+
 	if($case_id != 0){
 		//IMPORTS SYMPTOMS FROM SYMPTOM DATABASE AND SAVES
 		if(!empty($_POST["symptom"])){
