@@ -3,7 +3,7 @@ require_once(DSS_LIBRARY . 'db.php');
 
 function getMedicineList($search){
 	global $conn;
-	$query = "SELECT ID, name, generic_name, overview FROM dss_medicine WHERE is_removed = 0";
+	$query = "SELECT ID, name, generic_name, overview FROM dss_medicine WHERE is_removed = 0 ORDER BY name ASC";
 	if($search != ""){
 		$query .= " AND (name LIKE '%$search%' OR generic_name LIKE '%$search%' ";
 		$query .= " OR overview LIKE '%$search%')";
@@ -31,7 +31,7 @@ function addNewMedicine($post){
 	foreach($post as $key => $value){
 		if($key != "action" &&
 			$key != "name"){
-				$newValue = addslashes($value);
+				$newValue = addslashes(trim($value));
 				$field_names .= "`$key`, ";
 				$field_values .= "'$newValue', ";
 			}
