@@ -70,8 +70,8 @@ function addNewPatient($post, $files){
 	
 	$query = "UPDATE `dss_patients` SET PatientID = '$patient_uid' WHERE ID = $patient_id";
 	executeQuery($query);
-
-	if(isset($post['picture_from_camera'])){
+	
+	if($post['picture_from_camera'] != ""){
 		$full_name = $post["first_name"] . " " . $post["last_name"];
 		$subfile_name = replace_accents(friendly_url($full_name));
 		$file_name = "$patient_id-$subfile_name.jpg";

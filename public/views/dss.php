@@ -26,8 +26,8 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $site = array(
-		'title' => 'Decision Support System',
-		'subtitle' => 'Patient Diagnosis and Prescription',
+		'title' => 'Patient Record Management System',
+		'subtitle' => 'with Electronic Prescription',
 		'logo' => "assets/logo.png",
 		'icon' => "assets/logo.ico",
 		'root' => '/',

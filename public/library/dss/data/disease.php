@@ -3,7 +3,7 @@ require_once(DSS_LIBRARY . 'db.php');
 
 function getDiseaseList($search){
 	global $conn;
-	$query = "SELECT ID, name, diagnosis, treatment FROM dss_diseases WHERE is_removed = 0";
+	$query = "SELECT ID, name, diagnosis, treatment FROM dss_diseases WHERE is_removed = 0 ORDER BY name ASC";
 
 	$result = selectQuery($query);
 	if($search != ""){
@@ -115,7 +115,7 @@ function addNewDisease($post){
 		if($key != "action" &&
 			$key != "symptom" &&
 			$key != "medicine"){
-				$newValue = addslashes($value);
+				$newValue = addslashes(trim($value));
 				$field_names .= "`$key`, ";
 				$field_values .= "'$newValue', ";
 			}

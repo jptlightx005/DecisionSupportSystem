@@ -29,7 +29,7 @@
 		    <div class="container-fluid">
 
 		        <div class="navbar-header">
-		            <a class="navbar-brand" href="#">DSS</a>
+		            <a class="navbar-brand" href="#">PRMS</a>
 		        </div>
 		        <ul class="nav navbar-nav">
 		            <li <?= homeIsActive() ?>><a href="/">Home</a></li>

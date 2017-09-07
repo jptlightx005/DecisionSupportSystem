@@ -1,6 +1,7 @@
 <?php
 	include_once('../dss.php');
 	$case = getCaseInfo($_GET['id']);
+	$patient = getPatientInfo($case['PatientID']);
 	$medicine_list = getMedicineListForCase($_GET['id']);
 ?>
 
@@ -39,20 +40,6 @@
 			    text-align: justify;
 			}
 
-			#patient_picture {
-				position:relative;
-			}
-			#patient_picture img{
-				position: absolute;
-				top: 10px;
-				right: 10px;
-			}
-			.center-cropped {
-			  object-fit: cover;
-			  object-position: center; /* Center the image within the element */
-			  height: 100px;
-			  width: 85px;
-			}
 		</style>
 		<script src="bootstrap/js/bootstrap.min.js"></script>
 	    <script type="text/javascript" src="js/general.js"></script>
@@ -61,11 +48,69 @@
 	    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 	</head>
 	<body>
-		<h1><?php echo nl2br(returnFullNameFromObject($case), false); ?></h1>
-		<h3>Prescription:</h3>
-		<?php foreach ($medicine_list as $medicine): ?>
-			<h4><?= $medicine['medicine'] ?></h4>
-			<p><?= $medicine['dosage'] ?></p>
-		<?php endforeach; ?>
+		<header>
+			<div id="heading">
+				<center>Republic of the Philippines</center>
+				<center>Province of Iloilo</center>
+				<center>RURAL HEALTH UNIT</center>
+				<center>Pototan, Iloilo</center>
+			</div>
+			<div style="float">
+				
+			</div>
+		</header>
+		<div class="container" id="patient_record">
+			<div class="row">
+				<span>
+					<span class="label">NAME:</span>
+					<span class="detail" style="width:250px;"><?=  "{$patient["last_name"]},&nbsp;&nbsp; {$patient["first_name"]} &nbsp;&nbsp;&nbsp; {$patient["middle_name"]}" ?></span>
+				</span>
+			</div>
+
+			<div class="row">
+
+				<span>
+					<span class="label">ADDRESS:</span>
+					<span class="detail" style="width:225;text-align: center"><?=  $patient["address"] ?></span>
+				</span>
+			</div>
+			<div class="row">
+				<span>
+					<span class="label">AGE:</span>
+					<span class="detail" style="width:18px;text-align: center"><?= $patient["age"] ?></span>
+				</span>
+
+				<span>
+					<span class="label">SEX:</span>
+					<span class="detail" style="width:50px;text-align: center"><?=  $patient["gender"] ?></span>
+				</span>
+
+				<span>
+					<span class="label">DATE:</span>
+					<span class="detail" style="width:200px;text-align: center"><?= date("F j, Y") ?></span>
+				</span>
+				</span>
+			</div>
+
+			<h3>Prescription:</h3>
+			<img src="assets/rx_symbol.png" style="width:30px" />
+			<h4>
+				<?php
+					$meds = "";
+					foreach ($medicine_list as $medicine){
+						$meds .= $medicine['medicine'] . ", ";
+					}
+					$meds = substr($meds, 0, strlen($meds) - 2);
+					echo $meds;
+				?>
+			</h4>
+			<p><?= $case['treatment'] ?></p>
+			<br><br>
+			<div class="row" align="center">
+			DR. RODINA P. MONDRAGON <br>
+			P.T.R. No. 4792270 <br>
+			Lic. No. 0065414
+			</div>
+		</div>
 	</body>
 </html>
