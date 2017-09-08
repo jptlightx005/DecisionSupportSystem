@@ -185,7 +185,9 @@
 					<?php foreach($cases as $case): ?>
 						<td><?= returnFullDateTimeStringWithDate($case["case_date"]) ?></td>
 						<td><?= $case["diagnosis"] ?></td>
-						<td>
+						<td><?= $case["treatment"] ?></td>
+<!-- 						<td><?= $case["remarks"] ?></td> -->
+<td>
 							<?php
 								$medicines = "";
 							    foreach($case["prescription"] as $medicine){
@@ -194,8 +196,6 @@
 							    echo returnSpaceIfBlank(substr($medicines, 0, strlen($medicines) - 2));
 							?>
 						</td>
-						<td><?= $case["treatment"] ?></td>
-<!-- 						<td><?= $case["remarks"] ?></td> -->
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
