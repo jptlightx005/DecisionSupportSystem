@@ -66,7 +66,7 @@
 		<br/>
 		<div class="container" id="symptom_record">
 			<div class="row">
-				<h3><?php echo $symptom['name']; ?></h3>
+				<h4><?php echo $symptom['name']; ?></h4>
 				<p><?php echo $symptom['description']; ?></p>
 			</div>
 		</div>
