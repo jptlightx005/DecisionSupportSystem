@@ -42,6 +42,12 @@ function getPatientEHR($id){
 	return $filteredEHR;
 }
 
+function getPatientListFromDate($fromdate, $todate){
+	global $conn;
+	$query = "SELECT ID, PatientID, first_name, middle_name, last_name, gender, address, last_visit FROM dss_patients WHERE is_removed = 0 AND CAST(last_visit AS DATE) >= '$fromdate' AND CAST(last_visit AS DATE) <= '$todate'";
+
+	return selectQuery($query);
+}
 function getBrgyList(){
 	global $conn;
 	return selectQuery("SELECT * FROM `dss_brgy`");

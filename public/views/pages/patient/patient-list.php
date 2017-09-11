@@ -33,7 +33,7 @@
             <a href="patient" class="btn btn-primary btn-md">
                  <span class="glyphicon glyphicon-refresh"></span> Refresh
             </a>
-            <button type="button" class="btn btn-primary btn-md" onclick="printPopupWindow('/patient-list-print')">
+            <button type="button" class="btn btn-primary btn-md" data-toggle="modal" data-target="#printReportsModal">
                  <span class="glyphicon glyphicon-print"></span> Print Patient List
             </button>
             <table class="table">
@@ -264,6 +264,57 @@
         </div>
     </div>
 	
+    <div id="printReportsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Print Reports</h4>
+                </div>
+                    
+                <div class="modal-body">
+
+                    <label>From:</label>
+                    <input type="date" name="from_date" required="">
+
+                    <label>To:</label>
+                    <input type="date" name="to_date" required=""><br/>
+                </div>
+
+                
+                <div class="modal-footer">
+                    <button id="printReport" class="btn btn-default btn-md">
+                        <span class="glyphicon glyphicon-print"></span> Print
+                    </button>
+                    <script>
+                        $('#printReport').click(function(){
+
+                            var height = screen.height - 100;
+                            if(height >= 792)
+                                height = 792;
+                            var url = '/patient-list-print?';
+
+                            var fromdate = $('input[name=from_date]').val()
+                            url = url + "from_date=" + fromdate;
+
+                            var todate = $('input[name=to_date]').val()
+                            url = url + "&to_date=" + todate;
+
+                            if(fromdate != "" && todate != "" )
+                                window.open(url, '', 'width=900,height='+(height));
+
+                            return false;
+                        });
+                    </script>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <footer>
         <script type="text/javascript">
             $(".image-browser").change(function() {

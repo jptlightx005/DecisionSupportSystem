@@ -1,6 +1,6 @@
 <?php
 	include_once('../dss.php');
-	$patients = getPatientList();
+	$patients = getPatientListFromDate($_GET['from_date'], $_GET['to_date']);
 ?>
 
 
