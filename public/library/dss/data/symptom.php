@@ -3,11 +3,12 @@ require_once(DSS_LIBRARY . 'db.php');
 
 function getSymptomList($search){
 	global $conn;
-	$query = "SELECT ID, name, description FROM dss_symptoms WHERE is_removed = 0 ORDER BY name ASC";
+	$query = "SELECT ID, name, description FROM dss_symptoms WHERE is_removed = 0";
 	if($search != ""){
 		$query .= " AND (name LIKE '%$search%'";
 		$query .= " OR description LIKE '%$search%')";
 	}
+	$query .= " ORDER BY name ASC";
 	return selectQuery($query);
 }
 

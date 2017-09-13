@@ -59,7 +59,7 @@
 			<div id="heading">
 				<center>Republic of the Philippines</center>
 				<center>Province of Iloilo</center>
-				<center>ILOILO PROVINCIAL HOSPITAL</center>
+				<center>POTOTAN MUNICIPAL HEALTH CENTER</center>
 				<center>Pototan, Iloilo</center>
 			</div>
 			<div style="float">
@@ -83,7 +83,7 @@
  			<?php foreach($patients as $dict): ?>
                 <tr>
                     <td><?= $dict['PatientID'] ?></td>
-                    <td><a href="patient-page?id=<?= $dict['ID'] ?>"><?= returnFullNameFromObject($dict) ?></a></td>
+                    <td><?= returnFullNameFromObject($dict) ?></td>
                     <td><?= $dict['gender'] ?></td>
                     <td><?= $dict['address'] ?></td>
                     <td><?= returnFullDateTimeStringWithDate($dict['last_visit']) ?></td>

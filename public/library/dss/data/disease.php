@@ -3,12 +3,12 @@ require_once(DSS_LIBRARY . 'db.php');
 
 function getDiseaseList($search){
 	global $conn;
-	$query = "SELECT ID, name, diagnosis, treatment FROM dss_diseases WHERE is_removed = 0 ORDER BY name ASC";
+	$query = "SELECT ID, name, diagnosis, treatment FROM dss_diseases WHERE is_removed = 0";
 
-	$result = selectQuery($query);
 	if($search != ""){
 		$query .= " AND (name LIKE '%$search%' OR diagnosis LIKE '%$search%' OR treatment LIKE '%$search%')";
 
+		$query .= " ORDER BY name ASC";
 		$result = selectQuery($query);
 		
 		$symp_query = "SELECT ID FROM dss_symptoms WHERE is_removed = 0 AND (name LIKE '%$search%' OR description LIKE '%$search%')";
@@ -45,6 +45,9 @@ function getDiseaseList($search){
 
 			$result = array_unique(array_merge($result,$diseases), SORT_REGULAR);
 		}
+	}else{
+		$query .= " ORDER BY name ASC";
+		$result = selectQuery($query);
 	}
 	return $result;
 }

@@ -3,11 +3,12 @@ require_once(DSS_LIBRARY . 'db.php');
 
 function getMedicineList($search){
 	global $conn;
-	$query = "SELECT ID, name, generic_name, overview FROM dss_medicine WHERE is_removed = 0 ORDER BY name ASC";
+	$query = "SELECT ID, name, generic_name, overview FROM dss_medicine WHERE is_removed = 0";
 	if($search != ""){
 		$query .= " AND (name LIKE '%$search%' OR generic_name LIKE '%$search%' ";
 		$query .= " OR overview LIKE '%$search%')";
 	}
+	$query .= " ORDER BY name ASC";
 	return selectQuery($query);
 }
 
