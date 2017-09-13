@@ -5,7 +5,7 @@ function getCaseList($search){
 	global $conn;
 	$query = "SELECT dss_cases.ID, CaseID, dss_cases.PatientID, dss_cases.DiseaseID, dss_patients.first_name, dss_patients.middle_name, dss_patients.last_name, disease, diagnosis, treatment FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE dss_cases.is_removed = 0";
 	if($search != ""){
-		$query .= " AND ((first_name LIKE '%$search%' OR middle_name LIKE '%$search%' OR last_name LIKE '%$search%') OR disease LIKE '%$search%' OR diagnosis LIKE '%$search%' OR treatment LIKE '%$search%')";
+		$query .= " AND ((first_name LIKE '%$search%' OR middle_name LIKE '%$search%' OR last_name LIKE '%$search%') OR disease LIKE '%$search%' OR diagnosis LIKE '%$search%' OR treatment LIKE '%$search%' OR CaseID LIKE '%$search%')";
 	}
 	return selectQuery($query);
 }
@@ -174,7 +174,7 @@ function getCaseByBrgy($fromdate, $todate){
 	$brgyList = array();
 
 	foreach($cases as $case){
-		$brgy_name = strtolower($case['brgy']);
+		$brgy_name = $case['brgy'];
 		$brgyList[$brgy_name][] = $case;
 	}
 

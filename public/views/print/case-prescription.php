@@ -52,7 +52,7 @@
 			<div id="heading">
 				<center>Republic of the Philippines</center>
 				<center>Province of Iloilo</center>
-				<center>RURAL HEALTH UNIT</center>
+				<center>POTOTAN MUNICIPAL HEALTH CENTER</center>
 				<center>Pototan, Iloilo</center>
 			</div>
 			<div style="float">

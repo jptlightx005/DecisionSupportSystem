@@ -83,7 +83,7 @@
 			<div id="heading">
 				<center>Republic of the Philippines</center>
 				<center>Province of Iloilo</center>
-				<center>RURAL HEALTH UNIT</center>
+				<center>POTOTAN MUNICIPAL HEALTH CENTER</center>
 				<center>Pototan, Iloilo</center>
 			</div>
 			<div style="float">
@@ -185,7 +185,6 @@
 					<?php foreach($cases as $case): ?>
 						<td><?= returnFullDateTimeStringWithDate($case["case_date"]) ?></td>
 						<td><?= $case["diagnosis"] ?></td>
-						<td><?= $case["treatment"] ?></td>
 <!-- 						<td><?= $case["remarks"] ?></td> -->
 <td>
 							<?php
@@ -196,6 +195,7 @@
 							    echo returnSpaceIfBlank(substr($medicines, 0, strlen($medicines) - 2));
 							?>
 						</td>
+						<td><?= $case["treatment"] ?></td>
 					</tr>
 					<?php endforeach; ?>
 				</tbody>
