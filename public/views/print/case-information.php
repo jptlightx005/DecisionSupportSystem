@@ -88,7 +88,7 @@
 				    echo returnSpaceIfBlank(substr($medicines, 0, strlen($medicines) - 2));
 			    ?>                             	
 	        </p>
-			<h3>Treatment: </h3> <p> <?php echo nl2br($case['treatment'], false); ?></p>
+			<h3>Medication: </h3> <p> <?php echo nl2br($case['treatment'], false); ?></p>
 		</div>
 	</body>
 </html>
