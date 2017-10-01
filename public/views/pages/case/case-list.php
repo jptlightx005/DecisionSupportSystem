@@ -84,155 +84,157 @@
 	   <?php endif; ?>
 	<?php endblock() ?>
 
+    <?php startblock('modals') ?>
+        <div id="addCaseModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
-	<div id="addCaseModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <form class="modal-content" method="post" name="case_form" id="case_form">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <button type="button" class="refresh-button">
-                        <span class="glyphicon glyphicon-refresh"></span>
-                    </button>
-                    <h4 class="modal-title">Add Case</h4>
-                </div>
-                    <input type='hidden' name="admin_ulid" value="<?php echo $_COOKIE['adminID']; ?>" />
-                    <input type='hidden' name="DiseaseID" value="0" />
-                <div class="modal-body">
-                    <label>Patient Name:</label>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div style="margin-right:-25px;">
-                                <select class="form-control" name="PatientID" required>
-                                    <option disabled selected value>Select Patient</option>
-                                    <?php foreach($patient_list as $dict): ?>
-                                        <option value="<?= $dict['ID'] ?>"><?= returnFullNameFromObject($dict) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                <!-- Modal content-->
+                <form class="modal-content" method="post" name="case_form" id="case_form">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button type="button" class="refresh-button clear-form-button" id="refresh-case">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
+                        <h4 class="modal-title">Add Case</h4>
+                    </div>
+                        <input type='hidden' name="admin_ulid" value="<?php echo $_COOKIE['adminID']; ?>" />
+                        <input type='hidden' name="DiseaseID" value="0" />
+                    <div class="modal-body">
+                        <label>Patient Name:</label>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div style="margin-right:-25px;">
+                                    <select class="form-control" name="PatientID" required>
+                                        <option disabled selected value>Select Patient</option>
+                                        <?php foreach($patient_list as $dict): ?>
+                                            <option value="<?= $dict['ID'] ?>"><?= returnFullNameFromObject($dict) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <a href="patient" class="btn btn-primary btn-md">Add Patient</a>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <a href="patient" class="btn btn-primary btn-md">Add Patient</a>
-                        </div>
-                    </div>
-                    <label>Symptoms:</label>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="button-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="dropdown-text" title="Select Symptoms">Select Symptoms</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
-                                <ul class="dropdown-menu" id="symptom-ul">
-                                    <?php foreach($symptom_list as $dict): ?>
-                                    <li class="dropdown-li">
-                                        <a class="small" style="cursor:hand;" tabIndex="-1">
-                                            <input class="checkbox-input" type="checkbox" name="symptom[]" value="<?= $dict["ID"] ?>" />&nbsp;<label><?= $dict["name"] ?></label>
-                                        </a>
-                                        
-                                    </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                                <a href="symptoms" class="btn btn-primary btn-md">Add Symptom</a>
+                        <label>Symptoms:</label>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="button-group">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="dropdown-text" title="Select Symptoms">Select Symptoms</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
+                                    <ul class="dropdown-menu" id="symptom-ul">
+                                        <?php foreach($symptom_list as $dict): ?>
+                                        <li class="dropdown-li">
+                                            <a class="small" style="cursor:hand;" tabIndex="-1">
+                                                <input class="checkbox-input" type="checkbox" name="symptom[]" value="<?= $dict["ID"] ?>" />&nbsp;<label><?= $dict["name"] ?></label>
+                                            </a>
+                                            
+                                        </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                    <a href="symptoms" class="btn btn-primary btn-md">Add Symptom</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                	<label>Disease Name:</label>
-					<input class="form-control"  list="diseases" name="disease" autocomplete="off" required>
-					  <datalist id="diseases">
-					  </datalist>
+                        <label>Disease Name:</label>
+                        <input class="form-control"  list="diseases" name="disease" autocomplete="off" required>
+                          <datalist id="diseases">
+                          </datalist>
 
-                    <label for="diagnosis">Diagnosis:</label>
-                    <textarea class="form-control" rows="5" id="diagnosis" name="diagnosis" required></textarea>
-                    
-                    <label>Prescription:</label>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="button-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="dropdown-text" title="Select Medicine">Select Medicine</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
-                                <ul class="dropdown-menu" id="medicine-ul">
-                                    <?php foreach($medicine_list as $dict): ?>
-                                    <li class="dropdown-li">
-                                        <a class="small" style="cursor:hand;" tabIndex="-1">
-                                            <input class="checkbox-input" type="checkbox" name="medicine[]" value="<?= $dict["ID"] ?>" />&nbsp;<label><?= $dict["name"] ?></label>
-                                        </a>
-                                        
-                                    </li>
-                                   	<?php endforeach; ?>
-                                </ul>
-                                <a href="medicine" class="btn btn-primary btn-md">Add Medicine</a>
+                        <label for="diagnosis">Diagnosis:</label>
+                        <textarea class="form-control" rows="5" id="diagnosis" name="diagnosis" required></textarea>
+                        
+                        <label>Prescription:</label>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="button-group">
+                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"><span class="dropdown-text" title="Select Medicine">Select Medicine</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="caret"></span></button>
+                                    <ul class="dropdown-menu" id="medicine-ul">
+                                        <?php foreach($medicine_list as $dict): ?>
+                                        <li class="dropdown-li">
+                                            <a class="small" style="cursor:hand;" tabIndex="-1">
+                                                <input class="checkbox-input" type="checkbox" name="medicine[]" value="<?= $dict["ID"] ?>" />&nbsp;<label><?= $dict["name"] ?></label>
+                                            </a>
+                                            
+                                        </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                    <a href="medicine" class="btn btn-primary btn-md">Add Medicine</a>
+                                </div>
                             </div>
                         </div>
+                        <label for="medication">Medication:</label>
+                        <textarea class="form-control" rows="5" id="medication" name="treatment" required></textarea>
                     </div>
-                    <label for="medication">Medication:</label>
-                    <textarea class="form-control" rows="5" id="medication" name="treatment" required></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" id="submit_case" name="action" value="<?= ADD_CASE ?>" class="btn btn-default">Submit</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn clear-form-button">Clear</button>
+                        <button type="submit" id="submit_case" name="action" value="<?= ADD_CASE ?>" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
 
-        </div>
-    </div>
-
-    <div id="printReportsModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Print Reports</h4>
-                </div>
-                    
-                <div class="modal-body">
-                    <label>Gender:</label><br/>
-                    <select class="form-control" name="filter" required>
-                        <option value='age' selected>Age</option>
-                        <!-- <option value='diagnosis'>Diagnosis</option> -->
-                        <option value='brgy'>Brgy</option>
-                    </select><br/>
-
-                    <label>From:</label>
-                    <input type="date" name="from_date" required="">
-
-                    <label>To:</label>
-                    <input type="date" name="to_date" required=""><br/>
-                </div>
-
-                
-                <div class="modal-footer">
-                    <button id="printReport" class="btn btn-default btn-md">
-                        <span class="glyphicon glyphicon-print"></span> Print
-                    </button>
-                    <script>
-                        $('#printReport').click(function(){
-
-                            var height = screen.height - 100;
-                            if(height >= 792)
-                                height = 792;
-                            var url = '/case-report-print?filter=';
-                            var filter = $('select[name=filter]').find(":selected").val()
-                            url = url + filter;
-
-                            var fromdate = $('input[name=from_date]').val()
-                            url = url + "&from_date=" + fromdate;
-
-                            var todate = $('input[name=to_date]').val()
-                            url = url + "&to_date=" + todate;
-
-                            if(filter != "")
-                                window.open(url, '', 'width=900,height='+(height));
-
-                            return false;
-                        });
-                    </script>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
             </div>
-
         </div>
-    </div>
+
+        <div id="printReportsModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Print Reports</h4>
+                    </div>
+                        
+                    <div class="modal-body">
+                        <label>Gender:</label><br/>
+                        <select class="form-control" name="filter" required>
+                            <option value='age' selected>Age</option>
+                            <!-- <option value='diagnosis'>Diagnosis</option> -->
+                            <option value='brgy'>Brgy</option>
+                        </select><br/>
+
+                        <label>From:</label>
+                        <input type="date" name="from_date" required="">
+
+                        <label>To:</label>
+                        <input type="date" name="to_date" required=""><br/>
+                    </div>
+
+                    
+                    <div class="modal-footer">
+                        <button id="printReport" class="btn btn-default btn-md">
+                            <span class="glyphicon glyphicon-print"></span> Print
+                        </button>
+                        <script>
+                            $('#printReport').click(function(){
+
+                                var height = screen.height - 100;
+                                if(height >= 792)
+                                    height = 792;
+                                var url = '/case-report-print?filter=';
+                                var filter = $('select[name=filter]').find(":selected").val()
+                                url = url + filter;
+
+                                var fromdate = $('input[name=from_date]').val()
+                                url = url + "&from_date=" + fromdate;
+
+                                var todate = $('input[name=to_date]').val()
+                                url = url + "&to_date=" + todate;
+
+                                if(filter != "")
+                                    window.open(url, '', 'width=900,height='+(height));
+
+                                return false;
+                            });
+                        </script>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    <?php endblock() ?> 
 
     <script type="text/javascript">
        //Checkbox functionalities
@@ -363,6 +365,13 @@
                 alert("Please add medicine! ");
                 return false;
             }
+         });
+
+         $('.clear-form-button').click(function(){
+            $("input[name='symptom[]']").prop('checked', false);
+            $("input[name='symptom[]']").change();
+            $("input[name='medicine[]']").prop('checked', false);
+            $("input[name='medicine[]']").change();
          });
     </script>
 <?php endif; ?>

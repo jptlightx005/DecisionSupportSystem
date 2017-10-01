@@ -5,25 +5,20 @@
 <html>
 	<head>
 	    <title><?= $site['title'] ?></title>
-
 	    <!-- <link rel="icon" type="image/png" href="<?= $site['logo'] ?>" /> -->
 	    
-	    
-		<script src="js/jquery.min.js"></script>
-	    <script src="js/sidebar.js"></script>
-
-	    <!-- <script src="js/search.js"></script> -->
-	    <script src="js/generic.js"></script>
-	    <script src="js/modal-extension.js"></script>
-	    <script src="js/waiting.js"></script>
-
-	    <script src="bootstrap/js/bootstrap.min.js"></script>
 	    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
 	    <link rel="stylesheet" type="text/css" href="css/sidebar.css" />
 	    <link rel="stylesheet" type="text/css" href="css/generic.css" />
-	    
 	    <link rel="stylesheet" type="text/css" href="css/login.css" />
 	    <link rel="stylesheet" type="text/css" href="css/search.css" />
+
+		<script src="js/jquery.min.js"></script>
+	    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+	    <script src="js/sidebar.js"></script>
+		<script src="js/generic.js"></script>
+	    <script src="js/waiting.js"></script>
 	</head>
 	<body>
 		<!-- TOP NAVBAR -->
@@ -123,6 +118,9 @@
 						
 
 						<?php startblock('main') ?>
+						<?php endblock() ?>
+
+						<?php startblock('modals') ?>
 						<?php endblock() ?>
 					</div>
 				</div>
@@ -227,5 +225,9 @@
 				}
 		   	});
 		});
+	});
+
+	$(".clear-form-button").click(function(){
+	    document.getElementById('case_form').reset();
 	});
 </script>
