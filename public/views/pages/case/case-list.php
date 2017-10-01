@@ -89,10 +89,10 @@
             <div class="modal-dialog">
 
                 <!-- Modal content-->
-                <form class="modal-content" method="post" name="case_form" id="case_form">
+                <form class="modal-content modal-form" method="post" name="case_form" id="case_form">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <button type="button" class="refresh-button clear-form-button" id="refresh-case">
+                        <button type="button" class="refresh-button clear-form-button">
                             <span class="glyphicon glyphicon-refresh"></span>
                         </button>
                         <h4 class="modal-title">Add Case</h4>

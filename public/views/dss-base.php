@@ -228,6 +228,11 @@
 	});
 
 	$(".clear-form-button").click(function(){
-	    document.getElementById('case_form').reset();
+	    // document.getElementsByClassName('modal-form').reset();
+	    var forms = document.getElementsByClassName("modal-form");
+		for(var i = 0; i < forms.length; i++)
+		{
+		   forms.item(i).reset();
+		}
 	});
 </script>
