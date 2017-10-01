@@ -6,7 +6,7 @@
 	<head>
 	    <title><?= $site['title'] ?></title>
 
-	    <link rel="icon" type="image/png" href="<?= $site['logo'] ?>" />
+	    <!-- <link rel="icon" type="image/png" href="<?= $site['logo'] ?>" /> -->
 	    
 	    
 		<script src="js/jquery.min.js"></script>
@@ -14,6 +14,7 @@
 
 	    <!-- <script src="js/search.js"></script> -->
 	    <script src="js/generic.js"></script>
+	    <script src="js/modal-extension.js"></script>
 	    <script src="js/waiting.js"></script>
 
 	    <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -215,18 +216,14 @@
 				data: $(this).serialize(),
 				success: function(data){
 					console.log(data);
-					if (data.status) {
-						if(!alert(data.message)){
+					if(!alert(data.message)){
+						if(data.status){
 							window.location.href = data.url;
-							waitingDialog.hide();
-						};
-					}
-					else {
-						if(!alert(data.message)){
+						}else{
 							$('#nonce').val(data.nonce);
-							waitingDialog.hide();
 						}
-					}
+						waitingDialog.hide();
+		    		}
 				}
 		   	});
 		});

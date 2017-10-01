@@ -92,6 +92,9 @@
             <form class="modal-content" method="post" name="case_form" id="case_form">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button type="button" class="refresh-button">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
                     <h4 class="modal-title">Add Case</h4>
                 </div>
                     <input type='hidden' name="admin_ulid" value="<?php echo $_COOKIE['adminID']; ?>" />
