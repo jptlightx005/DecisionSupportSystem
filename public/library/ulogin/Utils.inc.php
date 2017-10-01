@@ -20,7 +20,7 @@ class ulUtils
     if((strlen($bytes) < $count) && function_exists('mcrypt_create_iv'))
     {
         // Use MCRYPT_RAND on Windows hosts with PHP < 5.3.7, otherwise use MCRYPT_DEV_URANDOM
-        // (http://bugs.php.net/55169).
+        // (https://bugs.php.net/55169).
         if ((version_compare(PHP_VERSION, '5.3.7', '<') && strncasecmp(PHP_OS, 'WIN', 3) == 0))
           $bytes = mcrypt_create_iv($count, MCRYPT_RAND);
         else
@@ -33,7 +33,7 @@ class ulUtils
     if ((strlen($bytes) < $count) && @class_exists('COM'))
     {
         // Officially deprecated in Windows 7
-        // http://msdn.microsoft.com/en-us/library/aa388182%28v=vs.85%29.aspx
+        // https://msdn.microsoft.com/en-us/library/aa388182%28v=vs.85%29.aspx
         try
         {
             $CAPI_Util = new COM('CAPICOM.Utilities.1');

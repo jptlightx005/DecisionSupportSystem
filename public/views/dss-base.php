@@ -14,6 +14,7 @@
 
 	    <!-- <script src="js/search.js"></script> -->
 	    <script src="js/generic.js"></script>
+	    <script src="js/waiting.js"></script>
 
 	    <script src="bootstrap/js/bootstrap.min.js"></script>
 	    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
@@ -132,7 +133,8 @@
                     <div class="loginmodal-container">
                         <h1>Login to Your Account</h1><br>
                         <form id="login_form" method="post">
-                        <input type="hidden" id="nonce" name="nonce" value="<?= ulNonce::Create('login') ?>">
+                        	<input type="hidden" id="currentpage" name="currentpage" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                        	<input type="hidden" id="nonce" name="nonce" value="<?= ulNonce::Create('login') ?>">
                             <input type="text" name="usrn" placeholder="Username">
                             <input type="password" name="pssw" placeholder="Password">
                             <input type="submit" name="action" class="login loginmodal-submit" value="<?= LOG_IN ?>">
@@ -201,3 +203,32 @@
 		<?php endif; ?>
 	</body>
 </html>
+
+<script>
+	$(document).ready(function() {
+		$('#login_form').submit(function(e) {
+			waitingDialog.show();
+		    e.preventDefault();
+		    $.ajax({
+				type: "POST",
+				url: '/api/login',
+				data: $(this).serialize(),
+				success: function(data){
+					console.log(data);
+					if (data.status) {
+						if(!alert(data.message)){
+							window.location.href = data.url;
+							waitingDialog.hide();
+						};
+					}
+					else {
+						if(!alert(data.message)){
+							$('#nonce').val(data.nonce);
+							waitingDialog.hide();
+						}
+					}
+				}
+		   	});
+		});
+	});
+</script>

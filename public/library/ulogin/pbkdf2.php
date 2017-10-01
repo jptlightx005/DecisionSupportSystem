@@ -19,7 +19,7 @@
  * Test vectors can be found here: https://www.ietf.org/rfc/rfc6070.txt
  *
  * This implementation of PBKDF2 was originally created by https://defuse.ca
- * With improvements by http://www.variations-of-shadow.com
+ * With improvements by https://www.variations-of-shadow.com
  */
 function pbkdf2($algorithm, $password, $salt, $count, $key_length, $raw_output = false)
 {

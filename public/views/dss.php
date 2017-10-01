@@ -81,48 +81,56 @@ if(isset($action)){
 		}
 		$url = $_SERVER['REQUEST_URI'];
 
-		redirectToURL($msg, $url);
+		redirectToURL("", $url, 0);
 		exit();
 	}else if($action == LOG_IN){
-		if (isset($_POST['nonce']) && ulNonce::Verify('login', $_POST['nonce'])){
-			$_SESSION['appRememberMeRequested'] = true;
-			$ulogin->Authenticate($_POST['usrn'],  $_POST['pssw']);
-			if ($ulogin->IsAuthSuccess()){
-				// Since we have specified callback functions to uLogin,
-				// we don't have to do anything here.
-				$ulid = getULIDforUsrn($_POST['usrn']);
-				if(isset($ulid)){
-					$ulid = $ulid['id'];
-					$profile = selectFirstQuery("SELECT * FROM dss_accounts WHERE UL_ID = $ulid");
+		// $loginsuccess = false;
+		// if (isset($_POST['nonce']) && ulNonce::Verify('login', $_POST['nonce'])){
+		// 	$_SESSION['appRememberMeRequested'] = true;
+		// 	$ulogin->Authenticate($_POST['usrn'],  $_POST['pssw']);
+		// 	if ($ulogin->IsAuthSuccess()){
+		// 		// Since we have specified callback functions to uLogin,
+		// 		// we don't have to do anything here.
+		// 		$ulid = getULIDforUsrn($_POST['usrn']);
+		// 		if(isset($ulid)){
+		// 			$ulid = $ulid['id'];
+		// 			$profile = selectFirstQuery("SELECT * FROM dss_accounts WHERE UL_ID = $ulid");
 
-					if(isset($profile)){
-						$msg = "Logged in successfully";
-						setcookie('adminID', $ulid, time() + 86400 * 5, "/");
-						setcookie('usrn', $_POST["usrn"], time() + 86400 * 5, "/");
-			            setcookie('first_name', $profile["first_name"], time() + 86400 * 5, "/");
-			            setcookie('middle_name', $profile["middle_name"], time() + 86400 * 5, "/");
-			            setcookie('last_name', $profile["last_name"], time() + 86400 * 5, "/");
-			            setcookie('privilege_level', $profile["privilege_level"], time() + 86400 * 5, "/");
-			            setcookie('job', $profile["job"], time() + 86400 * 5, "/");
-					}else{
-						$msg = "Logged in successfully, no Profile";
-						setcookie('adminID', $ulid, time() + 86400 * 5, "/");
-						setcookie('usrn', $_POST["usrn"], time() + 86400 * 5, "/");
-					}
-				}else{
-					$msg = "Logging in failed, no ULID";
-				}
+		// 			if(isset($profile)){
+		// 				$msg = "Logged in successfully";
+		// 				setcookie('adminID', $ulid, time() + 86400 * 5, "/");
+		// 				setcookie('usrn', $_POST["usrn"], time() + 86400 * 5, "/");
+		// 	            setcookie('first_name', $profile["first_name"], time() + 86400 * 5, "/");
+		// 	            setcookie('middle_name', $profile["middle_name"], time() + 86400 * 5, "/");
+		// 	            setcookie('last_name', $profile["last_name"], time() + 86400 * 5, "/");
+		// 	            setcookie('privilege_level', $profile["privilege_level"], time() + 86400 * 5, "/");
+		// 	            setcookie('job', $profile["job"], time() + 86400 * 5, "/");
+		// 			}else{
+		// 				$msg = "Logged in successfully, no Profile";
+		// 				setcookie('adminID', $ulid, time() + 86400 * 5, "/");
+		// 				setcookie('usrn', $_POST["usrn"], time() + 86400 * 5, "/");
+		// 			}
+
+		// 			$loginsuccess = true;
+		// 		}else{
+		// 			$msg = "Logging in failed, no ULID";
+		// 		}
 				
-			}else{
-				$msg = "Invalid username or password";
-			}
-		}else{
-			$msg = 'invalid nonce';
-		}
-		$url = $_SERVER['REQUEST_URI'];
+		// 	}else{
+		// 		$msg = "Invalid username or password";
+		// 	}
+		// }else{
+		// 	$msg = 'invalid nonce';
+		// }
+		// $url = $_SERVER['REQUEST_URI'];
 
-		redirectToURL($msg, $url);
-		exit();
+		// // redirectToURL($msg, $url);
+		// if($loginsuccess){
+		// 	echo "<script>if(!alert('$msg')){window.location.href = '$url';}</script>";
+		// 	exit();
+		// }else{
+		// 	echo "<script>alert('$msg')</script>";
+		// }
 	}else if($action == LOG_OUT){
 		resetCookies();
 		// $msg = "Logged out successfully";
