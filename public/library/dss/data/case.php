@@ -181,6 +181,45 @@ function getCaseByBrgy($fromdate, $todate){
 	return $brgyList;
 }
 
+function getCaseByBrgyDisease($fromdate, $todate){
+	$query = "SELECT disease, brgy FROM dss_cases INNER JOIN dss_patients ON dss_cases.PatientID = dss_patients.ID WHERE dss_cases.is_removed = 0 AND CAST(case_date AS DATE) >= '$fromdate' AND CAST(case_date AS DATE) <= '$todate'";
+
+	$cases = selectQuery($query);
+
+	$columnHeaders = array();
+
+	foreach($cases as $case){
+		$disease_name = $case['disease'];
+		if(!in_array($disease_name, $columnHeaders)){
+			$columnHeaders[] = $disease_name;
+		}
+	}
+
+	$brgyList = array();
+
+	foreach($cases as $case){
+		$brgy_name = $case['brgy'];
+		if(!isset($brgyList[$brgy_name])){
+			$brgyList[$brgy_name] = array();
+		}
+		foreach ($columnHeaders as $header) {
+			if(!isset($brgyList[$brgy_name][$header])) {
+				$brgyList[$brgy_name][$header] = 0;
+			}
+
+			if($case['disease'] == $header){
+				$brgyList[$brgy_name][$header] += 1;
+			}
+		}
+	}
+
+	$diseaseReport['headers'] = $columnHeaders;
+	$diseaseReport['brgy_list'] = $brgyList;
+	$diseaseReport['actual_list'] = $cases;
+
+	return $diseaseReport;
+}
+
 function belowEighteen($case){
     return  $case['age'] < 18;
 }

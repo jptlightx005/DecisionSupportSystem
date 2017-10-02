@@ -4,7 +4,9 @@
 	if($_REQUEST['filter'] == 'age'){
 		$case_list = getCaseByAge($_REQUEST['from_date'], $_REQUEST['to_date']);
 	}else if($_REQUEST['filter'] == 'brgy'){
-		$case_list = getCaseByBrgy($_REQUEST['from_date'], $_REQUEST['to_date']);
+		$diseaseReport = getCaseByBrgyDisease($_REQUEST['from_date'], $_REQUEST['to_date']);
+		$headers = $diseaseReport['headers'];
+		$case_list = $diseaseReport['brgy_list'];
 	}
 ?>
 
@@ -106,13 +108,18 @@
 					<thead>
 						<tr>
 							<th>BRGY</th>
-							<th>NO. OF PATIENTS</th>
+							<?php foreach($headers as $header): ?>
+								<th><?= $header ?></th>
+							<?php endforeach; ?>
 						</tr>
 					</thead>
 					<tbody>
 						<?php foreach($case_list as $key => $value): ?>
 							<td><?= $key ?></td>
-							<td><?= count($value) ?></td>
+							<?php foreach($headers as $header): ?>
+								<td><?= $value[$header] ?></td>
+							<?php endforeach; ?>
+							
 						</tr>
 						<?php endforeach; ?>
 					</tbody>
