@@ -164,11 +164,11 @@ class ulPassword
 
     private static function GensaltBlowfish($input)
 	{
-		// See: http://stackoverflow.com/questions/4795385/how-do-you-use-bcrypt-for-hashing-passwords-in-php
+		// See: https://stackoverflow.com/questions/4795385/how-do-you-use-bcrypt-for-hashing-passwords-in-php
 		// Input string must be 16 bytes min. Anything after 16 is ignored.
 
 		// The following is code from the PHP Password Hashing Framework
-		// http://www.openwall.com/phpass/
+		// https://www.openwall.com/phpass/
 		//
 		// We care because the last character in our encoded string will
 		// only represent 2 bits.  While two known implementations of

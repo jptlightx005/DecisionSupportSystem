@@ -60,36 +60,42 @@
 	   <?php endif; ?>
 	<?php endblock() ?>
 
-	<div id="addMedicineModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+    <?php startblock('modals') ?>
+        <div id="addMedicineModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
-            <!-- Modal content-->
-            <form class="modal-content" method="post" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Add Medicine</h4>
-                </div>
-				<input type='hidden' name="admin_ulid" value="<?php echo $_COOKIE['adminID']; ?>" />
-                <div class="modal-body">
-					<label>Generic Name:</label>
-					<input class="form-control" type="text" name="generic_name" required />
-					<label>Brand Name:</label>
-					<input class="form-control" type="text" name="brand_name" required />
-					<label>Overview:</label>
-					<textarea class="form-control" name="overview" rows="5" required></textarea>
-					<label>Side Effects:</label>
-					<textarea class="form-control" name="side_effects" rows="5" required></textarea>
-					<label>Recommended Dosage:</label>
-					<textarea class="form-control" name="dosage" rows="5" required></textarea>
-					<label>Warning:</label>
-					<textarea class="form-control" name="warning" rows="5" required></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" name="action" value="<?= ADD_MEDICINE ?>" class="btn btn-default">Submit</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </form>
+                <!-- Modal content-->
+                <form class="modal-content modal-form" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <button type="button" class="refresh-button clear-form-button">
+                            <span class="glyphicon glyphicon-refresh"></span>
+                        </button>
+                        <h4 class="modal-title">Add Medicine</h4>
+                    </div>
+                    <input type='hidden' name="admin_ulid" value="<?php echo $_COOKIE['adminID']; ?>" />
+                    <div class="modal-body">
+                        <label>Generic Name:</label>
+                        <input class="form-control" type="text" name="generic_name" required />
+                        <label>Brand Name:</label>
+                        <input class="form-control" type="text" name="brand_name" required />
+                        <label>Overview:</label>
+                        <textarea class="form-control" name="overview" rows="5" required></textarea>
+                        <label>Side Effects:</label>
+                        <textarea class="form-control" name="side_effects" rows="5" required></textarea>
+                        <label>Recommended Dosage:</label>
+                        <textarea class="form-control" name="dosage" rows="5" required></textarea>
+                        <label>Warning:</label>
+                        <textarea class="form-control" name="warning" rows="5" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn clear-form-button">Clear</button>
+                        <button type="submit" name="action" value="<?= ADD_MEDICINE ?>" class="btn btn-default">Submit</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
 
+            </div>
         </div>
-    </div>
+    <?php endblock() ?>
 <?php endif; ?>

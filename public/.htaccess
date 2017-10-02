@@ -2,6 +2,8 @@ RewriteEngine On    # Turn on the rewriting engine
 
 Options -Indexes
 
+RewriteRule ^api/login$ /library/dss/api/login.php [L]
+
 RewriteRule ^$ /views/pages/$1 [L]
 RewriteRule ^about$ /views/pages/about.php [L]
 RewriteRule ^help$ /views/pages/help.php [L]

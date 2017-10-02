@@ -1,7 +1,7 @@
 <?php
 /*
 Code in this file is based on:
-http://thinkvitamin.com/code/how-to-create-bulletproof-sessions/
+https://thinkvitamin.com/code/how-to-create-bulletproof-sessions/
 
 Copyright (c) 2009, Robert Hafner
 Copyright (c) 2011, Károly Pados
@@ -36,7 +36,7 @@ class ulSessionManager
 	/**
 	 * AOL users may switch IP addresses from one proxy to another.
 	 *
-	 * @link http://webmaster.info.aol.com/proxyinfo.html
+	 * @link https://webmaster.info.aol.com/proxyinfo.html
 	 * @var array
 	 */
 	private static $aolProxies = array( '64.12.9', '149.174', '152.163', '195.93.', '198.81.', '202.67.', '205.188',  '207.200');

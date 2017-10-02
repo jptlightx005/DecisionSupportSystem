@@ -5,23 +5,20 @@
 <html>
 	<head>
 	    <title><?= $site['title'] ?></title>
-
-	    <link rel="icon" type="image/png" href="<?= $site['logo'] ?>" />
+	    <!-- <link rel="icon" type="image/png" href="<?= $site['logo'] ?>" /> -->
 	    
-	    
-		<script src="js/jquery.min.js"></script>
-	    <script src="js/sidebar.js"></script>
-
-	    <!-- <script src="js/search.js"></script> -->
-	    <script src="js/generic.js"></script>
-
-	    <script src="bootstrap/js/bootstrap.min.js"></script>
 	    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
 	    <link rel="stylesheet" type="text/css" href="css/sidebar.css" />
 	    <link rel="stylesheet" type="text/css" href="css/generic.css" />
-	    
 	    <link rel="stylesheet" type="text/css" href="css/login.css" />
 	    <link rel="stylesheet" type="text/css" href="css/search.css" />
+
+		<script src="js/jquery.min.js"></script>
+	    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+	    <script src="js/sidebar.js"></script>
+		<script src="js/generic.js"></script>
+	    <script src="js/waiting.js"></script>
 	</head>
 	<body>
 		<!-- TOP NAVBAR -->
@@ -34,7 +31,9 @@
 		        <ul class="nav navbar-nav">
 		            <li <?= homeIsActive() ?>><a href="/">Home</a></li>
 		            <li <?= aboutIsActive() ?>><a href="about">About</a></li>
-		            <li <?= helpIsActive() ?>><a href="help">Help</a></li>
+		            <?php if($_SESSION['isLoggedIn']): ?>
+		            	<li <?= helpIsActive() ?>><a href="help">Help</a></li>
+		            <?php endif; ?>
 		        </ul>
 
 		        <ul class="nav navbar-nav navbar-right">
@@ -122,6 +121,9 @@
 
 						<?php startblock('main') ?>
 						<?php endblock() ?>
+
+						<?php startblock('modals') ?>
+						<?php endblock() ?>
 					</div>
 				</div>
 		    </div>
@@ -132,7 +134,8 @@
                     <div class="loginmodal-container">
                         <h1>Login to Your Account</h1><br>
                         <form id="login_form" method="post">
-                        <input type="hidden" id="nonce" name="nonce" value="<?= ulNonce::Create('login') ?>">
+                        	<input type="hidden" id="currentpage" name="currentpage" value="<?= $_SERVER['REQUEST_URI'] ?>">
+                        	<input type="hidden" id="nonce" name="nonce" value="<?= ulNonce::Create('login') ?>">
                             <input type="text" name="usrn" placeholder="Username">
                             <input type="password" name="pssw" placeholder="Password">
                             <input type="submit" name="action" class="login loginmodal-submit" value="<?= LOG_IN ?>">
@@ -201,3 +204,37 @@
 		<?php endif; ?>
 	</body>
 </html>
+
+<script>
+	$(document).ready(function() {
+		$('#login_form').submit(function(e) {
+			waitingDialog.show();
+		    e.preventDefault();
+		    $.ajax({
+				type: "POST",
+				url: '/api/login',
+				data: $(this).serialize(),
+				success: function(data){
+					console.log(data);
+					if(!alert(data.message)){
+						if(data.status){
+							window.location.href = data.url;
+						}else{
+							$('#nonce').val(data.nonce);
+						}
+						waitingDialog.hide();
+		    		}
+				}
+		   	});
+		});
+	});
+
+	$(".clear-form-button").click(function(){
+	    // document.getElementsByClassName('modal-form').reset();
+	    var forms = document.getElementsByClassName("modal-form");
+		for(var i = 0; i < forms.length; i++)
+		{
+		   forms.item(i).reset();
+		}
+	});
+</script>

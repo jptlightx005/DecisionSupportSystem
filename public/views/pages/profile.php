@@ -2,6 +2,8 @@
 
 <?php
     define('UPDATE_PROFILE', 'update_profile');
+    define('UPDATE_USERNAME', 'update_username');
+    define('UPDATE_PASSWORD', 'update_password')
 ?>
 
 <?php if($_SESSION['isLoggedIn']): ?>
@@ -16,6 +18,19 @@
 	            setcookie('last_name', $account["last_name"], time() + 86400 * 5, "/");
 	            setcookie('privilege_level', $account["privilege_level"], time() + 86400 * 5, "/");
 	            setcookie('job', $account["job"], time() + 86400 * 5, "/");
+            }else if($action == UPDATE_USERNAME){
+                $result = updateUsername($_POST);
+				// $url = $_SERVER['REQUEST_URI'];
+
+				// redirectToURL($msg, $url);
+				// if($loginsuccess){
+				// 	echo "<script>if(!alert('$msg')){window.location.href = '$url';}</script>";
+				// 	exit();
+				// }else{
+				// 	echo "<script>alert('$msg')</script>";
+				// }
+            }else if($action == UPDATE_PASSWORD){
+            	$result = updatePassword($_POST);
             }
 
             if(isset($result)){
@@ -27,9 +42,32 @@
             }
         }
 
+        $username = getUsernameByID($_COOKIE['adminID']);
 		$profile = getProfileByID($_COOKIE['adminID']);
+
+		$nonce = ulNonce::Create('login');
 	?>
 	<?php startblock('main') ?>
+		<div class="row">
+			<h3>Credentials
+				<button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#editUsernameModal">
+					<span class="glyphicon glyphicon-pencil"></span> Change Username
+				</button>
+				<button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#updatePasswordModal">
+					<span class="glyphicon glyphicon-pencil"></span> Change Password
+				</button>
+			</h3>
+
+			<div class="col-md-6">
+				<dl class="row">
+					<dt class="col-sm-4">Username:</dt>
+					<dd class="col-sm-8"><?= $username ?>&nbsp;</dd>
+					
+					<dt class="col-sm-4">Password:</dt>
+					<dd class="col-sm-8">**********</dd>
+				</dl>
+			</div>
+		</div>
 		<h3>User Info
 			<button type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#editProfileModal">
 				<span class="glyphicon glyphicon-pencil"></span> Edit
@@ -75,6 +113,62 @@
 		</div>
 	<?php endblock() ?>
 
+ 	<div id="editUsernameModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <form class="modal-content" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Your Username</h4>
+                </div>
+				<input type='hidden' name="UL_ID" value="<?php echo $_COOKIE['adminID']; ?>" />
+				<input type="hidden" id="nonce" name="nonce" value="<?= $nonce; ?>">
+                <div class="modal-body">
+					<label>Current Username:</label>
+				    <input class="form-control" type="text" name="old_usrn" required />
+				    <label>New Username:</label>
+				    <input class="form-control" type="text" name="new_usrn" required />
+                    <label>Confirm Password:</label>
+				    <input class="form-control" type="password" name="pssw" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="action" value="<?= UPDATE_USERNAME ?>" class="btn btn-default">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+	<div id="updatePasswordModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <form class="modal-content" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Update Your Password</h4>
+                </div>
+				<input type='hidden' name="UL_ID" value="<?php echo $_COOKIE['adminID']; ?>" />
+				<input type="hidden" id="nonce" name="nonce" value="<?= $nonce; ?>">
+				<input type="hidden" id="usrn" name="usrn" value="<?= $username ?>">
+                <div class="modal-body">
+					<label>Old Password:</label>
+				    <input class="form-control" type="password" name="old_pssw" required />
+				    <label>New Password:</label>
+				    <input class="form-control" type="password" name="new_pssw" required />
+                    <label>Confirm Password:</label>
+				    <input class="form-control" type="password" name="conf_pssw" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="action" value="<?= UPDATE_PASSWORD ?>" class="btn btn-default">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
 	 <div id="editProfileModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
