@@ -31,7 +31,9 @@
 		        <ul class="nav navbar-nav">
 		            <li <?= homeIsActive() ?>><a href="/">Home</a></li>
 		            <li <?= aboutIsActive() ?>><a href="about">About</a></li>
-		            <li <?= helpIsActive() ?>><a href="help">Help</a></li>
+		            <?php if($_SESSION['isLoggedIn']): ?>
+		            	<li <?= helpIsActive() ?>><a href="help">Help</a></li>
+		            <?php endif; ?>
 		        </ul>
 
 		        <ul class="nav navbar-nav navbar-right">
