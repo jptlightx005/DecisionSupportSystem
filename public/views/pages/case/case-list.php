@@ -168,17 +168,11 @@
 
                         <div id="prescription" style="display:none;">
                             <label>Prescribed Medicine</label>
-                            <div id="presc_med">
+                            <div id="presc_med" style="margin-left: 10px;">
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn show-something">Show</button>
-                        <script type="text/javascript">
-                            $('.show-something').click(function(){
-                                $('#prescription').show();
-                             });
-                        </script>
                         <button type="button" class="btn clear-form-button">Clear</button>
                         <button type="submit" id="submit_case" name="action" value="<?= ADD_CASE ?>" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -326,24 +320,48 @@
         $("input[name='medicine[]']").on('change', function (e, fromdisease = false) {
             e.stopPropagation();
             e.preventDefault();
-            console.log('did select medicine')
 
-            var medicine = case_form["medicine[]"];
-            var prescription_count = 0;
+            var medicine = $("input[name='medicine[]']:checked");
             var medlen = medicine.length;
-            if(medlen == undefined){
-                if(medicine.checked)
-                    prescription_count++;
-            }else{
-                for (var i=0; i < medlen; i++) {
-                    if (medicine[i].checked)
-                        prescription_count++;
-                }
-            }
-
-            if(prescription_count > 0){
+            console.log(medlen)
+            if(medlen > 0){
                 $('#prescription').show();
-                $('#presc_med').clear();
+                $('#presc_med').empty();
+
+
+                console.log('did2');
+                
+                for (var i=0; i < medlen; i++) {
+                    med = medicine[i]
+                    
+                    var id = med.value;
+                    var title = med.nextSibling.nextSibling.innerHTML;
+                    
+                    $('#presc_med').append("<label>" + title + "</label><br>");
+
+                    $('#presc_med').append($('<input>', {
+                                                        class: 'form-control',
+                                                        type: 'hidden',
+                                                        name: "presc[" + i + "][id]",
+                                                        value: id,
+                                                        required: true
+                                                    }));
+                    $('#presc_med').append($('<input>', {
+                                                        class: 'form-control',
+                                                        type: 'number',
+                                                        name: "presc[" + i + "][amount]",
+                                                        placeholder: 'Amount',
+                                                        required: true
+                                                    }));
+                    $('#presc_med').append($('<textarea>', {
+                                                        class: 'form-control',
+                                                        rows: 4,
+                                                        name: "presc[" + i + "][intake]",
+                                                        placeholder: 'Signetur',
+                                                        required: true
+                                                    }));
+                }
+                console.log($('#presc_med'))
             }else{
                 $('#prescription').hide();
             }

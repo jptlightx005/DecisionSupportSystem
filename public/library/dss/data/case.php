@@ -55,7 +55,8 @@ function addNewCase($post){
 	foreach($post as $key => $value){
 		if($key != "action" &&
 			$key != "symptom" &&
-			$key != "medicine"){
+			$key != "medicine" &&
+			$key != "presc"){
 			$newValue = addslashes($value);
 			$field_names .= "`$key`, ";
 			$field_values .= "'$newValue', ";
@@ -114,6 +115,19 @@ function addNewCase($post){
 			$medicineQuery = "INSERT INTO dss_medicine_used (MedicineID, medicine, CaseID) VALUES $medicineValues";
 			if(!executeQuery($medicineQuery))
 				return response(0, $medicineQuery);
+		}
+
+		//......
+		if(!empty($_POST["presc"])){	
+			$prescValues = "";
+			foreach($_POST["presc"] as $dict){
+				$intake = trim($dict['intake']);
+				$prescValues .= "($case_id, {$dict['id']}, {$dict['amount']}, '$intake'), ";
+			}
+			$prescValues = substr($prescValues, 0, strlen($prescValues) - 2);
+			$prescQuery = "INSERT INTO dss_presc (CaseID, MedicineID, amount, intake) VALUES $prescValues";
+			if(!executeQuery($prescQuery))
+				return response(0, $prescQuery);
 		}
 
 		return response(1, "Successfully added case!");
