@@ -165,8 +165,19 @@
                         </div>
                         <label for="medication">Medication:</label>
                         <textarea class="form-control" rows="5" id="medication" name="treatment" required></textarea>
+
+                        <div id="prescription" style="display:none;">
+                            <label>Prescribed Medicine</label>
+
+                        </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn show-something">Show</button>
+                        <script type="text/javascript">
+                            $('.show-something').click(function(){
+                                $('#prescription').show();
+                             });
+                        </script>
                         <button type="button" class="btn clear-form-button">Clear</button>
                         <button type="submit" id="submit_case" name="action" value="<?= ADD_CASE ?>" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -238,20 +249,21 @@
 
     <script type="text/javascript">
        //Checkbox functionalities
-	    $('li.dropdown-li').click(
-	        function() {
-	            var cb = $(this).find(":checkbox")[0];
+       var symptoms_loaded_from_disease = 0;
+       var triggered = 0;
 
-	            if (!$(cb).attr("checked")) {
-	                $(cb).attr("checked", "checked");
-	            } else {
-	                $(cb).removeAttr("checked");
-	            }
-	            $(cb).trigger('change');
-	        }
-	    );
+	    $('li.dropdown-li').click(function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            var cb = $(this).find(":checkbox");
+            var ischecked = cb.prop('checked');
+            cb.prop('checked', !ischecked);
+            cb.change();
+	    });
 
-	    $(".checkbox-input").change(function () {
+	    $(".checkbox-input").change(function (e) {
+            e.stopPropagation();
+            e.preventDefault();
 	        var checked_boxes = $(this).closest('.button-group').find('.checkbox-input:checked');
 	        var text = checked_boxes.map(function() {
 	            return $(this).next("label").text();
@@ -261,11 +273,9 @@
 	        $(this).closest('.button-group').find('.dropdown-text').text(text.length > 0 ? text : title);
 	     });
 
-	    $(".dropdown-li").click(function(e){
-	        e.stopPropagation();
-	    });
-
-        $("input[name='symptom[]']").change(function () {
+        $("input[name='symptom[]']").on('change', function (e, fromdisease = false) {
+            e.stopPropagation();
+            e.preventDefault();
             var symptoms = case_form["symptom[]"];
             var symptom_count = 0;
             var symlen = symptoms.length;
@@ -274,6 +284,7 @@
             if(symlen == undefined){
                 if(symptoms.checked){
                     symurlparam += "symptoms[0]=" + symptoms.value;
+                    symptom_count++;
                 }
             }else{
                 var j = 0;
@@ -281,6 +292,7 @@
                     if(symptoms[i].checked){
                         symurlparam += "symptoms[" + j + "]=" + symptoms[i].value + "&";
                         j++;
+                        symptom_count++;
                     }
                 }
 
@@ -290,31 +302,44 @@
             if(symurlparam.length == 1){
                 symurlparam = "";
             }
-            
-            $.getJSON("/api/diseases" + symurlparam, { get_param: 'value' }, function(data) {
 
-                $('#diseases').empty();
-                for(var i = 0; i < data.length; i++){
-                    
-                    $('#diseases').append($('<option>', {
-                        id: data[i].ID,
-                        value: data[i].name
-                    }));
-                }
-            });
+            if(!fromdisease){
+                $("input[name='disease']").val("")
+                $.getJSON("/api/diseases" + symurlparam, { get_param: 'value' }, function(data) {
+                    $('#diseases').empty();
+                    for(var i = 0; i < data.length; i++){
+                        
+                        $('#diseases').append($('<option>', {
+                            id: data[i].ID,
+                            value: data[i].name
+                        }));
+                    }
+
+
+                });
+            }else{
+                symptoms_loaded_from_disease--;
+            }
          });
 
-	    $("input[name='disease']").on('input', function () {
+	    $("input[name='disease']").on('input', function (e) {
+            console.log("triggered input disease")
+            e.preventDefault();
+            e.stopPropagation();
 		    var val = this.value;
 		    var c_id = $("#diseases").find('option[value="' +val + '"]').attr('id');
             $("input[name='DiseaseID']").val(0);
 	        $.getJSON("/api/disease?id=" + c_id, { get_param: 'value' }, function(data) {
 	        	$("input[name='DiseaseID']").val(data.ID);
-                $("input[name='symptom[]']").prop('checked', false);
+                console.log("checked checkboxes: " + $("input[name='symptom[]']:checked").length)
+                var checkedBoxes = $("input[name='symptom[]']:checked")
+                checkedBoxes.prop('checked', false);
 	        	$.each(data.symptoms, function(index, value){
-	        		$("input[name='symptom[]'][value='" + value.ID + "']").prop('checked', true);
+                    var cb = $("input[name='symptom[]'][value='" + value.ID + "']");
+	        		cb.prop('checked', true);
+                    symptoms_loaded_from_disease++;
+                    cb.trigger('change', [true]);
 	        	});
-				$("input[name='symptom[]']").change();
 
 				$("input[name='medicine[]']").prop('checked', false);
 	        	$.each(data.prescription, function(index, value){
@@ -372,6 +397,9 @@
             $("input[name='symptom[]']").change();
             $("input[name='medicine[]']").prop('checked', false);
             $("input[name='medicine[]']").change();
+
+            $("textarea[name='diagnosis']").text('');
+            $("textarea[name='treatment']").text('');   
          });
     </script>
 <?php endif; ?>
