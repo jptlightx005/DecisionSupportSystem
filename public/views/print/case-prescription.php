@@ -94,7 +94,7 @@
 
 			<h3>Prescription:</h3>
 			<img src="assets/rx_symbol.png" style="width:30px" />
-			<h4>
+			<!-- <h4>
 				<?php
 					$meds = "";
 					foreach ($medicine_list as $medicine){
@@ -103,7 +103,7 @@
 					$meds = substr($meds, 0, strlen($meds) - 2);
 					echo $meds;
 				?>
-			</h4>
+			</h4> -->
 			<p><?= $case['treatment'] ?></p>
 			<br><br>
 			<div class="row" align="center">
