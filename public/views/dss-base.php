@@ -230,11 +230,8 @@
 	});
 
 	$(".clear-form-button").click(function(){
-	    // document.getElementsByClassName('modal-form').reset();
+	    
 	    var forms = document.getElementsByClassName("modal-form");
-		for(var i = 0; i < forms.length; i++)
-		{
-		   forms.item(i).reset();
-		}
+	    forms.item(0).reset()
 	});
 </script>
