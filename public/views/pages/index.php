@@ -5,6 +5,7 @@
 		body {
 		    background-image: url("assets/55398920.jpg-vector-medical-health-care.jpg");
 		    background-color: #cccccc;
+			
 		}
 		#text-box{
 			background-color: rgba(255, 255, 255, 0.7);
