@@ -168,7 +168,8 @@
 
                         <div id="prescription" style="display:none;">
                             <label>Prescribed Medicine</label>
-
+                            <div id="presc_med">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -326,6 +327,26 @@
             e.stopPropagation();
             e.preventDefault();
             console.log('did select medicine')
+
+            var medicine = case_form["medicine[]"];
+            var prescription_count = 0;
+            var medlen = medicine.length;
+            if(medlen == undefined){
+                if(medicine.checked)
+                    prescription_count++;
+            }else{
+                for (var i=0; i < medlen; i++) {
+                    if (medicine[i].checked)
+                        prescription_count++;
+                }
+            }
+
+            if(prescription_count > 0){
+                $('#prescription').show();
+                $('#presc_med').clear();
+            }else{
+                $('#prescription').hide();
+            }
 
          });
 
