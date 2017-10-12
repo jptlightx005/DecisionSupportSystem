@@ -172,12 +172,12 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn show-something">Show</button>
+                        <!-- <button type="button" class="btn show-something">Show</button>
                         <script type="text/javascript">
                             $('.show-something').click(function(){
                                 $('#prescription').show();
                              });
-                        </script>
+                        </script> -->
                         <button type="button" class="btn clear-form-button">Clear</button>
                         <button type="submit" id="submit_case" name="action" value="<?= ADD_CASE ?>" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
