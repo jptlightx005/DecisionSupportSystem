@@ -322,6 +322,13 @@
             }
          });
 
+        $("input[name='medicine[]']").on('change', function (e, fromdisease = false) {
+            e.stopPropagation();
+            e.preventDefault();
+            console.log('did select medicine')
+
+         });
+
 	    $("input[name='disease']").on('input', function (e) {
             console.log("triggered input disease")
             e.preventDefault();
@@ -331,9 +338,10 @@
             $("input[name='DiseaseID']").val(0);
 	        $.getJSON("/api/disease?id=" + c_id, { get_param: 'value' }, function(data) {
 	        	$("input[name='DiseaseID']").val(data.ID);
+
                 console.log("checked checkboxes: " + $("input[name='symptom[]']:checked").length)
-                var checkedBoxes = $("input[name='symptom[]']:checked")
-                checkedBoxes.prop('checked', false);
+
+                $("input[name='symptom[]']:checked").prop('checked', false);
 	        	$.each(data.symptoms, function(index, value){
                     var cb = $("input[name='symptom[]'][value='" + value.ID + "']");
 	        		cb.prop('checked', true);
@@ -341,11 +349,12 @@
                     cb.trigger('change', [true]);
 	        	});
 
-				$("input[name='medicine[]']").prop('checked', false);
+				$("input[name='medicine[]']:checked").prop('checked', false);
 	        	$.each(data.prescription, function(index, value){
-	        		$("input[name='medicine[]'][value='" + value.ID + "']").prop('checked', true);
+                    var cb = $("input[name='medicine[]'][value='" + value.ID + "']");
+	        		cb.prop('checked', true);
+                    cb.trigger('change', [true]);
 	        	});
-				$("input[name='medicine[]']").change();
 
 	        	$("textarea[name='diagnosis']").text(data.diagnosis);
 	        	$("textarea[name='treatment']").text(data.treatment);
