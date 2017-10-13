@@ -117,7 +117,7 @@
 			<!-- <p><?= $case['treatment'] ?></p> -->
 			<br><br>
 			<div class="row" align="center">
-			DR. RODINA P. MONDRAGON <br>
+			<strong>DR. RODINA P. MONDRAGON</strong> <br>
 			P.T.R. No. 4792270 <br>
 			Lic. No. 0065414
 			</div>
