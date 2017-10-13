@@ -3,6 +3,7 @@
 	$case = getCaseInfo($_GET['id']);
 	$patient = getPatientInfo($case['PatientID']);
 	$medicine_list = getMedicineListForCase($_GET['id']);
+	$presc_list = getPrescriptionListForCase($_GET['id']);
 ?>
 
 <html>
@@ -35,8 +36,9 @@
 				text-indent: 20px;
 			}
 			p {
-			    text-indent: 30px;
+			    text-indent: 0px;
 			    padding: 0px 20px;
+			    font-size: 16px;
 			    text-align: justify;
 			}
 
@@ -93,21 +95,29 @@
 			</div>
 
 			<h3>Prescription:</h3>
-			<img src="assets/rx_symbol.png" style="width:30px" />
-			<!-- <h4>
+			<img src="assets/rx_symbol.png" style="width:30px;" />
+			<div style="margin-left:50px">
 				<?php
 					$meds = "";
-					foreach ($medicine_list as $medicine){
-						$meds .= $medicine['medicine'] . ", ";
+					foreach ($presc_list as $medicine){
+						$mname = $medicine['name'];
+						$mamount = $medicine['amount'];
+						$intake = $medicine['intake'];
+						echo "<span class='med_name'>$mname &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #$mamount </span>";
+						echo  "<p><span style='font-size:15px;'>Sig.</span>&nbsp;&nbsp;&nbsp;&nbsp;$intake</p><br>";
 					}
-					$meds = substr($meds, 0, strlen($meds) - 2);
-					echo $meds;
 				?>
-			</h4> -->
-			<p><?= $case['treatment'] ?></p>
+			</div>
+				
+			<style>
+				.med_name{
+					font-size: 20px;
+				}
+			</style>
+			<!-- <p><?= $case['treatment'] ?></p> -->
 			<br><br>
 			<div class="row" align="center">
-			DR. RODINA P. MONDRAGON <br>
+			<strong>DR. RODINA P. MONDRAGON</strong> <br>
 			P.T.R. No. 4792270 <br>
 			Lic. No. 0065414
 			</div>
