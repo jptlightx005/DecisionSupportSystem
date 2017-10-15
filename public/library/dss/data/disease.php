@@ -130,7 +130,8 @@ function addNewDisease($post){
 	foreach($post as $key => $value){
 		if($key != "action" &&
 			$key != "symptom" &&
-			$key != "medicine"){
+			$key != "medicine" &&
+			$key != "presc"){
 				$newValue = addslashes(trim($value));
 				$field_names .= "`$key`, ";
 				$field_values .= "'$newValue', ";
@@ -183,6 +184,19 @@ function addNewDisease($post){
 				return response(0, $medicineQuery);
 		}
 		
+
+		//......
+		if(!empty($_POST["presc"])){	
+			$prescValues = "";
+			foreach($_POST["presc"] as $dict){
+				$intake = trim($dict['intake']);
+				$prescValues .= "($disease_id, {$dict['id']}, {$dict['amount']}, '$intake'), ";
+			}
+			$prescValues = substr($prescValues, 0, strlen($prescValues) - 2);
+			$prescQuery = "INSERT INTO dss_presc (DiseaseID, MedicineID, amount, intake) VALUES $prescValues";
+			if(!executeQuery($prescQuery))
+				return response(0, $prescQuery);
+		}
 
 		return response(1, "Successfully added disease!");
 	}else{
