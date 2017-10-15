@@ -32,13 +32,13 @@ function getDiseaseList($search){
 			foreach($used_symptoms as $dict){
 				$id = $dict['DiseaseID'];
 				if($id != 0){
-					$subquery .= "ID = $id AND ";
+					$subquery .= "(ID = $id AND is_removed = 0) OR ";
 				}
 			}
 
 			if(count($used_symptoms) > 0){
-				$subquery = substr($subquery, 0, strlen($subquery) - 5);
-				$query = "SELECT ID, name, diagnosis, treatment FROM dss_diseases $subquery";
+				$subquery = substr($subquery, 0, strlen($subquery) - 4);
+				$query = "SELECT ID, name, diagnosis, treatment FROM dss_diseases $subquery ORDER BY name ASC";
 
 				$diseases = selectQuery($query);
 			}
@@ -67,9 +67,13 @@ function getDiseaseInfo($id){
 		$medQuery = "SELECT * FROM dss_medicine_used JOIN dss_medicine ON dss_medicine_used.MedicineID = dss_medicine.ID WHERE DiseaseID = $id";
 		$medicineList = selectQuery($medQuery);
 
+		$prescQuery = "SELECT * FROM dss_presc INNER JOIN dss_medicine ON dss_presc.MedicineID = dss_medicine.ID WHERE DiseaseID = $id";
+		$prescList = selectQuery($prescQuery);
+
 		$disease["symptoms"] = $symptomsList;
-		$disease["prescription"] = $medicineList;
-		
+		$disease["medicine"] = $medicineList;
+		$disease["prescription"] = $prescList;
+
 		return $disease;
 	}else{
 		return response(0, "Case ID Not Found!");
@@ -78,7 +82,7 @@ function getDiseaseInfo($id){
 
 function getDiseaseBySymptoms($symptoms){
 	global $conn;
-	$subquery = "WHERE ";
+	$subquery = "WHERE (";
 	foreach($symptoms as $id){
 		$subquery .= "SymptomID = $id OR ";
 	}
@@ -86,23 +90,36 @@ function getDiseaseBySymptoms($symptoms){
 	$diseases = array();
 	if(count($symptoms) > 0){
 		$subquery = substr($subquery, 0, strlen($subquery) - 4);
-		$query = "SELECT * FROM dss_symptoms_used $subquery";
-
+		$query = "SELECT * FROM dss_symptoms_used $subquery) AND CaseID = 0";
+		
 		$used_symptoms = selectQuery($query);
-
-		$subquery = "WHERE ";
-
-		foreach($used_symptoms as $dict){
-			$id = $dict['DiseaseID'];
-			if($id != 0){
-				$subquery .= "ID = $id AND ";
+		
+		$diseaseList = array();
+		foreach($used_symptoms as $symptom){
+			
+			$diseaseID = $symptom["DiseaseID"];
+			$diseaseList["$diseaseID"][] = $symptom["SymptomID"];
+		}
+		
+		foreach ($diseaseList as $key => $value) {
+			if(count($value) < count($symptoms)){
+				unset($diseaseList[$key]);
 			}
 		}
 
-		if(count($used_symptoms) > 0){
-			$subquery = substr($subquery, 0, strlen($subquery) - 5);
-			$query = "SELECT * FROM dss_diseases $subquery";
+		$subquery = "WHERE ";
 
+		foreach($diseaseList as $key => $value){
+			$id = $key;
+			if($id != 0){
+				$subquery .= "(ID = $id AND is_removed = 0) OR ";
+			}
+		}
+
+		if(count($diseaseList) > 0){
+			$subquery = substr($subquery, 0, strlen($subquery) - 4);
+			$query = "SELECT * FROM dss_diseases $subquery";
+			
 			$diseases = selectQuery($query);
 		}
 	}
@@ -117,7 +134,8 @@ function addNewDisease($post){
 	foreach($post as $key => $value){
 		if($key != "action" &&
 			$key != "symptom" &&
-			$key != "medicine"){
+			$key != "medicine" &&
+			$key != "presc"){
 				$newValue = addslashes(trim($value));
 				$field_names .= "`$key`, ";
 				$field_values .= "'$newValue', ";
@@ -170,6 +188,19 @@ function addNewDisease($post){
 				return response(0, $medicineQuery);
 		}
 		
+
+		//......
+		if(!empty($_POST["presc"])){	
+			$prescValues = "";
+			foreach($_POST["presc"] as $dict){
+				$intake = trim($dict['intake']);
+				$prescValues .= "($disease_id, {$dict['id']}, {$dict['amount']}, '$intake'), ";
+			}
+			$prescValues = substr($prescValues, 0, strlen($prescValues) - 2);
+			$prescQuery = "INSERT INTO dss_presc (DiseaseID, MedicineID, amount, intake) VALUES $prescValues";
+			if(!executeQuery($prescQuery))
+				return response(0, $prescQuery);
+		}
 
 		return response(1, "Successfully added disease!");
 	}else{

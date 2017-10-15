@@ -7,6 +7,8 @@ function getCaseList($search){
 	if($search != ""){
 		$query .= " AND ((first_name LIKE '%$search%' OR middle_name LIKE '%$search%' OR last_name LIKE '%$search%') OR disease LIKE '%$search%' OR diagnosis LIKE '%$search%' OR treatment LIKE '%$search%' OR CaseID LIKE '%$search%')";
 	}
+
+	$query .= " ORDER BY CaseID DESC";
 	return selectQuery($query);
 }
 
