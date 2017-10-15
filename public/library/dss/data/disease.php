@@ -32,12 +32,12 @@ function getDiseaseList($search){
 			foreach($used_symptoms as $dict){
 				$id = $dict['DiseaseID'];
 				if($id != 0){
-					$subquery .= "ID = $id AND ";
+					$subquery .= "ID = $id OR ";
 				}
 			}
 
 			if(count($used_symptoms) > 0){
-				$subquery = substr($subquery, 0, strlen($subquery) - 5);
+				$subquery = substr($subquery, 0, strlen($subquery) - 4);
 				$query = "SELECT ID, name, diagnosis, treatment FROM dss_diseases $subquery";
 
 				$diseases = selectQuery($query);
@@ -78,7 +78,7 @@ function getDiseaseInfo($id){
 
 function getDiseaseBySymptoms($symptoms){
 	global $conn;
-	$subquery = "WHERE ";
+	$subquery = "WHERE (";
 	foreach($symptoms as $id){
 		$subquery .= "SymptomID = $id OR ";
 	}
@@ -86,23 +86,36 @@ function getDiseaseBySymptoms($symptoms){
 	$diseases = array();
 	if(count($symptoms) > 0){
 		$subquery = substr($subquery, 0, strlen($subquery) - 4);
-		$query = "SELECT * FROM dss_symptoms_used $subquery";
-
+		$query = "SELECT * FROM dss_symptoms_used $subquery) AND CaseID = 0";
+		
 		$used_symptoms = selectQuery($query);
-
-		$subquery = "WHERE ";
-
-		foreach($used_symptoms as $dict){
-			$id = $dict['DiseaseID'];
-			if($id != 0){
-				$subquery .= "ID = $id AND ";
+		
+		$diseaseList = array();
+		foreach($used_symptoms as $symptom){
+			
+			$diseaseID = $symptom["DiseaseID"];
+			$diseaseList["$diseaseID"][] = $symptom["SymptomID"];
+		}
+		
+		foreach ($diseaseList as $key => $value) {
+			if(count($value) < count($symptoms)){
+				unset($diseaseList[$key]);
 			}
 		}
 
-		if(count($used_symptoms) > 0){
-			$subquery = substr($subquery, 0, strlen($subquery) - 5);
-			$query = "SELECT * FROM dss_diseases $subquery";
+		$subquery = "WHERE ";
 
+		foreach($diseaseList as $key => $value){
+			$id = $key;
+			if($id != 0){
+				$subquery .= "ID = $id OR ";
+			}
+		}
+
+		if(count($diseaseList) > 0){
+			$subquery = substr($subquery, 0, strlen($subquery) - 4);
+			$query = "SELECT * FROM dss_diseases $subquery";
+			
 			$diseases = selectQuery($query);
 		}
 	}
