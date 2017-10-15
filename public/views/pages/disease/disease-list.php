@@ -189,6 +189,9 @@
                 if($('#presc_med').length > 0){
 
                     $('#presc_med').contents().appendTo(temp_div)
+                    // temp_div.children('div').each(function (){ //enable if debugging
+                    //     console.log("id: " + $(this).get(0).id);
+                    // });
                 }
                 $('#presc_med').empty();
 
@@ -199,8 +202,8 @@
 
                     var alreadyAdded = false;
                     temp_div.children('div').each(function (){
-                        console.log("id: " + $(this).get(0).id);
                         if(id == $(this).get(0).id){
+                            console.log("already added!: " + $(this).get(0).id);
                             $('#presc_med').append($(this));
                             alreadyAdded = true;
                             return;
@@ -208,6 +211,7 @@
                     });
 
                     if(!alreadyAdded){
+                        console.log("adding: " + id);
                         var title = med.nextSibling.nextSibling.innerHTML;
                     
                         var div = $("<div class='prescribed' id=" + id + ">");
@@ -216,21 +220,21 @@
                         div.append($('<input>', {
                                                             class: 'form-control',
                                                             type: 'hidden',
-                                                            name: "presc[" + i + "][id]",
+                                                            name: "presc[" + id + "][id]",
                                                             value: id,
                                                             required: true
                                                         }));
                         div.append($('<input>', {
                                                             class: 'form-control',
                                                             type: 'number',
-                                                            name: "presc[" + i + "][amount]",
+                                                            name: "presc[" + id + "][amount]",
                                                             placeholder: 'Amount',
                                                             required: true
                                                         }));
                         div.append($('<textarea>', {
                                                             class: 'form-control',
                                                             rows: 4,
-                                                            name: "presc[" + i + "][intake]",
+                                                            name: "presc[" + id + "][intake]",
                                                             placeholder: 'Signetur',
                                                             required: true
                                                         }));

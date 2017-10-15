@@ -81,7 +81,7 @@
 			<p>
 				<?php
 					$medicines = "";
-				    foreach($disease["prescription"] as $medicine){
+				    foreach($disease["medicine"] as $medicine){
 				        $medicines .= "{$medicine["name"]}, ";
 				    }
 				    echo returnSpaceIfBlank(substr($medicines, 0, strlen($medicines) - 2));

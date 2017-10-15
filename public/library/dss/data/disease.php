@@ -32,13 +32,13 @@ function getDiseaseList($search){
 			foreach($used_symptoms as $dict){
 				$id = $dict['DiseaseID'];
 				if($id != 0){
-					$subquery .= "ID = $id OR ";
+					$subquery .= "(ID = $id AND is_removed = 0) OR ";
 				}
 			}
 
 			if(count($used_symptoms) > 0){
 				$subquery = substr($subquery, 0, strlen($subquery) - 4);
-				$query = "SELECT ID, name, diagnosis, treatment FROM dss_diseases $subquery";
+				$query = "SELECT ID, name, diagnosis, treatment FROM dss_diseases $subquery ORDER BY name ASC";
 
 				$diseases = selectQuery($query);
 			}
@@ -67,9 +67,13 @@ function getDiseaseInfo($id){
 		$medQuery = "SELECT * FROM dss_medicine_used JOIN dss_medicine ON dss_medicine_used.MedicineID = dss_medicine.ID WHERE DiseaseID = $id";
 		$medicineList = selectQuery($medQuery);
 
+		$prescQuery = "SELECT * FROM dss_presc INNER JOIN dss_medicine ON dss_presc.MedicineID = dss_medicine.ID WHERE DiseaseID = $id";
+		$prescList = selectQuery($prescQuery);
+
 		$disease["symptoms"] = $symptomsList;
-		$disease["prescription"] = $medicineList;
-		
+		$disease["medicine"] = $medicineList;
+		$disease["prescription"] = $prescList;
+
 		return $disease;
 	}else{
 		return response(0, "Case ID Not Found!");
@@ -108,7 +112,7 @@ function getDiseaseBySymptoms($symptoms){
 		foreach($diseaseList as $key => $value){
 			$id = $key;
 			if($id != 0){
-				$subquery .= "ID = $id OR ";
+				$subquery .= "(ID = $id AND is_removed = 0) OR ";
 			}
 		}
 

@@ -246,6 +246,7 @@
        //Checkbox functionalities
        var symptoms_loaded_from_disease = 0;
        var triggered = 0;
+       var temp_div = $("<div id='temp'>");
 
 	    $('li.dropdown-li').click(function(e) {
             e.stopPropagation();
@@ -309,8 +310,6 @@
                             value: data[i].name
                         }));
                     }
-
-
                 });
             }else{
                 symptoms_loaded_from_disease--;
@@ -323,43 +322,67 @@
 
             var medicine = $("input[name='medicine[]']:checked");
             var medlen = medicine.length;
-            console.log(medlen)
+            
             if(medlen > 0){
                 $('#prescription').show();
+
+                console.log ("clearing...");
+                if($('#presc_med').length > 0){
+
+                    $('#presc_med').contents().appendTo(temp_div)
+                    // temp_div.children('div').each(function (){ //enable if debugging
+                    //     console.log("id: " + $(this).get(0).id);
+                    // });
+                }
                 $('#presc_med').empty();
 
-
-                console.log('did2');
-                
                 for (var i=0; i < medlen; i++) {
-                    med = medicine[i]
+                    med = medicine[i];
                     
                     var id = med.value;
-                    var title = med.nextSibling.nextSibling.innerHTML;
-                    
-                    $('#presc_med').append("<label>" + title + "</label><br>");
 
-                    $('#presc_med').append($('<input>', {
-                                                        class: 'form-control',
-                                                        type: 'hidden',
-                                                        name: "presc[" + i + "][id]",
-                                                        value: id,
-                                                        required: true
-                                                    }));
-                    $('#presc_med').append($('<input>', {
-                                                        class: 'form-control',
-                                                        type: 'number',
-                                                        name: "presc[" + i + "][amount]",
-                                                        placeholder: 'Amount',
-                                                        required: true
-                                                    }));
-                    $('#presc_med').append($('<textarea>', {
-                                                        class: 'form-control',
-                                                        rows: 4,
-                                                        name: "presc[" + i + "][intake]",
-                                                        placeholder: 'Signetur',
-                                                        required: true
-                                                    }));
+                    var alreadyAdded = false;
+                    console.log("iterating to: " + temp_div.children.length);
+                    temp_div.children('div').each(function (){
+                        if(id == $(this).get(0).id){
+                            console.log("already added!: " + $(this).get(0).id);
+                            $('#presc_med').append($(this));
+                            alreadyAdded = true;
+                            return;
+                        }
+                    });
+
+                    if(!alreadyAdded){
+                        console.log("adding: " + id);
+                        var title = med.nextSibling.nextSibling.innerHTML;
+                    
+                        var div = $("<div class='prescribed' id=" + id + ">");
+                        div.append("<label>" + title + "</label><br>");
+
+                        div.append($('<input>', {
+                                                            class: 'form-control',
+                                                            type: 'hidden',
+                                                            name: "presc[" + id + "][id]",
+                                                            value: id,
+                                                            required: true
+                                                        }));
+                        div.append($('<input>', {
+                                                            class: 'form-control',
+                                                            type: 'number',
+                                                            name: "presc[" + id + "][amount]",
+                                                            placeholder: 'Amount',
+                                                            required: true
+                                                        }));
+                        div.append($('<textarea>', {
+                                                            class: 'form-control',
+                                                            rows: 4,
+                                                            name: "presc[" + id + "][intake]",
+                                                            placeholder: 'Signetur',
+                                                            required: true
+                                                        }));
+
+                        $('#presc_med').append(div);
+                    }
                 }
                 console.log($('#presc_med'))
             }else{
@@ -389,11 +412,23 @@
 	        	});
 
 				$("input[name='medicine[]']:checked").prop('checked', false);
-	        	$.each(data.prescription, function(index, value){
+	        	$.each(data.medicine, function(index, value){
                     var cb = $("input[name='medicine[]'][value='" + value.ID + "']");
 	        		cb.prop('checked', true);
                     cb.trigger('change', [true]);
 	        	});
+
+                var presc_div = $('#presc_med')
+
+                $.each(data.prescription, function(index, value){
+                    //get div where input hidden = this id
+                    var pdiv = presc_div.find('div#' + value.ID + '.prescribed')
+                    var pamnt = pdiv.find('input[type=number]')
+                    var psig = pdiv.find('textarea')
+
+                    pamnt.val(value.amount)
+                    psig.text(value.intake)
+                });
 
 	        	$("textarea[name='diagnosis']").text(data.diagnosis);
 	        	$("textarea[name='treatment']").text(data.treatment);

@@ -84,7 +84,7 @@
 	                                <dt class="col-sm-5">Prescribed Medicine:</dt>
 	                                <dd class="col-sm-7"><?php
 	    $medicines = "";
-	    foreach($disease["prescription"] as $medicine){
+	    foreach($disease["medicine"] as $medicine){
 	        $medicines .= "<a href='medicine-page?id={$medicine["ID"]}'>{$medicine["name"]}</a>, ";
 	    }
 	    echo returnSpaceIfBlank(substr($medicines, 0, strlen($medicines) - 2));
