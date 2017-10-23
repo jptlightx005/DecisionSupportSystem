@@ -76,6 +76,7 @@
                         <th>Patient Name</th>
                         <th>Gender</th>
                         <th>Address</th>
+                        <th>Disease</th>
                         <th>Last Visit</th>
                         <!-- <th>Options</th> -->
                     </tr>
@@ -86,6 +87,7 @@
                     <td><?= returnFullNameFromObject($dict) ?></td>
                     <td><?= $dict['gender'] ?></td>
                     <td><?= $dict['address'] ?></td>
+                    <td><?= $dict['case'] ?></td>
                     <td><?= returnFullDateTimeStringWithDate($dict['last_visit']) ?></td>
                 </tr>
             <?php endforeach; ?>

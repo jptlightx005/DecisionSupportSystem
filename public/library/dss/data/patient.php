@@ -45,8 +45,17 @@ function getPatientEHR($id){
 function getPatientListFromDate($fromdate, $todate){
 	global $conn;
 	$query = "SELECT ID, PatientID, first_name, middle_name, last_name, gender, address, last_visit FROM dss_patients WHERE is_removed = 0 AND CAST(last_visit AS DATE) >= '$fromdate' AND CAST(last_visit AS DATE) <= '$todate'";
-
-	return selectQuery($query);
+	$patients = selectQuery($query);
+	foreach($patients as $key => $value){
+		//$value will be the patient
+		$patient_id = $value['ID'];
+		$query = "SELECT disease FROM `dss_cases` WHERE PatientID ORDER BY case_date DESC LIMIT 1";
+		$case = selectFirstQuery($query);
+		if(isset($case)){
+			$patients[$key]['case'] = $case['disease'];
+		}
+	}
+	return $patients;
 }
 function getBrgyList(){
 	global $conn;

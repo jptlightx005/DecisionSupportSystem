@@ -108,16 +108,9 @@ function resetCookies(){
 
 //custom functions
 function printArray($array){
-    echo "<div><button class='copy-button' style='float:right' onclick=''>Copy</button><br><br>";
     echo "<pre>";
     print_r($array);
     echo "</pre>";
-    echo "</div>";
-    echo "<script>
-            $('.copy-button').onclick(function(){
-                
-            });
-          </script>";
 }
 
 function returnBlankIfNull($obj){
