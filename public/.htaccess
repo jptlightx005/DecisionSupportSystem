@@ -1,0 +1,46 @@
+RewriteEngine On    # Turn on the rewriting engine
+
+Options -Indexes
+
+RewriteRule ^api/login$ /library/dss/api/login.php [L]
+
+RewriteRule ^$ /views/pages/$1 [L]
+RewriteRule ^about$ /views/pages/about.php [L]
+RewriteRule ^help$ /views/pages/help.php [L]
+RewriteRule ^profile$ /views/pages/profile.php [L]
+RewriteRule ^test$ /views/pages/test.php [L]
+
+RewriteRule ^case$ /views/pages/case/case-list.php [L]
+RewriteRule ^case-page$ /views/pages/case/case-page.php [L]
+RewriteRule ^case-print$ /views/print/case-information.php [L]
+RewriteRule ^case-report-print$ /views/print/case-report.php [L]
+RewriteRule ^prescription-print$ /views/print/case-prescription.php [L]
+RewriteRule ^api/case$ /library/dss/api/get-case.php [L]
+
+RewriteRule ^patient$ /views/pages/patient/patient-list.php [L]
+RewriteRule ^patient-page$ /views/pages/patient/patient-page.php [L]
+RewriteRule ^patient-print$ /views/print/patient-information.php [L]
+RewriteRule ^patient-list-print$ /views/print/patient-list.php [L]
+
+RewriteRule ^symptoms$ /views/pages/symptom/symptom-list.php [L]
+RewriteRule ^symptom-page$ /views/pages/symptom/symptom-page.php [L]
+RewriteRule ^symptom-print$ /views/print/symptom-information.php [L]
+
+RewriteRule ^medicine$ /views/pages/medicine/medicine-list.php [L]
+RewriteRule ^medicine-page$ /views/pages/medicine/medicine-page.php [L]
+RewriteRule ^medicine-print$ /views/print/medicine-information.php [L]
+
+RewriteRule ^disease$ /views/pages/disease/disease-list.php [L]
+RewriteRule ^disease-page$ /views/pages/disease/disease-page.php [L]
+RewriteRule ^disease-print$ /views/print/disease-information.php [L]
+RewriteRule ^api/disease$ /library/dss/api/get-disease.php [L]
+RewriteRule ^api/diseases$ /library/dss/api/get-diseases.php [L]
+
+RewriteRule ^nurse$ /views/pages/nurse/nurse-list.php [L]
+RewriteRule ^api/account$ /library/dss/api/get-account.php [L]
+
+RewriteRule ^css/(.*)$ /scripts/stylesheet/$1 [NC,L]
+RewriteRule ^js/(.*)$ /scripts/javascript/$1 [NC,L]
+RewriteRule ^bootstrap/(.*)$ /library/bootstrap/$1 [NC,L]
+RewriteRule ^assets/(.*)$ /images/assets/$1 [NC,L]
+RewriteRule ^uploads/(.*)$ /images/uploads/$1 [NC,L]
